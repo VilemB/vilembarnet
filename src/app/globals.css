@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffff; /* White background */
+  --foreground: #111827; /* Dark gray text (Tailwind gray-900) */
 }
 
 @theme inline {
@@ -12,15 +12,29 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Remove or comment out the dark mode override */
+/*
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
 }
+*/
+
+@utilities {
+  /* Keep or adjust utility classes if needed */
+  .navbar-link {
+    @apply text-black no-underline p-2 rounded-lg; /* Adjust color */
+  }
+
+  .navbar {
+    @apply flex justify-between items-center p-4 bg-gray-200 rounded-l-lg w-1/5 h-12 mt-4 ml-4; /* Adjust color */
+  }
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif; /* Consider using the Geist font variables */
 }

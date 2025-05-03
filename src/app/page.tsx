@@ -1,103 +1,227 @@
-import Image from "next/image";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-white text-gray-900 flex flex-col font-mono">
+      <main className="flex-grow container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24 md:space-y-32">
+        {/* Hero/Intro Section */}
+        <section
+          id="about"
+          className="flex flex-col items-start space-y-4 max-w-3xl mx-auto"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">
+            Vilém Barnet
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600">
+            Full-Stack Engineer
+          </p>
+          <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+            Passionate about crafting elegant and efficient digital experiences
+            from end-to-end. I specialize in building robust backend systems and
+            intuitive frontend interfaces, always focusing on user needs and
+            delivering high-quality, scalable solutions. I thrive on tackling
+            complex challenges and continuously learning new technologies.
+          </p>
+        </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        {/* Work/Projects Section */}
+        <section id="work" className="space-y-10 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-10 md:mb-12 text-gray-900">
+            Selected Work
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {/* Card 1 */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col group">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
+                  Project Title 1
+                </h3>
+                <div className="flex space-x-3 text-xs text-gray-500 mt-1 shrink-0">
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-sky-600 transition-colors"
+                  >
+                    Demo
+                  </a>
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-sky-600 transition-colors"
+                  >
+                    Code
+                  </a>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4 text-sm flex-grow">
+                Brief description of the project, highlighting key technologies
+                or contributions. Made this one a bit longer to test the
+                flex-grow property.
+              </p>
+              <div className="mt-auto pt-3 border-t border-gray-200">
+                <p className="text-xs text-gray-500 flex flex-wrap gap-x-2 gap-y-1.5">
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    Next.js
+                  </span>
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    Tailwind
+                  </span>
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    TypeScript
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col group">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
+                  Project Title 2
+                </h3>
+                <div className="flex space-x-3 text-xs text-gray-500 mt-1 shrink-0">
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-sky-600 transition-colors"
+                  >
+                    Demo
+                  </a>
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-sky-600 transition-colors"
+                  >
+                    Code
+                  </a>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4 text-sm flex-grow">
+                Another project description, perhaps focusing on different
+                skills or outcomes.
+              </p>
+              <div className="mt-auto pt-3 border-t border-gray-200">
+                <p className="text-xs text-gray-500 flex flex-wrap gap-x-2 gap-y-1.5">
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    React
+                  </span>
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    Node.js
+                  </span>
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    CSS Modules
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col group md:col-span-2 lg:col-span-1">
+              <div className="flex justify-between items-start mb-3">
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
+                  Project Title 3
+                </h3>
+                <div className="flex space-x-3 text-xs text-gray-500 mt-1 shrink-0">
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-sky-600 transition-colors"
+                  >
+                    Code
+                  </a>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4 text-sm flex-grow">
+                Showcasing a backend-focused project or API development work.
+              </p>
+              <div className="mt-auto pt-3 border-t border-gray-200">
+                <p className="text-xs text-gray-500 flex flex-wrap gap-x-2 gap-y-1.5">
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    Python
+                  </span>
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    Flask
+                  </span>
+                  <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
+                    PostgreSQL
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="space-y-6 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+            Get In Touch
+          </h2>
+          <p className="text-gray-600 leading-relaxed">
+            I&apos;m actively looking for new opportunities and collaborations
+            where I can contribute to meaningful projects. Whether you have a
+            specific project in mind, want to discuss potential roles, or just
+            want to connect regarding web development, backend systems, or
+            anything in between, I&apos;d love to hear from you.
+          </p>
+          <p className="text-gray-600 leading-relaxed">
+            The best way to reach me is via email. I strive to respond as soon
+            as possible!
+          </p>
+          <div>
+            <a
+              href="mailto:your-email@example.com"
+              className="inline-block bg-gray-800 hover:bg-gray-700 text-white font-medium py-2.5 px-6 rounded-md transition-colors duration-300 text-sm md:text-base shadow-md hover:shadow-lg"
+            >
+              Say Hello
+            </a>
+          </div>
+          <div className="pt-6">
+            <p className="text-sm text-gray-500 mb-3">
+              You can also find me on:
+            </p>
+            <div className="flex space-x-6 text-gray-500">
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="GitHub"
+                className="hover:text-sky-600 transition-colors duration-300"
+              >
+                <span className="text-xs uppercase tracking-wider">GitHub</span>
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="LinkedIn"
+                className="hover:text-sky-600 transition-colors duration-300"
+              >
+                <span className="text-xs uppercase tracking-wider">
+                  LinkedIn
+                </span>
+              </a>
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Twitter"
+                className="hover:text-sky-600 transition-colors duration-300"
+              >
+                <span className="text-xs uppercase tracking-wider">
+                  Twitter
+                </span>
+              </a>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <Footer />
     </div>
   );
 }
