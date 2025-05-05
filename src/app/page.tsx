@@ -1,9 +1,46 @@
+"use client";
+
 import Footer from "@/components/Footer";
+import SpaceDroidAnimation from "@/components/SpaceDroidAnimation";
+import { animate } from "animejs";
+import React from "react";
 
 export default function Home() {
+  const handleButtonMouseEnter = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: 1.05,
+        translateY: -2,
+        duration: 200,
+        easing: "easeOutQuad",
+      },
+      {}
+    );
+  };
+
+  const handleButtonMouseLeave = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: 1.0,
+        translateY: 0,
+        duration: 300,
+        easing: "easeOutQuad",
+      },
+      {}
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-white text-gray-900 flex flex-col font-mono">
-      <main className="flex-grow container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24 md:space-y-32">
+    <div className="min-h-screen bg-white text-gray-900 flex flex-col font-mono relative">
+      <SpaceDroidAnimation />
+
+      <main className="flex-grow container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24 md:space-y-32 z-10 relative">
         {/* Hero/Intro Section */}
         <section
           id="about"
@@ -176,6 +213,8 @@ export default function Home() {
             <a
               href="mailto:your-email@example.com"
               className="inline-block bg-gray-800 hover:bg-gray-700 text-white font-medium py-2.5 px-6 rounded-md transition-colors duration-300 text-sm md:text-base shadow-md hover:shadow-lg"
+              onMouseEnter={handleButtonMouseEnter}
+              onMouseLeave={handleButtonMouseLeave}
             >
               Say Hello
             </a>
