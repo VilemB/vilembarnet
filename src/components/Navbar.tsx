@@ -1,7 +1,7 @@
 "use client"; // Required for useEffect and useState
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { animate } from "animejs"; // Import animejs
 
 // Helper function to throttle scroll events
@@ -32,19 +32,18 @@ function throttle<T extends (...args: unknown[]) => void>(
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("about");
-  const navRef = useRef<HTMLElement>(null); // Ref for the nav element
 
-  // Smooth scroll handler with Click Animation
+  // Smooth scroll handler - Simplified for side nav
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     sectionId: string
   ) => {
     e.preventDefault();
 
-    // Click animation
+    // Keep subtle click animation
     animate(e.currentTarget, {
-      scale: [0.97, 1], // Quick shrink and return
-      duration: 200,
+      scale: [0.95, 1],
+      duration: 150,
       easing: "easeOutQuad",
     });
 
@@ -52,40 +51,31 @@ export default function Navbar() {
 
     const element = document.getElementById(sectionId);
     if (element) {
-      const navHeight = navRef.current?.offsetHeight || 70;
-      const elementPosition =
-        element.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - navHeight - 20;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+      // Simple scroll into view, adjust behavior if needed
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   useEffect(() => {
     const sections = ["about", "work", "contact"];
-    // Ensure elements are queried only after component mounts
     const sectionElements = sections.map((id) => document.getElementById(id));
 
     const handleScroll = throttle(() => {
       let currentSection = "about";
-      const navHeight = navRef.current?.offsetHeight || 70;
-      const scrollThreshold = navHeight + 50;
+      // Adjust threshold for vertical nav - might need tweaking
+      const scrollThreshold = window.innerHeight * 0.3;
       const scrollPosition = window.scrollY + scrollThreshold;
 
-      // Check if scrolled to the bottom of the page
       const atBottom =
         window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 10; // Allow 10px tolerance
+        document.documentElement.scrollHeight - 10;
 
       if (atBottom) {
-        currentSection = sections[sections.length - 1]; // Force last section if at bottom
+        currentSection = sections[sections.length - 1];
       } else {
-        // Original logic to find the current section based on top offset
         for (let i = sectionElements.length - 1; i >= 0; i--) {
           const el = sectionElements[i];
+          // Use offsetTop directly, should be fine
           if (el && el.offsetTop <= scrollPosition) {
             currentSection = sections[i];
             break;
@@ -99,94 +89,63 @@ export default function Navbar() {
     }, 100);
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Initial check on mount
+    handleScroll();
 
-    // Enhanced Animation setup for links on hover
-    const links = navRef.current?.querySelectorAll("a[data-nav-link]");
-    if (links) {
-      links.forEach((link) => {
-        link.addEventListener("mouseenter", () => {
-          animate(link, {
-            translateY: "-4px", // Slightly more lift
-            scale: 1.05, // Add subtle scale
-            duration: 250, // Slightly longer duration
-            easing: "easeOutExpo", // Different easing
-          });
-        });
-        link.addEventListener("mouseleave", () => {
-          animate(link, {
-            translateY: "0px",
-            scale: 1,
-            duration: 250,
-            easing: "easeOutExpo",
-          });
-        });
-      });
-    }
+    // Remove previous Anime hover effect setup
+    // const links = navRef.current?.querySelectorAll("a[data-nav-link]"); ...
 
-    // Cleanup listener on unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      // Optional: Clean up anime event listeners if needed, though usually not necessary
     };
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
-  // Enhanced CSS Classes for Underline Animations
+  // New CSS Classes for Vertical Side Nav
   const linkBaseClasses =
-    "px-3 py-1.5 transition-colors duration-200 ease-in-out text-sm md:text-base relative inline-block origin-bottom " +
-    "after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-[-2px] " +
-    "after:h-[2px] after:rounded-full after:origin-center after:transition-all after:duration-300 after:ease-out"; // Base for underline
+    "w-full text-center py-3 px-2 transition-colors duration-200 ease-in-out text-sm relative group"; // Full width, centered text
 
-  const activeLinkClasses =
-    "text-black font-semibold after:w-[55%] after:scale-x-100 after:bg-black"; // Visible underline for active
+  const activeLinkClasses = "text-white bg-gray-700/50"; // Brighter text, subtle background
 
   const inactiveLinkClasses =
-    "text-neutral-600 hover:text-neutral-900 " +
-    "after:w-[55%] after:scale-x-0 after:bg-neutral-400 hover:after:scale-x-100"; // Hidden underline, visible on hover
+    "text-gray-400 hover:text-white hover:bg-gray-700/30"; // Dimmer text, different hover
 
   return (
     <nav
-      ref={navRef}
-      className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200/80 shadow-sm"
+      // Side Nav Styling
+      className="fixed top-0 left-0 h-screen w-20 bg-gray-800 text-white flex flex-col items-center pt-20 z-50 shadow-lg"
     >
-      {/* White background, lighter border */}
-      <div className="container mx-auto px-4 md:px-6 py-3 flex justify-center items-center">
-        <div className="flex space-x-4 md:space-x-5">
-          <Link
-            data-nav-link
-            className={`${linkBaseClasses} ${
-              activeSection === "about"
-                ? activeLinkClasses
-                : inactiveLinkClasses
-            }`}
-            href="#about"
-            onClick={(e) => handleLinkClick(e, "about")}
-          >
-            About
-          </Link>
-          <Link
-            data-nav-link
-            className={`${linkBaseClasses} ${
-              activeSection === "work" ? activeLinkClasses : inactiveLinkClasses
-            }`}
-            href="#work"
-            onClick={(e) => handleLinkClick(e, "work")}
-          >
-            Work
-          </Link>
-          <Link
-            data-nav-link
-            className={`${linkBaseClasses} ${
-              activeSection === "contact"
-                ? activeLinkClasses
-                : inactiveLinkClasses
-            }`}
-            href="#contact"
-            onClick={(e) => handleLinkClick(e, "contact")}
-          >
-            Contact
-          </Link>
-        </div>
+      <div className="flex flex-col space-y-6 w-full items-center">
+        <Link
+          className={`${linkBaseClasses} ${
+            // Removed data-nav-link as querySelector is removed
+            activeSection === "about" ? activeLinkClasses : inactiveLinkClasses
+          }`}
+          href="#about"
+          onClick={(e) => handleLinkClick(e, "about")}
+        >
+          {/* Consider Icons Here */}
+          <span className="block">About</span>{" "}
+          {/* Ensure text wraps or use icons */}
+        </Link>
+        <Link
+          className={`${linkBaseClasses} ${
+            activeSection === "work" ? activeLinkClasses : inactiveLinkClasses
+          }`}
+          href="#work"
+          onClick={(e) => handleLinkClick(e, "work")}
+        >
+          <span className="block">Work</span>
+        </Link>
+        <Link
+          className={`${linkBaseClasses} ${
+            activeSection === "contact"
+              ? activeLinkClasses
+              : inactiveLinkClasses
+          }`}
+          href="#contact"
+          onClick={(e) => handleLinkClick(e, "contact")}
+        >
+          <span className="block">Contact</span>
+        </Link>
       </div>
     </nav>
   );

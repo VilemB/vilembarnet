@@ -40,7 +40,7 @@ export default function Home() {
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-mono relative">
       <SpaceDroidAnimation />
 
-      <main className="flex-grow container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24 md:space-y-32 z-10 relative">
+      <main className="flex-grow container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24 md:space-y-32 z-10 relative pl-20">
         {/* Hero/Intro Section */}
         <section
           id="about"
