@@ -70,15 +70,15 @@ function throttle<T extends (...args: unknown[]) => void>(
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("about");
   const [underlineStyle, setUnderlineStyle] = useState({});
-  const navLinksRef = useRef<HTMLDivElement>(null); // Ref for the container of main navigation links
+  const navLinksContainerRef = useRef<HTMLDivElement>(null);
+  const [isShrunkByScroll, setIsShrunkByScroll] = useState(false); // Renamed for clarity
+  const [isHovered, setIsHovered] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Link data - sectionId should match IDs in your page.tsx
-  // Text can be whatever you want to display.
   const navigationLinks = [
-    { id: "about", text: "About" }, // Was "Pricing" in example, using "About" to match existing page section
-    { id: "work", text: "Work" }, // Was "FAQ" in example, using "Work"
-    { id: "contact", text: "Contact" }, // Was "Blog" in example, using "Contact"
-    // { id: "blog", text: "Blog" }, // Example, if you have a blog section
+    { id: "about", text: "About" },
+    { id: "work", text: "Work" },
+    { id: "contact", text: "Contact" },
   ];
 
   const handleLinkClick = (
@@ -96,6 +96,24 @@ export default function Navbar() {
       {}
     );
     setActiveSection(sectionId);
+    // If clicking a link, ensure navbar is fully expanded
+    setIsShrunkByScroll(false);
+    setIsHovered(true); // Assume hover since click happened within
+
+    // Ensure content is visible before scrolling
+    if (navLinksContainerRef.current) {
+      navLinksContainerRef.current.style.pointerEvents = "auto";
+      animate(
+        {
+          targets: navLinksContainerRef.current,
+          opacity: 1,
+          duration: 250,
+          easing: "easeOutQuad",
+        },
+        {}
+      );
+    }
+
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -105,12 +123,22 @@ export default function Navbar() {
   useEffect(() => {
     const sectionIds = navigationLinks.map((link) => link.id);
 
-    const updateActiveStateAndUnderline = () => {
+    const handleScrollAndResize = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsShrunkByScroll(true);
+      } else if (currentScrollY < lastScrollY || currentScrollY <= 40) {
+        setIsShrunkByScroll(false);
+      }
+      setLastScrollY(currentScrollY);
+
+      const trulyShrunk = isShrunkByScroll && !isHovered;
+
       let currentSectionId = sectionIds[0] || "";
-      const scrollThreshold = window.innerHeight * 0.4; // Can be adjusted
-      const scrollPosition = window.scrollY + scrollThreshold;
+      const scrollThreshold = window.innerHeight * 0.4;
+      const scrollPosition = currentScrollY + scrollThreshold;
       const atBottom =
-        window.innerHeight + window.scrollY >=
+        window.innerHeight + currentScrollY >=
         document.documentElement.scrollHeight - 20;
 
       if (atBottom && sectionIds.length > 0) {
@@ -126,69 +154,98 @@ export default function Navbar() {
       }
       setActiveSection(currentSectionId);
 
-      if (navLinksRef.current) {
-        const activeLinkElement = navLinksRef.current.querySelector(
+      // Only calculate underline if not truly shrunk and container exists
+      if (navLinksContainerRef.current && !trulyShrunk) {
+        const activeLinkElement = navLinksContainerRef.current.querySelector(
           `a[href="#${currentSectionId}"]`
         ) as HTMLElement;
-
         if (activeLinkElement) {
           setUnderlineStyle({
-            width: activeLinkElement.offsetWidth - 16, // Account for px-2 on links (8px each side)
+            width: activeLinkElement.offsetWidth - 16,
             transform: `translateX(${activeLinkElement.offsetLeft + 8}px)`,
-            opacity: 1,
+            opacity: 1, // Ensure underline is visible when not shrunk
           });
-        } else {
-          setUnderlineStyle({ opacity: 0, width: 0 });
         }
+      } else if (trulyShrunk) {
+        setUnderlineStyle({
+          width: 0,
+          opacity: 0,
+          transform: "translateX(0px)",
+        });
       }
     };
 
-    const throttledScrollHandler = throttle(updateActiveStateAndUnderline, 100);
+    const throttledScrollHandler = throttle(handleScrollAndResize, 50);
     window.addEventListener("scroll", throttledScrollHandler);
-    window.addEventListener("resize", updateActiveStateAndUnderline);
-    updateActiveStateAndUnderline(); // Initial call
+    window.addEventListener("resize", throttledScrollHandler);
+    handleScrollAndResize();
 
     return () => {
       window.removeEventListener("scroll", throttledScrollHandler);
-      window.removeEventListener("resize", updateActiveStateAndUnderline);
+      window.removeEventListener("resize", throttledScrollHandler);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // navigationLinks can be added if it's dynamic, but here it's static
+  }, [lastScrollY, isShrunkByScroll, isHovered]);
 
   const baseLinkClasses =
-    "px-3 py-2 text-sm transition-colors duration-200 ease-out rounded-md"; // Added px-3 for a bit more space
+    "px-3 py-2 text-sm transition-colors duration-200 ease-out rounded-md";
   const navLinkClasses = `${baseLinkClasses} text-slate-700 hover:text-blue-600`;
   const activeNavLinkTextClass = "!text-blue-600 font-medium";
 
+  const trulyShrunkFinal = isShrunkByScroll && !isHovered;
+
   return (
     <nav
-      className="fixed top-5 left-1/2 -translate-x-1/2 z-50 
+      className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 
                  bg-white/90 backdrop-blur-md 
-                 rounded-full shadow-xl border border-gray-200/75"
+                 rounded-full shadow-xl border border-gray-200/75
+                 transition-all duration-300 ease-in-out
+                 ${trulyShrunkFinal ? "w-48 h-2" : "w-auto h-14"}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex items-center justify-center h-14 px-4 sm:px-6">
+      <div
+        className={`flex items-center justify-center h-full 
+                      transition-all duration-300 ease-in-out
+                      ${
+                        trulyShrunkFinal
+                          ? "px-1 overflow-hidden"
+                          : "px-4 sm:px-6"
+                      }`}
+      >
         <div
-          ref={navLinksRef}
-          className="flex items-center space-x-1 sm:space-x-2 relative"
+          ref={navLinksContainerRef} // Ref is still useful for underline calculation if needed, even if children are conditional
+          className={`flex items-center space-x-1 sm:space-x-2 relative transition-opacity duration-200 ease-in-out ${
+            trulyShrunkFinal ? "opacity-0" : "opacity-100"
+          }`}
+          // Added opacity transition to the container for any brief moment before children are removed/added
         >
-          {navigationLinks.map((link) => (
-            <Link
-              key={link.id}
-              href={`#${link.id}`}
-              onClick={(e) => handleLinkClick(e, link.id)}
-              className={`${navLinkClasses} ${
-                activeSection === link.id ? activeNavLinkTextClass : ""
-              }`}
-              aria-current={activeSection === link.id ? "page" : undefined}
-            >
-              {link.text}
-            </Link>
-          ))}
-          <div
-            className="absolute bottom-[6px] h-[2.5px] bg-blue-600 rounded-full transition-all duration-300 ease-out"
-            style={underlineStyle}
-          />
+          {!trulyShrunkFinal &&
+            navigationLinks.map((link) => (
+              <Link
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={(e) => handleLinkClick(e, link.id)}
+                className={`${navLinkClasses} ${
+                  activeSection === link.id ? activeNavLinkTextClass : ""
+                }`}
+                aria-current={activeSection === link.id ? "page" : undefined}
+                tabIndex={trulyShrunkFinal ? -1 : 0}
+              >
+                {link.text}
+              </Link>
+            ))}
+          {!trulyShrunkFinal && (
+            <div
+              className={`absolute bottom-[6px] h-[2.5px] bg-blue-600 rounded-full 
+                         transition-transform duration-300 ease-out`}
+              style={underlineStyle}
+            />
+          )}
         </div>
+        {trulyShrunkFinal && (
+          <div className="absolute top-0 left-0 w-full h-full bg-slate-300/60 rounded-full opacity-100 transition-opacity duration-300 ease-in-out"></div>
+        )}
       </div>
     </nav>
   );
