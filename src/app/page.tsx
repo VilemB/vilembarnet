@@ -36,6 +36,47 @@ export default function Home() {
     );
   };
 
+  const handleCardMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: 1.03,
+        translateY: -4,
+        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+        duration: 250,
+        easing: "easeOutQuad",
+      },
+      {}
+    );
+  };
+
+  const handleCardMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: 1.0,
+        translateY: 0,
+        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        duration: 350,
+        easing: "easeOutQuad",
+      },
+      {}
+    );
+  };
+
+  const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: [1.03, 0.98, 1.03],
+        translateY: [-4, 0, -4],
+        duration: 200,
+        easing: "easeInOutQuad",
+      },
+      {}
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-mono relative">
       <SpaceDroidAnimation />
@@ -68,7 +109,12 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {/* Card 1 */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col group">
+            <div
+              className="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group cursor-pointer shadow-md"
+              onMouseEnter={handleCardMouseEnter}
+              onMouseLeave={handleCardMouseLeave}
+              onClick={handleCardClick}
+            >
               <div className="flex justify-between items-start mb-3">
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
                   Project Title 1
@@ -113,7 +159,12 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col group">
+            <div
+              className="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group cursor-pointer shadow-md"
+              onMouseEnter={handleCardMouseEnter}
+              onMouseLeave={handleCardMouseLeave}
+              onClick={handleCardClick}
+            >
               <div className="flex justify-between items-start mb-3">
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
                   Project Title 2
@@ -157,7 +208,12 @@ export default function Home() {
             </div>
 
             {/* Card 3 */}
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-5 hover:border-gray-300 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col group md:col-span-2 lg:col-span-1">
+            <div
+              className="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group md:col-span-2 lg:col-span-1 cursor-pointer shadow-md"
+              onMouseEnter={handleCardMouseEnter}
+              onMouseLeave={handleCardMouseLeave}
+              onClick={handleCardClick}
+            >
               <div className="flex justify-between items-start mb-3">
                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
                   Project Title 3
