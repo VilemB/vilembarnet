@@ -9,34 +9,35 @@ import ProjectCard, { ProjectCardProps } from "@/components/ProjectCard";
 // Define project data array
 const projectsData: ProjectCardProps[] = [
   {
-    title: "Project Title 1",
+    title: "eČtenářák",
     description:
-      "Brief description of the project, highlighting key technologies or contributions. Made this one a bit longer to test the flex-grow property.",
-    tags: ["Next.js", "Tailwind", "TypeScript"],
-    demoUrl: "#",
-    codeUrl: "#",
+      "A modern and user-friendly platform designed to help Czech students effectively manage their studies and prepare for literature final exams.",
+    tags: ["Next.js", "TypeScript", "OpenAI API", "Tailwind", "MongoDB"],
+    demoUrl: "https://www.ectenarak.cz",
+    codeUrl: "https://github.com/vilemb/ectenarak",
     // Event handlers will be passed in the map function
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onClick: () => {},
   },
   {
-    title: "Project Title 2",
+    title: "GenCards",
     description:
-      "Another project description, perhaps focusing on different skills or outcomes.",
-    tags: ["React", "Node.js", "CSS Modules"],
-    demoUrl: "#",
-    codeUrl: "#",
+      "A dynamic flashcard generation tool that empowers users to easily create, customize, and study digital card sets for efficient learning.",
+    tags: ["Next.js", "TypeScript", "OpenAI API", "Tailwind", "MongoDB"],
+    demoUrl: "https://gencards.vercel.app",
+    codeUrl: "https://github.com/vilemb/gencards",
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onClick: () => {},
   },
   {
-    title: "Project Title 3",
+    title: "Sofia",
     description:
-      "Showcasing a backend-focused project or API development work.",
-    tags: ["Python", "Flask", "PostgreSQL"],
-    codeUrl: "#", // No demoUrl for this one
+      "A community-driven platform for philosophical exploration, offering daily wisdom and fostering engaging discussions among thinkers and learners.",
+    tags: ["Next.js", "JavaScript", "Tailwind", "MongoDB"],
+    demoUrl: "https://www.sofia-app.com",
+    codeUrl: "https://github.com/vilemb/sofiaapp",
     className: "md:col-span-2 lg:col-span-1", // Example of specific class for layout
     onMouseEnter: () => {},
     onMouseLeave: () => {},
