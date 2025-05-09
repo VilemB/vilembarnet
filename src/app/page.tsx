@@ -4,6 +4,45 @@ import Footer from "@/components/Footer";
 import { animate, stagger } from "animejs";
 import React, { useState, useEffect, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
+import ProjectCard, { ProjectCardProps } from "@/components/ProjectCard";
+
+// Define project data array
+const projectsData: ProjectCardProps[] = [
+  {
+    title: "Project Title 1",
+    description:
+      "Brief description of the project, highlighting key technologies or contributions. Made this one a bit longer to test the flex-grow property.",
+    tags: ["Next.js", "Tailwind", "TypeScript"],
+    demoUrl: "#",
+    codeUrl: "#",
+    // Event handlers will be passed in the map function
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
+    onClick: () => {},
+  },
+  {
+    title: "Project Title 2",
+    description:
+      "Another project description, perhaps focusing on different skills or outcomes.",
+    tags: ["React", "Node.js", "CSS Modules"],
+    demoUrl: "#",
+    codeUrl: "#",
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
+    onClick: () => {},
+  },
+  {
+    title: "Project Title 3",
+    description:
+      "Showcasing a backend-focused project or API development work.",
+    tags: ["Python", "Flask", "PostgreSQL"],
+    codeUrl: "#", // No demoUrl for this one
+    className: "md:col-span-2 lg:col-span-1", // Example of specific class for layout
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
+    onClick: () => {},
+  },
+];
 
 export default function Home() {
   const handleButtonMouseEnter = (
@@ -38,46 +77,55 @@ export default function Home() {
     );
   };
 
-  const handleCardMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
-    animate(
-      {
-        targets: event.currentTarget,
-        scale: 1.03,
-        translateY: -4,
-        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
-        duration: 250,
-        easing: "easeOutQuad",
-      },
-      {}
-    );
-  };
+  const handleCardMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      animate(
+        {
+          targets: event.currentTarget,
+          scale: 1.03,
+          translateY: -4,
+          boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+          duration: 250,
+          easing: "easeOutQuad",
+        },
+        {}
+      );
+    },
+    []
+  );
 
-  const handleCardMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
-    animate(
-      {
-        targets: event.currentTarget,
-        scale: 1.0,
-        translateY: 0,
-        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-        duration: 350,
-        easing: "easeOutQuad",
-      },
-      {}
-    );
-  };
+  const handleCardMouseLeave = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      animate(
+        {
+          targets: event.currentTarget,
+          scale: 1.0,
+          translateY: 0,
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+          duration: 350,
+          easing: "easeOutQuad",
+        },
+        {}
+      );
+    },
+    []
+  );
 
-  const handleCardClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    animate(
-      {
-        targets: event.currentTarget,
-        scale: [1.03, 0.98, 1.03],
-        translateY: [-4, 0, -4],
-        duration: 200,
-        easing: "easeInOutQuad",
-      },
-      {}
-    );
-  };
+  const handleCardClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      animate(
+        {
+          targets: event.currentTarget,
+          scale: [1.03, 0.98, 1.03],
+          translateY: [-4, 0, -4],
+          duration: 200,
+          easing: "easeInOutQuad",
+        },
+        {}
+      );
+    },
+    []
+  );
 
   const [appIsLoading, setAppIsLoading] = useState(true);
   const [showLoadingScreenComponent, setShowLoadingScreenComponent] =
@@ -87,7 +135,7 @@ export default function Home() {
   useEffect(() => {
     const loadingTimer = setTimeout(() => {
       setAppIsLoading(false);
-    }, 2500); // Simulated loading time: 2.5 seconds
+    }, 2500);
 
     return () => clearTimeout(loadingTimer);
   }, []);
@@ -97,7 +145,6 @@ export default function Home() {
     setPageContentVisible(true);
   }, []);
 
-  // New useEffect for page content animations
   useEffect(() => {
     if (pageContentVisible) {
       const initialDelay = 100;
@@ -208,144 +255,20 @@ export default function Home() {
               Selected Work
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {/* Card 1 */}
-              <div
-                className="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group cursor-pointer shadow-md"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseLeave={handleCardMouseLeave}
-                onClick={handleCardClick}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
-                    Project Title 1
-                  </h3>
-                  <div className="flex space-x-3 text-xs text-gray-500 mt-1 shrink-0">
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-sky-600 transition-colors"
-                    >
-                      Demo
-                    </a>
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-sky-600 transition-colors"
-                    >
-                      Code
-                    </a>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4 text-sm flex-grow">
-                  Brief description of the project, highlighting key
-                  technologies or contributions. Made this one a bit longer to
-                  test the flex-grow property.
-                </p>
-                <div className="mt-auto pt-3 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 flex flex-wrap gap-x-2 gap-y-1.5">
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      Next.js
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      Tailwind
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      TypeScript
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 2 */}
-              <div
-                className="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group cursor-pointer shadow-md"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseLeave={handleCardMouseLeave}
-                onClick={handleCardClick}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
-                    Project Title 2
-                  </h3>
-                  <div className="flex space-x-3 text-xs text-gray-500 mt-1 shrink-0">
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-sky-600 transition-colors"
-                    >
-                      Demo
-                    </a>
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-sky-600 transition-colors"
-                    >
-                      Code
-                    </a>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4 text-sm flex-grow">
-                  Another project description, perhaps focusing on different
-                  skills or outcomes.
-                </p>
-                <div className="mt-auto pt-3 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 flex flex-wrap gap-x-2 gap-y-1.5">
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      React
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      Node.js
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      CSS Modules
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 3 */}
-              <div
-                className="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group md:col-span-2 lg:col-span-1 cursor-pointer shadow-md"
-                onMouseEnter={handleCardMouseEnter}
-                onMouseLeave={handleCardMouseLeave}
-                onClick={handleCardClick}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 group-hover:text-black transition-colors">
-                    Project Title 3
-                  </h3>
-                  <div className="flex space-x-3 text-xs text-gray-500 mt-1 shrink-0">
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-sky-600 transition-colors"
-                    >
-                      Code
-                    </a>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-4 text-sm flex-grow">
-                  Showcasing a backend-focused project or API development work.
-                </p>
-                <div className="mt-auto pt-3 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 flex flex-wrap gap-x-2 gap-y-1.5">
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      Python
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      Flask
-                    </span>
-                    <span className="bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">
-                      PostgreSQL
-                    </span>
-                  </p>
-                </div>
-              </div>
+              {projectsData.map((project, index) => (
+                <ProjectCard
+                  key={index} // Using index as key, consider a unique project.id if available
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tags}
+                  demoUrl={project.demoUrl}
+                  codeUrl={project.codeUrl}
+                  className={project.className} // Pass className if defined
+                  onMouseEnter={handleCardMouseEnter}
+                  onMouseLeave={handleCardMouseLeave}
+                  onClick={handleCardClick}
+                />
+              ))}
             </div>
           </section>
 
