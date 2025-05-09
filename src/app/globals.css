@@ -38,3 +38,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif; /* Consider using the Geist font variables */
 }
+
+/* Hide default system cursor when LazyCursor is active */
+/* body.hide-cursor,
+body.hide-cursor * {
+  cursor: none !important;
+} */

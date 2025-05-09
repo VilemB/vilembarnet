@@ -9,6 +9,7 @@ import LanguageSkillTag from "@/components/LanguageSkillTag";
 import SkillTag from "@/components/SkillTag";
 import { Button } from "@/components/ui/button";
 import { Mail, GithubIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
+import LazyCursor from "@/components/LazyCursor";
 
 // Define project data array
 const projectsData: ProjectCardProps[] = [
@@ -71,9 +72,12 @@ const uiUxSkillsData: string[] = [
 ];
 
 export default function Home() {
+  const [isLazyCursorHovering, setIsLazyCursorHovering] = useState(false);
+
   const handleButtonMouseEnter = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    setIsLazyCursorHovering(true);
     animate(
       {
         targets: event.currentTarget,
@@ -88,6 +92,7 @@ export default function Home() {
   const handleButtonMouseLeave = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    setIsLazyCursorHovering(false);
     animate(
       {
         targets: event.currentTarget,
@@ -102,6 +107,7 @@ export default function Home() {
 
   // Animation for social icons
   const handleIconMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsLazyCursorHovering(true);
     animate(
       {
         targets: event.currentTarget,
@@ -115,6 +121,7 @@ export default function Home() {
   };
 
   const handleIconMouseLeave = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsLazyCursorHovering(false);
     animate(
       {
         targets: event.currentTarget,
@@ -132,8 +139,8 @@ export default function Home() {
 
   const handleCardMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLDivElement>, index: number) => {
-      setHoveredCardIndex(index); // Set hovered index
-      // Original animation for scale/shadow - targets currentTarget
+      setHoveredCardIndex(index);
+      setIsLazyCursorHovering(true);
       animate(
         {
           targets: event.currentTarget,
@@ -151,8 +158,8 @@ export default function Home() {
 
   const handleCardMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      setHoveredCardIndex(null); // Clear hovered index
-      // Original animation for scale/shadow - targets currentTarget
+      setHoveredCardIndex(null);
+      setIsLazyCursorHovering(false);
       animate(
         {
           targets: event.currentTarget,
@@ -188,6 +195,7 @@ export default function Home() {
   const [showLoadingScreenComponent, setShowLoadingScreenComponent] =
     useState(true);
   const [pageContentVisible, setPageContentVisible] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     const loadingTimer = setTimeout(() => {
@@ -195,6 +203,10 @@ export default function Home() {
     }, 2500);
 
     return () => clearTimeout(loadingTimer);
+  }, []);
+
+  useEffect(() => {
+    setIsClient(true);
   }, []);
 
   const handleLoadingExitComplete = useCallback(() => {
@@ -311,6 +323,7 @@ export default function Home() {
           onExitComplete={handleLoadingExitComplete}
         />
       )}
+      {isClient && <LazyCursor isHovering={isLazyCursorHovering} />}
 
       <div
         className={`min-h-screen bg-white text-gray-900 flex flex-col font-mono relative transition-opacity duration-500 ease-in-out ${
