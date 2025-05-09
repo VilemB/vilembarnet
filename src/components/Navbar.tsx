@@ -71,13 +71,14 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("about");
   const [underlineStyle, setUnderlineStyle] = useState({});
   const navLinksContainerRef = useRef<HTMLDivElement>(null);
-  const [isShrunkByScroll, setIsShrunkByScroll] = useState(false); // Renamed for clarity
+  const [isShrunkByScroll, setIsShrunkByScroll] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const navigationLinks = [
     { id: "about", text: "About" },
     { id: "work", text: "Work" },
+    { id: "skills", text: "Skills" },
     { id: "contact", text: "Contact" },
   ];
 

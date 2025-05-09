@@ -5,6 +5,8 @@ import { animate, stagger } from "animejs";
 import React, { useState, useEffect, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import ProjectCard, { ProjectCardProps } from "@/components/ProjectCard";
+import LanguageSkillTag from "@/components/LanguageSkillTag";
+import SkillTag from "@/components/SkillTag";
 
 // Define project data array
 const projectsData: ProjectCardProps[] = [
@@ -43,6 +45,27 @@ const projectsData: ProjectCardProps[] = [
     onMouseLeave: () => {},
     onClick: () => {},
   },
+];
+
+// Define language skills data structure
+interface LanguageSkill {
+  name: string;
+  proficiency: string;
+}
+
+const languageSkillsData: LanguageSkill[] = [
+  { name: "Czech", proficiency: "Native" },
+  { name: "English", proficiency: "Fluent" },
+  { name: "Spanish", proficiency: "Professional" },
+  { name: "Greek", proficiency: "Basic" },
+  { name: "Korean", proficiency: "Basic" },
+];
+
+const uiUxSkillsData: string[] = [
+  "Figma",
+  "Adobe Photoshop",
+  "Adobe Illustrator",
+  "Adobe InDesign",
 ];
 
 export default function Home() {
@@ -157,6 +180,7 @@ export default function Home() {
     if (pageContentVisible) {
       const initialDelay = 100;
 
+      // 1. About Section (delay: initialDelay)
       animate(
         {
           targets: "#about",
@@ -169,6 +193,7 @@ export default function Home() {
         {}
       );
 
+      // 2. Work Section Title (delay: initialDelay + 200)
       animate(
         {
           targets: "#work > h2",
@@ -181,6 +206,7 @@ export default function Home() {
         {}
       );
 
+      // 3. Project Cards (delay: stagger(150, { start: initialDelay + 350 }))
       animate(
         {
           targets: "#work .grid > div",
@@ -194,6 +220,36 @@ export default function Home() {
         {}
       );
 
+      // 4. Skills Section Title (delay: initialDelay + 600)
+      animate(
+        {
+          targets: "#skills > h2",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          duration: 600,
+          easing: "easeOutExpo",
+          delay: initialDelay + 600,
+        },
+        {}
+      );
+
+      // 5. Skills Categories (6 categories total now)
+      // Starts after Skills title, staggers through all category divs
+      animate(
+        {
+          targets: "#skills .skill-category", // Using a common class for skill category divs
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          scale: [0.95, 1],
+          duration: 500,
+          easing: "easeOutExpo",
+          delay: stagger(150, { start: initialDelay + 750 }),
+        },
+        {}
+      );
+
+      // 6. Contact Section Title (Adjust delay based on 6 skill categories)
+      // Last skill cat starts at initialDelay + 750 + 5*150 = initialDelay + 1500. Ends initialDelay + 2000
       animate(
         {
           targets: "#contact > h2",
@@ -201,11 +257,12 @@ export default function Home() {
           translateY: ["20px", "0px"],
           duration: 600,
           easing: "easeOutExpo",
-          delay: initialDelay + 700,
+          delay: initialDelay + 1600,
         },
         {}
       );
 
+      // 7. Contact Section Content
       animate(
         {
           targets: "#contact > p, #contact > div",
@@ -213,7 +270,7 @@ export default function Home() {
           translateY: ["20px", "0px"],
           duration: 500,
           easing: "easeOutExpo",
-          delay: stagger(100, { start: initialDelay + 850 }),
+          delay: stagger(100, { start: initialDelay + 1750 }),
         },
         {}
       );
@@ -248,12 +305,8 @@ export default function Home() {
               Full-Stack Engineer
             </p>
             <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-              Passionate about crafting elegant and efficient digital
-              experiences from end-to-end. I specialize in building robust
-              backend systems and intuitive frontend interfaces, always focusing
-              on user needs and delivering high-quality, scalable solutions. I
-              thrive on tackling complex challenges and continuously learning
-              new technologies.
+              Crafting elegant and impactful digital experiences, from concept
+              to code.
             </p>
           </section>
 
@@ -279,6 +332,125 @@ export default function Home() {
                   isHovering={hoveredCardIndex === index}
                 />
               ))}
+            </div>
+          </section>
+
+          {/* Skills Section Updated */}
+          <section id="skills" className="space-y-10 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+              Skills & Technologies
+            </h2>
+            <div className="space-y-8">
+              {/* Frontend */}
+              <div className="skill-category">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Frontend
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    "React",
+                    "Next.js",
+                    "TypeScript",
+                    "JavaScript (ES6+)",
+                    "HTML5",
+                    "CSS3",
+                    "Tailwind CSS",
+                    "Anime.js",
+                    "Three.js / R3F",
+                  ].map((skill) => (
+                    <SkillTag
+                      key={skill}
+                      skillName={skill}
+                      categoryColorTheme="sky"
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Backend */}
+              <div className="skill-category">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Backend
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    "Node.js",
+                    "Express.js",
+                    "REST APIs",
+                    "Python",
+                    "Django",
+                    "LLM integration",
+                    "n8n",
+                  ].map((skill) => (
+                    <SkillTag
+                      key={skill}
+                      skillName={skill}
+                      categoryColorTheme="emerald"
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* UI/UX Design */}
+              <div className="skill-category">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  UI/UX Design
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {uiUxSkillsData.map((skill) => (
+                    <SkillTag
+                      key={skill}
+                      skillName={skill}
+                      categoryColorTheme="purple"
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Databases */}
+              <div className="skill-category">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Databases
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {["MongoDB", "MySQL", "SQL"].map((skill) => (
+                    <SkillTag
+                      key={skill}
+                      skillName={skill}
+                      categoryColorTheme="amber"
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Tools & Other */}
+              <div className="skill-category">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Tools & Other
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {["Git & GitHub", "VS Code", "npm / yarn", "Vercel"].map(
+                    (skill) => (
+                      <SkillTag
+                        key={skill}
+                        skillName={skill}
+                        categoryColorTheme="slate"
+                      />
+                    )
+                  )}
+                </div>
+              </div>
+              {/* Languages */}
+              <div className="skill-category">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Languages
+                </h3>
+                <div className="flex flex-wrap gap-4">
+                  {languageSkillsData.map((skill) => (
+                    <LanguageSkillTag
+                      key={skill.name}
+                      name={skill.name}
+                      proficiency={skill.proficiency}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
