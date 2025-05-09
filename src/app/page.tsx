@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import { animate } from "animejs";
+import { animate, stagger } from "animejs";
 import React, { useState, useEffect, useCallback } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 
@@ -96,6 +96,74 @@ export default function Home() {
     setShowLoadingScreenComponent(false);
     setPageContentVisible(true);
   }, []);
+
+  // New useEffect for page content animations
+  useEffect(() => {
+    if (pageContentVisible) {
+      const initialDelay = 100;
+
+      animate(
+        {
+          targets: "#about",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          duration: 600,
+          easing: "easeOutExpo",
+          delay: initialDelay,
+        },
+        {}
+      );
+
+      animate(
+        {
+          targets: "#work > h2",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          duration: 600,
+          easing: "easeOutExpo",
+          delay: initialDelay + 200,
+        },
+        {}
+      );
+
+      animate(
+        {
+          targets: "#work .grid > div",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          scale: [0.95, 1],
+          duration: 500,
+          easing: "easeOutExpo",
+          delay: stagger(150, { start: initialDelay + 350 }),
+        },
+        {}
+      );
+
+      animate(
+        {
+          targets: "#contact > h2",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          duration: 600,
+          easing: "easeOutExpo",
+          delay: initialDelay + 700,
+        },
+        {}
+      );
+
+      animate(
+        {
+          targets: "#contact > p, #contact > div",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          duration: 500,
+          easing: "easeOutExpo",
+          delay: stagger(100, { start: initialDelay + 850 }),
+        },
+        {}
+      );
+    }
+  }, [pageContentVisible]);
 
   return (
     <>
