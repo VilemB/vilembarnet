@@ -7,6 +7,8 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ProjectCard, { ProjectCardProps } from "@/components/ProjectCard";
 import LanguageSkillTag from "@/components/LanguageSkillTag";
 import SkillTag from "@/components/SkillTag";
+import { Button } from "@/components/ui/button";
+import { Mail, GithubIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
 
 // Define project data array
 const projectsData: ProjectCardProps[] = [
@@ -70,14 +72,41 @@ const uiUxSkillsData: string[] = [
 
 export default function Home() {
   const handleButtonMouseEnter = (
-    event: React.MouseEvent<HTMLAnchorElement>
+    event: React.MouseEvent<HTMLButtonElement>
   ) => {
     animate(
       {
         targets: event.currentTarget,
-        scale: 1.05,
+        scale: 1.06,
+        translateY: -5,
+        easing: "spring(1, 80, 10, 0)",
+      },
+      {}
+    );
+  };
+
+  const handleButtonMouseLeave = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: 1.0,
+        translateY: 0,
+        duration: 300,
+        easing: "easeOutQuad",
+      },
+      {}
+    );
+  };
+
+  // Animation for social icons
+  const handleIconMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    animate(
+      {
+        targets: event.currentTarget,
+        scale: 1.2,
         translateY: -2,
-        backgroundPosition: "0% 0",
         duration: 200,
         easing: "easeOutQuad",
       },
@@ -85,15 +114,12 @@ export default function Home() {
     );
   };
 
-  const handleButtonMouseLeave = (
-    event: React.MouseEvent<HTMLAnchorElement>
-  ) => {
+  const handleIconMouseLeave = (event: React.MouseEvent<HTMLAnchorElement>) => {
     animate(
       {
         targets: event.currentTarget,
         scale: 1.0,
         translateY: 0,
-        backgroundPosition: "100% 0",
         duration: 300,
         easing: "easeOutQuad",
       },
@@ -455,75 +481,70 @@ export default function Home() {
           </section>
 
           {/* Contact Section */}
-          <section id="contact" className="space-y-6 max-w-3xl mx-auto">
+          <section id="contact" className="space-y-8 max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               Get In Touch
             </h2>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed max-w-xl mx-auto sm:mx-0">
               I&apos;m actively looking for new opportunities and collaborations
               where I can contribute to meaningful projects. Whether you have a
               specific project in mind, want to discuss potential roles, or just
-              want to connect regarding web development, backend systems, or
-              anything in between, I&apos;d love to hear from you.
+              want to connect, I&apos;d love to hear from you.
             </p>
-            <p className="text-gray-600 leading-relaxed">
-              The best way to reach me is via email. I strive to respond as soon
-              as possible!
-            </p>
-            <div>
-              <a
-                href="mailto:your-email@example.com"
-                className="inline-block text-white font-medium py-2.5 px-6 rounded-md text-sm md:text-base shadow-md hover:shadow-lg"
-                style={{
-                  background:
-                    "linear-gradient(to right, #374151 50%, #1F2937 50%)",
-                  backgroundSize: "200% 100%",
-                  backgroundPosition: "100% 0",
-                  color: "white",
-                }}
+            <div className="pt-2">
+              <Button
+                size="lg"
+                className="group bg-gray-800 hover:bg-sky-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
                 onMouseEnter={handleButtonMouseEnter}
                 onMouseLeave={handleButtonMouseLeave}
+                asChild
               >
-                Say Hello
-              </a>
+                <a
+                  href="mailto:your-email@example.com"
+                  className="flex items-center"
+                >
+                  <Mail className="mr-2 h-5 w-5 transition-transform duration-300 ease-in-out group-hover:rotate-[360deg]" />
+                  Let&apos;s Connect
+                </a>
+              </Button>
             </div>
-            <div className="pt-6">
-              <p className="text-sm text-gray-500 mb-3">
+            <div className="pt-8">
+              <p className="text-base text-gray-600 mb-4">
                 You can also find me on:
               </p>
-              <div className="flex space-x-6 text-gray-500">
+              <div className="flex space-x-8 text-gray-600">
                 <a
                   href="https://github.com/vilemb"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="GitHub"
-                  className="hover:text-sky-600 transition-colors duration-300"
+                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
+                  onMouseEnter={handleIconMouseEnter}
+                  onMouseLeave={handleIconMouseLeave}
                 >
-                  <span className="text-xs uppercase tracking-wider">
-                    GitHub
-                  </span>
+                  <GithubIcon size={28} />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="LinkedIn"
-                  className="hover:text-sky-600 transition-colors duration-300"
+                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
+                  onMouseEnter={handleIconMouseEnter}
+                  onMouseLeave={handleIconMouseLeave}
                 >
-                  <span className="text-xs uppercase tracking-wider">
-                    LinkedIn
-                  </span>
+                  <LinkedinIcon size={28} />
                 </a>
                 <a
                   href="https://x.com/barnetvilem"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="X (Twitter)"
-                  className="hover:text-sky-600 transition-colors duration-300"
+                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
+                  onMouseEnter={handleIconMouseEnter}
+                  onMouseLeave={handleIconMouseLeave}
                 >
-                  <span className="text-xs uppercase tracking-wider">
-                    X (Twitter)
-                  </span>
+                  <TwitterIcon size={28} />
                 </a>
               </div>
             </div>
