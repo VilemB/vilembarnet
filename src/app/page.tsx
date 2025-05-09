@@ -321,7 +321,7 @@ export default function Home() {
               </p>
               <div className="flex space-x-6 text-gray-500">
                 <a
-                  href="#"
+                  href="https://github.com/vilemb"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="GitHub"
@@ -332,7 +332,7 @@ export default function Home() {
                   </span>
                 </a>
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/"
                   target="_blank"
                   rel="noopener noreferrer"
                   title="LinkedIn"
@@ -343,14 +343,14 @@ export default function Home() {
                   </span>
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/barnetvilem"
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Twitter"
+                  title="X (Twitter)"
                   className="hover:text-sky-600 transition-colors duration-300"
                 >
                   <span className="text-xs uppercase tracking-wider">
-                    Twitter
+                    X (Twitter)
                   </span>
                 </a>
               </div>
