@@ -296,17 +296,17 @@ export default function Home() {
           {/* Hero/Intro Section */}
           <section
             id="about"
-            className="flex flex-col items-start space-y-4 max-w-3xl mx-auto"
+            className="flex flex-col items-start space-y-4 max-w-3xl mx-auto text-center sm:text-left"
           >
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 w-full">
               Vilém Barnet
             </h1>
-            <p className="text-lg md:text-xl text-gray-600">
-              Full-Stack Engineer
+            <p className="text-xl md:text-2xl text-sky-700 font-semibold w-full">
+              Full-Stack Engineer & Digital Solutions Architect
             </p>
-            <p className="text-base md:text-lg text-gray-700 leading-relaxed">
-              Crafting elegant and impactful digital experiences, from concept
-              to code.
+            <p className="text-base md:text-lg text-gray-700 leading-relaxed mt-1 w-full">
+              Transforming complex challenges into elegant, user-centric web
+              solutions that drive results.
             </p>
           </section>
 
