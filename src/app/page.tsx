@@ -78,8 +78,13 @@ export default function Home() {
     );
   };
 
+  // New state for tracking hovered card index
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+
   const handleCardMouseEnter = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
+    (event: React.MouseEvent<HTMLDivElement>, index: number) => {
+      setHoveredCardIndex(index); // Set hovered index
+      // Original animation for scale/shadow - targets currentTarget
       animate(
         {
           targets: event.currentTarget,
@@ -97,6 +102,8 @@ export default function Home() {
 
   const handleCardMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
+      setHoveredCardIndex(null); // Clear hovered index
+      // Original animation for scale/shadow - targets currentTarget
       animate(
         {
           targets: event.currentTarget,
@@ -258,16 +265,18 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               {projectsData.map((project, index) => (
                 <ProjectCard
-                  key={index} // Using index as key, consider a unique project.id if available
+                  key={index}
                   title={project.title}
                   description={project.description}
                   tags={project.tags}
                   demoUrl={project.demoUrl}
                   codeUrl={project.codeUrl}
-                  className={project.className} // Pass className if defined
-                  onMouseEnter={handleCardMouseEnter}
-                  onMouseLeave={handleCardMouseLeave}
-                  onClick={handleCardClick}
+                  className={project.className}
+                  // Pass index to handlers and determine isHovering
+                  onMouseEnter={(e) => handleCardMouseEnter(e, index)}
+                  onMouseLeave={(e) => handleCardMouseLeave(e)} // No index needed for leave if currentTarget is used
+                  onClick={(e) => handleCardClick(e)} // No index needed for click
+                  isHovering={hoveredCardIndex === index}
                 />
               ))}
             </div>
