@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { Analytics } from "@vercel/analytics/react";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,6 +31,7 @@ export default function RootLayout({
       >
         <Navbar />
         <main className="pt-24 px-4 pb-4">{children}</main>
+        <Analytics />
       </body>
     </html>
   );
