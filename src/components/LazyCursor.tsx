@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface LazyCursorProps {
   isHovering: boolean;
@@ -11,12 +11,29 @@ const LazyCursor: React.FC<LazyCursorProps> = ({ isHovering }) => {
   const mousePosition = useRef({ x: 0, y: 0 });
   const delayedMousePosition = useRef({ x: 0, y: 0 });
   const animationFrameId = useRef<number | null>(null);
+  const [isSmallDevice, setIsSmallDevice] = useState(false);
 
   const lerp = (start: number, end: number, amount: number): number => {
     return (1 - amount) * start + amount * end;
   };
 
   useEffect(() => {
+    // Check if device is small (mobile/tablet)
+    const checkDeviceSize = () => {
+      setIsSmallDevice(window.innerWidth <= 768);
+    };
+
+    checkDeviceSize();
+    window.addEventListener("resize", checkDeviceSize);
+
+    return () => {
+      window.removeEventListener("resize", checkDeviceSize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isSmallDevice) return; // Don't add cursor effects on small devices
+
     const handleMouseMove = (event: MouseEvent) => {
       mousePosition.current = { x: event.clientX, y: event.clientY };
     };
@@ -28,12 +45,12 @@ const LazyCursor: React.FC<LazyCursorProps> = ({ isHovering }) => {
         delayedMousePosition.current.x = lerp(
           delayedMousePosition.current.x,
           mousePosition.current.x,
-          0.125 // Adjusted for less laziness (was 0.075)
+          0.125
         );
         delayedMousePosition.current.y = lerp(
           delayedMousePosition.current.y,
           mousePosition.current.y,
-          0.125 // Adjusted for less laziness (was 0.075)
+          0.125
         );
 
         cursorRef.current.style.transform = `translate3d(${
@@ -51,7 +68,9 @@ const LazyCursor: React.FC<LazyCursorProps> = ({ isHovering }) => {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [isHovering]);
+  }, [isHovering, isSmallDevice]);
+
+  if (isSmallDevice) return null; // Don't render cursor on small devices
 
   return (
     <div

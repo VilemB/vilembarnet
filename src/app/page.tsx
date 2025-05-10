@@ -331,30 +331,33 @@ export default function Home() {
         }`}
         style={{ visibility: pageContentVisible ? "visible" : "hidden" }}
       >
-        <main className="flex-grow container mx-auto px-4 py-16 md:px-6 md:py-24 space-y-24 md:space-y-32 z-10 relative pl-20">
+        <main className="flex-grow container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-24 space-y-16 sm:space-y-20 md:space-y-32 z-10 relative">
           {/* Hero/Intro Section */}
           <section
             id="about"
-            className="flex flex-col items-start space-y-4 max-w-3xl mx-auto text-center sm:text-left"
+            className="flex flex-col items-start space-y-3 sm:space-y-4 max-w-3xl mx-auto text-center sm:text-left"
           >
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 w-full">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight text-gray-900 w-full">
               Vilém Barnet
             </h1>
-            <p className="text-xl md:text-2xl text-sky-700 font-semibold w-full">
+            <p className="text-lg sm:text-xl md:text-2xl text-sky-700 font-semibold w-full">
               Full-Stack Engineer & Digital Solutions Architect
             </p>
-            <p className="text-base md:text-lg text-gray-700 leading-relaxed mt-1 w-full">
+            <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed mt-1 w-full">
               Transforming complex challenges into elegant, user-centric web
               solutions that drive results.
             </p>
           </section>
 
           {/* Work/Projects Section */}
-          <section id="work" className="space-y-10 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-10 md:mb-12 text-gray-900">
+          <section
+            id="work"
+            className="space-y-6 sm:space-y-10 max-w-3xl mx-auto"
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-6 sm:mb-10 md:mb-12 text-gray-900">
               Selected Work
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               {projectsData.map((project, index) => (
                 <ProjectCard
                   key={index}
@@ -364,10 +367,9 @@ export default function Home() {
                   demoUrl={project.demoUrl}
                   codeUrl={project.codeUrl}
                   className={project.className}
-                  // Pass index to handlers and determine isHovering
                   onMouseEnter={(e) => handleCardMouseEnter(e, index)}
-                  onMouseLeave={(e) => handleCardMouseLeave(e)} // No index needed for leave if currentTarget is used
-                  onClick={(e) => handleCardClick(e)} // No index needed for click
+                  onMouseLeave={(e) => handleCardMouseLeave(e)}
+                  onClick={(e) => handleCardClick(e)}
                   isHovering={hoveredCardIndex === index}
                 />
               ))}
@@ -375,17 +377,20 @@ export default function Home() {
           </section>
 
           {/* Skills Section Updated */}
-          <section id="skills" className="space-y-10 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+          <section
+            id="skills"
+            className="space-y-6 sm:space-y-10 max-w-3xl mx-auto"
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               Skills & Technologies
             </h2>
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               {/* Frontend */}
               <div className="skill-category">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   Frontend
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {[
                     "React",
                     "Next.js",
@@ -407,10 +412,10 @@ export default function Home() {
               </div>
               {/* Backend */}
               <div className="skill-category">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   Backend
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {[
                     "Node.js",
                     "Express.js",
@@ -430,10 +435,10 @@ export default function Home() {
               </div>
               {/* UI/UX Design */}
               <div className="skill-category">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   UI/UX Design
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {uiUxSkillsData.map((skill) => (
                     <SkillTag
                       key={skill}
@@ -445,10 +450,10 @@ export default function Home() {
               </div>
               {/* Databases */}
               <div className="skill-category">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   Databases
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {["MongoDB", "MySQL", "SQL"].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -460,10 +465,10 @@ export default function Home() {
               </div>
               {/* Tools & Other */}
               <div className="skill-category">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   Tools & Other
                 </h3>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {["Git & GitHub", "VS Code", "npm / yarn", "Vercel"].map(
                     (skill) => (
                       <SkillTag
@@ -477,10 +482,10 @@ export default function Home() {
               </div>
               {/* Languages */}
               <div className="skill-category">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   Languages
                 </h3>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-2 sm:gap-4">
                   {languageSkillsData.map((skill) => (
                     <LanguageSkillTag
                       key={skill.name}
@@ -494,11 +499,14 @@ export default function Home() {
           </section>
 
           {/* Contact Section */}
-          <section id="contact" className="space-y-8 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
+          <section
+            id="contact"
+            className="space-y-6 sm:space-y-8 max-w-3xl mx-auto"
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               Get In Touch
             </h2>
-            <p className="text-gray-700 leading-relaxed max-w-xl mx-auto sm:mx-0">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-xl mx-auto sm:mx-0">
               I&apos;m actively looking for new opportunities and collaborations
               where I can contribute to meaningful projects. Whether you have a
               specific project in mind, want to discuss potential roles, or just
@@ -507,25 +515,25 @@ export default function Home() {
             <div className="pt-2">
               <Button
                 size="lg"
-                className="group bg-gray-800 hover:bg-sky-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
+                className="group bg-gray-800 hover:bg-sky-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 w-full sm:w-auto"
                 onMouseEnter={handleButtonMouseEnter}
                 onMouseLeave={handleButtonMouseLeave}
                 asChild
               >
                 <a
                   href="mailto:your-email@example.com"
-                  className="flex items-center"
+                  className="flex items-center justify-center sm:justify-start"
                 >
                   <Mail className="mr-2 h-5 w-5 transition-transform duration-300 ease-in-out group-hover:rotate-[360deg]" />
                   Let&apos;s Connect
                 </a>
               </Button>
             </div>
-            <div className="pt-8">
-              <p className="text-base text-gray-600 mb-4">
+            <div className="pt-6 sm:pt-8">
+              <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
                 You can also find me on:
               </p>
-              <div className="flex space-x-8 text-gray-600">
+              <div className="flex justify-center sm:justify-start space-x-6 sm:space-x-8 text-gray-600">
                 <a
                   href="https://github.com/vilemb"
                   target="_blank"
@@ -535,7 +543,7 @@ export default function Home() {
                   onMouseEnter={handleIconMouseEnter}
                   onMouseLeave={handleIconMouseLeave}
                 >
-                  <GithubIcon size={28} />
+                  <GithubIcon size={24} className="sm:w-7 sm:h-7" />
                 </a>
                 <a
                   href="https://x.com/barnetvilem"
@@ -546,7 +554,7 @@ export default function Home() {
                   onMouseEnter={handleIconMouseEnter}
                   onMouseLeave={handleIconMouseLeave}
                 >
-                  <TwitterIcon size={28} />
+                  <TwitterIcon size={24} className="sm:w-7 sm:h-7" />
                 </a>
                 <a
                   href="https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/"
@@ -557,7 +565,7 @@ export default function Home() {
                   onMouseEnter={handleIconMouseEnter}
                   onMouseLeave={handleIconMouseLeave}
                 >
-                  <LinkedinIcon size={28} />
+                  <LinkedinIcon size={24} className="sm:w-7 sm:h-7" />
                 </a>
               </div>
             </div>

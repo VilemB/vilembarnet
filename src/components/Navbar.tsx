@@ -194,7 +194,6 @@ export default function Navbar() {
 
   const baseLinkClasses =
     "px-3 py-2 text-sm transition-colors duration-200 ease-out rounded-md";
-  const navLinkClasses = `${baseLinkClasses} text-slate-700 hover:text-blue-600`;
   const activeNavLinkTextClass = "!text-blue-600 font-medium";
 
   const trulyShrunkFinal = isShrunkByScroll && !isHovered;
@@ -205,7 +204,8 @@ export default function Navbar() {
                  bg-white/90 backdrop-blur-md 
                  rounded-full shadow-xl border border-gray-200/75
                  transition-all duration-300 ease-in-out
-                 ${trulyShrunkFinal ? "w-48 h-2" : "w-auto h-14"}`}
+                 ${trulyShrunkFinal ? "w-48 h-2" : "w-auto h-14"}
+                 max-w-[95vw] sm:max-w-none`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -215,15 +215,14 @@ export default function Navbar() {
                       ${
                         trulyShrunkFinal
                           ? "px-1 overflow-hidden"
-                          : "px-4 sm:px-6"
+                          : "px-2 sm:px-4 md:px-6"
                       }`}
       >
         <div
-          ref={navLinksContainerRef} // Ref is still useful for underline calculation if needed, even if children are conditional
-          className={`flex items-center space-x-1 sm:space-x-2 relative transition-opacity duration-200 ease-in-out ${
+          ref={navLinksContainerRef}
+          className={`flex items-center space-x-0.5 sm:space-x-1 md:space-x-2 relative transition-opacity duration-200 ease-in-out ${
             trulyShrunkFinal ? "opacity-0" : "opacity-100"
           }`}
-          // Added opacity transition to the container for any brief moment before children are removed/added
         >
           {!trulyShrunkFinal &&
             navigationLinks.map((link) => (
@@ -231,7 +230,7 @@ export default function Navbar() {
                 key={link.id}
                 href={`#${link.id}`}
                 onClick={(e) => handleLinkClick(e, link.id)}
-                className={`${navLinkClasses} ${
+                className={`${baseLinkClasses} text-slate-700 hover:text-blue-600 text-xs sm:text-sm ${
                   activeSection === link.id ? activeNavLinkTextClass : ""
                 }`}
                 aria-current={activeSection === link.id ? "page" : undefined}
