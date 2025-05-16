@@ -29,7 +29,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   return (
     <div
-      className={`bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col group cursor-pointer shadow-md ${className} transition-all duration-300 ease-in-out`.trim()}
+      className={`bg-gray-50 border rounded-lg p-5 flex flex-col group cursor-pointer shadow-md ${className} transition-all duration-300 ease-in-out ${
+        isHovering ? "border-sky-300" : "border-gray-200"
+      }`.trim()}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
