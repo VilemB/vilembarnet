@@ -7,6 +7,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ProjectCard, { ProjectCardProps } from "@/components/ProjectCard";
 import LanguageSkillTag from "@/components/LanguageSkillTag";
 import SkillTag from "@/components/SkillTag";
+import ArticleCard from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
 import { Mail, GithubIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
 import LazyCursor from "@/components/LazyCursor";
@@ -20,7 +21,6 @@ const projectsData: ProjectCardProps[] = [
     tags: ["Next.js", "TypeScript", "OpenAI API", "Tailwind", "MongoDB"],
     demoUrl: "https://www.ectenarak.cz",
     codeUrl: "https://github.com/vilemb/ectenarak",
-    // Event handlers will be passed in the map function
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onClick: () => {},
@@ -43,7 +43,7 @@ const projectsData: ProjectCardProps[] = [
     tags: ["Next.js", "JavaScript", "Tailwind", "MongoDB"],
     demoUrl: "https://www.sofia-app.com",
     codeUrl: "https://github.com/vilemb/sofiaapp",
-    className: "md:col-span-2 lg:col-span-1", // Example of specific class for layout
+    className: "md:col-span-2 lg:col-span-1",
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onClick: () => {},
@@ -71,8 +71,23 @@ const uiUxSkillsData: string[] = [
   "Adobe InDesign",
 ];
 
+// Define dummy blog article data
+const articlesData = [
+  {
+    title: "Don't do what others want you to do, do what you love",
+    snippet:
+      "Why choosing passion over pressure is the smartest investment you'll ever make.",
+    mediumUrl:
+      "https://medium.com/@barnetvilem/dont-do-what-others-want-you-to-do-do-what-you-love-72652fc3f68b",
+  },
+];
+
 export default function Home() {
   const [isLazyCursorHovering, setIsLazyCursorHovering] = useState(false);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [hoveredArticleIndex, setHoveredArticleIndex] = useState<number | null>(
+    null
+  );
 
   const handleButtonMouseEnter = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -134,9 +149,6 @@ export default function Home() {
     );
   };
 
-  // New state for tracking hovered card index
-  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
-
   const handleCardMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLDivElement>, index: number) => {
       setHoveredCardIndex(index);
@@ -184,6 +196,43 @@ export default function Home() {
           translateY: [-4, 0, -4],
           duration: 200,
           easing: "easeInOutQuad",
+        },
+        {}
+      );
+    },
+    []
+  );
+
+  // New handlers for ArticleCard hover
+  const handleArticleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>, index: number) => {
+      setHoveredArticleIndex(index);
+      setIsLazyCursorHovering(true);
+      animate(
+        {
+          targets: event.currentTarget,
+          scale: 1.02,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
+          duration: 200,
+          easing: "easeOutQuad",
+        },
+        {}
+      );
+    },
+    []
+  );
+
+  const handleArticleMouseLeave = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      setHoveredArticleIndex(null);
+      setIsLazyCursorHovering(false);
+      animate(
+        {
+          targets: event.currentTarget,
+          scale: 1.0,
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+          duration: 300,
+          easing: "easeOutQuad",
         },
         {}
       );
@@ -271,11 +320,12 @@ export default function Home() {
         {}
       );
 
-      // 5. Skills Categories (6 categories total now)
+      // 5. Skills Categories (6 categories total)
       // Starts after Skills title, staggers through all category divs
+      // Ends around initialDelay + 750 (start) + 5*150 (stagger for last) + 500 (duration) = initialDelay + 2000
       animate(
         {
-          targets: "#skills .skill-category", // Using a common class for skill category divs
+          targets: "#skills .skill-category",
           opacity: [0, 1],
           translateY: ["20px", "0px"],
           scale: [0.95, 1],
@@ -286,8 +336,39 @@ export default function Home() {
         {}
       );
 
-      // 6. Contact Section Title (Adjust delay based on 6 skill categories)
-      // Last skill cat starts at initialDelay + 750 + 5*150 = initialDelay + 1500. Ends initialDelay + 2000
+      // 6. Blog Section Title (New - after skills categories finish)
+      // Skills end around initialDelay + 2000. Start blog title initialDelay + 2100
+      animate(
+        {
+          targets: "#blog > h2",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          duration: 600,
+          easing: "easeOutExpo",
+          delay: initialDelay + 2100,
+        },
+        {}
+      );
+
+      // 7. Blog Article Cards (New - after blog title starts)
+      // Start blog cards initialDelay + 2100 + 150 = initialDelay + 2250
+      // Ends around initialDelay + 2250 + (num_cards-1)*150 (stagger) + 500 (duration)
+      // For 3 cards: initialDelay + 2250 + 2*150 + 500 = initialDelay + 3050
+      animate(
+        {
+          targets: "#blog .grid > div",
+          opacity: [0, 1],
+          translateY: ["20px", "0px"],
+          scale: [0.95, 1],
+          duration: 500,
+          easing: "easeOutExpo",
+          delay: stagger(150, { start: initialDelay + 2250 }),
+        },
+        {}
+      );
+
+      // 8. Contact Section Title (Adjusted delay)
+      // Blog cards (3) end around initialDelay + 3050. Start contact title initialDelay + 3150
       animate(
         {
           targets: "#contact > h2",
@@ -295,12 +376,13 @@ export default function Home() {
           translateY: ["20px", "0px"],
           duration: 600,
           easing: "easeOutExpo",
-          delay: initialDelay + 1600,
+          delay: initialDelay + 3150,
         },
         {}
       );
 
-      // 7. Contact Section Content
+      // 9. Contact Section Content (Adjusted delay)
+      // Start contact content initialDelay + 3150 + 150 = initialDelay + 3300
       animate(
         {
           targets: "#contact > p, #contact > div",
@@ -308,7 +390,7 @@ export default function Home() {
           translateY: ["20px", "0px"],
           duration: 500,
           easing: "easeOutExpo",
-          delay: stagger(100, { start: initialDelay + 1750 }),
+          delay: stagger(100, { start: initialDelay + 3300 }),
         },
         {}
       );
@@ -495,6 +577,30 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* Blog Section - New */}
+          <section
+            id="blog"
+            className="space-y-6 sm:space-y-10 max-w-3xl mx-auto"
+          >
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-6 sm:mb-10 md:mb-12 text-gray-900">
+              Latest Articles
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+              {articlesData.map((article, index) => (
+                <div key={index}>
+                  <ArticleCard
+                    title={article.title}
+                    snippet={article.snippet}
+                    mediumUrl={article.mediumUrl}
+                    onMouseEnter={(e) => handleArticleMouseEnter(e, index)}
+                    onMouseLeave={(e) => handleArticleMouseLeave(e)}
+                    isHovering={hoveredArticleIndex === index}
+                  />
+                </div>
+              ))}
             </div>
           </section>
 
