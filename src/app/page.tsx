@@ -413,11 +413,11 @@ export default function Home() {
         }`}
         style={{ visibility: pageContentVisible ? "visible" : "hidden" }}
       >
-        <main className="flex-grow container mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-24 space-y-16 sm:space-y-20 md:space-y-32 z-10 relative">
+        <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-32 space-y-24 sm:space-y-32 md:space-y-40 z-10 relative">
           {/* Hero/Intro Section */}
           <section
             id="about"
-            className="flex flex-col items-start space-y-3 sm:space-y-4 max-w-3xl mx-auto text-center sm:text-left"
+            className="flex flex-col items-start space-y-3 sm:space-y-4 max-w-3xl mx-auto text-center sm:text-left pt-8"
           >
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight text-gray-900 w-full">
               Vilém Barnet
@@ -434,7 +434,7 @@ export default function Home() {
           {/* Work/Projects Section */}
           <section
             id="work"
-            className="space-y-6 sm:space-y-10 max-w-3xl mx-auto"
+            className="space-y-8 sm:space-y-12 max-w-3xl mx-auto pt-8"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-6 sm:mb-10 md:mb-12 text-gray-900">
               Selected Work
@@ -461,7 +461,7 @@ export default function Home() {
           {/* Skills Section Updated */}
           <section
             id="skills"
-            className="space-y-6 sm:space-y-10 max-w-3xl mx-auto"
+            className="space-y-8 sm:space-y-12 max-w-3xl mx-auto pt-8"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               Skills & Technologies
@@ -583,7 +583,7 @@ export default function Home() {
           {/* Blog Section - New */}
           <section
             id="blog"
-            className="space-y-6 sm:space-y-10 max-w-3xl mx-auto"
+            className="space-y-8 sm:space-y-12 max-w-3xl mx-auto pt-8"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-6 sm:mb-10 md:mb-12 text-gray-900">
               Latest Articles
@@ -607,7 +607,7 @@ export default function Home() {
           {/* Contact Section */}
           <section
             id="contact"
-            className="space-y-6 sm:space-y-8 max-w-3xl mx-auto"
+            className="space-y-8 sm:space-y-12 max-w-3xl mx-auto pt-8"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
               Get In Touch
