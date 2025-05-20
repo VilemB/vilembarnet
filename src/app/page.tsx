@@ -59,7 +59,7 @@ interface LanguageSkill {
 const languageSkillsData: LanguageSkill[] = [
   { name: "Czech", proficiency: "Native" },
   { name: "English", proficiency: "Fluent" },
-  { name: "Spanish", proficiency: "Professional" },
+  { name: "Spanish", proficiency: "Conversational" },
   { name: "Greek", proficiency: "Basic" },
   { name: "Korean", proficiency: "Basic" },
 ];
