@@ -504,8 +504,8 @@ export default function Home() {
                     "REST APIs",
                     "Python",
                     "Django",
-                    "LLM integration",
                     "n8n",
+                    "LLM integration",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
