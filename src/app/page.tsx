@@ -482,7 +482,6 @@ export default function Home() {
                     "CSS3",
                     "Tailwind CSS",
                     "Anime.js",
-                    "Three.js / R3F",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -502,10 +501,10 @@ export default function Home() {
                     "Node.js",
                     "Express.js",
                     "REST APIs",
+                    "LLM integration",
                     "Python",
                     "Django",
                     "n8n",
-                    "LLM integration",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
