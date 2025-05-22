@@ -77,6 +77,7 @@ const articlesData = [
     title: "AI Weekly: Major Announcements from the Past Week",
     snippet:
       "What just happened in AI? Here’s the short version.",
+    date: "22/05/2025",
     mediumUrl:
       "https://medium.com/@barnetvilem/ai-weekly-major-announcements-from-the-past-week-c42bf07b0172",
   },
@@ -84,6 +85,7 @@ const articlesData = [
     title: "Don't do what others want you to do, do what you love",
     snippet:
       "Why choosing passion over pressure is the smartest investment you'll ever make.",
+    date: "16/05/2025",
     mediumUrl:
       "https://medium.com/@barnetvilem/dont-do-what-others-want-you-to-do-do-what-you-love-72652fc3f68b",
   },
@@ -600,6 +602,7 @@ export default function Home() {
                   <ArticleCard
                     title={article.title}
                     snippet={article.snippet}
+                    date={article.date}
                     mediumUrl={article.mediumUrl}
                     onMouseEnter={(e) => handleArticleMouseEnter(e, index)}
                     onMouseLeave={(e) => handleArticleMouseLeave(e)}

@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 export interface ArticleCardProps {
   title: string;
   snippet: string;
+  date: string;
   mediumUrl: string;
   className?: string;
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -16,6 +17,7 @@ export interface ArticleCardProps {
 const ArticleCard: React.FC<ArticleCardProps> = ({
   title,
   snippet,
+  date,
   mediumUrl,
   className = "",
   onMouseEnter,
@@ -45,7 +47,8 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
         <p className="text-gray-600 text-sm">{snippet}</p>
       </div>
 
-      <div className="mt-auto pt-3 border-t border-gray-200 text-right">
+      <div className="mt-auto pt-3 border-t border-gray-200 text-right flex justify-between">
+        <p className="text-gray-600 text-sm">{date}</p>
         <a
           href={mediumUrl}
           target="_blank"
