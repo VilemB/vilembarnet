@@ -74,6 +74,13 @@ const uiUxSkillsData: string[] = [
 // Define dummy blog article data
 const articlesData = [
   {
+    title: "AI Weekly: Major Announcements from the Past Week",
+    snippet:
+      "What just happened in AI? Here’s the short version.",
+    mediumUrl:
+      "https://medium.com/@barnetvilem/ai-weekly-major-announcements-from-the-past-week-c42bf07b0172",
+  },
+  {
     title: "Don't do what others want you to do, do what you love",
     snippet:
       "Why choosing passion over pressure is the smartest investment you'll ever make.",
