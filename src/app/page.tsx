@@ -9,7 +9,7 @@ import LanguageSkillTag from "@/components/LanguageSkillTag";
 import SkillTag from "@/components/SkillTag";
 import ArticleCard from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
-import { Mail, GithubIcon, LinkedinIcon, TwitterIcon } from "lucide-react";
+import { Mail, GithubIcon, TwitterIcon } from "lucide-react";
 import LazyCursor from "@/components/LazyCursor";
 
 // Define project data array
