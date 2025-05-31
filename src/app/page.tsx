@@ -671,17 +671,6 @@ export default function Home() {
                 >
                   <TwitterIcon size={24} className="sm:w-7 sm:h-7" />
                 </a>
-                <a
-                  href="https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="LinkedIn"
-                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
-                  onMouseEnter={handleIconMouseEnter}
-                  onMouseLeave={handleIconMouseLeave}
-                >
-                  <LinkedinIcon size={24} className="sm:w-7 sm:h-7" />
-                </a>
               </div>
             </div>
           </section>
