@@ -15,8 +15,89 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vilém Barnet | Software Engineer",
-  description: "Vilém Barnet is a software engineer with a passion for building products that help people live better lives.",
+  metadataBase: new URL('https://vilembarnet.vercel.app'),
+  title: {
+    default: "Vilém Barnet | Full-Stack Engineer",
+    template: "%s | Vilém Barnet"
+  },
+  description: "Vilém Barnet is a Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.",
+  keywords: [
+    "Vilém Barnet",
+    "Full-Stack Engineer",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Web Developer",
+    "Software Engineer",
+    "JavaScript Developer",
+    "Node.js Developer",
+    "AI Integration",
+    "LLM Integration",
+    "OpenAI API",
+    "MongoDB Developer",
+    "Supabase Developer",
+    "Tailwind CSS",
+    "Web Development Prague",
+    "Czech Republic Developer",
+    "eČtenářák",
+    "GenCards",
+    "Sofia App",
+    "Portfolio Website",
+    "Freelance Developer",
+    "Web Solutions",
+    "Modern Web Development",
+    "UI/UX Design",
+    "Figma Design",
+    "REST APIs",
+    "Python Developer",
+    "Django Developer"
+  ],
+  authors: [{ name: "Vilém Barnet" }],
+  creator: "Vilém Barnet",
+  publisher: "Vilém Barnet",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'cs_CZ',
+    url: 'https://vilembarnet.vercel.app',
+    siteName: 'Vilém Barnet Portfolio',
+    title: 'Vilém Barnet | Full-Stack Engineer',
+    description: 'Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Vilém Barnet - Full-Stack Engineer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vilém Barnet | Full-Stack Engineer',
+    description: 'Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.',
+    creator: '@barnetvilem',
+    images: ['/og-image.jpg'],
+  },
+  alternates: {
+    canonical: 'https://vilembarnet.vercel.app',
+  },
+  category: 'Technology',
+  verification: {
+    google: 'your-google-verification-code',
+  },
 };
 
 export default function RootLayout({
@@ -26,6 +107,47 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0ea5e9" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: 'Vilém Barnet',
+              jobTitle: 'Full-Stack Engineer & Digital Solutions Architect',
+              description: 'Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration',
+              url: 'https://vilembarnet.com',
+              sameAs: [
+                'https://github.com/vilemb',
+                'https://x.com/barnetvilem',
+                'https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/',
+                'https://medium.com/@barnetvilem'
+              ],
+              knowsAbout: [
+                'React',
+                'Next.js',
+                'TypeScript',
+                'JavaScript',
+                'Node.js',
+                'Python',
+                'AI Integration',
+                'Web Development',
+                'Frontend Development',
+                'Backend Development'
+              ],
+              worksFor: {
+                '@type': 'Organization',
+                name: 'Freelance'
+              }
+            })
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
