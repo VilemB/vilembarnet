@@ -76,7 +76,7 @@ const articlesData = [
   {
     title: "AI Weekly: Major Announcements from the Past Week",
     snippet:
-      "What just happened in AI? Here’s the short version.",
+      "What just happened in AI? Here's the short version.",
     date: "22/05/2025",
     mediumUrl:
       "https://medium.com/@barnetvilem/ai-weekly-major-announcements-from-the-past-week-c42bf07b0172",
@@ -512,7 +512,10 @@ export default function Home() {
                     "REST APIs",
                     "LLM integration",
                     "Python",
-                    "Django",
+                    "FastAPI",
+                    "Instructor",
+                    "OpenAI SDK",
+                    "LlamaIndex",
                     "n8n",
                   ].map((skill) => (
                     <SkillTag
