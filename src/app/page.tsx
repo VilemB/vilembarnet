@@ -75,13 +75,6 @@ const languageSkillsData: LanguageSkill[] = [
   { name: "Korean", proficiency: "Basic" },
 ];
 
-const uiUxSkillsData: string[] = [
-  "Figma",
-  "Adobe Photoshop",
-  "Adobe Illustrator",
-  "Adobe InDesign",
-];
-
 // Define dummy blog article data
 const articlesData = [
   {
@@ -524,6 +517,8 @@ export default function Home() {
                     "LLM integration",
                     "Python",
                     "FastAPI",
+                    "LangChain",
+                    "LangGraph",
                     "Instructor",
                     "OpenAI SDK",
                     "LlamaIndex",
@@ -543,7 +538,7 @@ export default function Home() {
                   UI/UX Design
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {uiUxSkillsData.map((skill) => (
+                  {["Figma", "Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign"].map((skill) => (
                     <SkillTag
                       key={skill}
                       skillName={skill}
@@ -573,7 +568,7 @@ export default function Home() {
                   Tools & Other
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["Git & GitHub", "VS Code", "npm", "Vercel", "Linux"].map(
+                  {["LangSmith", "Git & GitHub", "VS Code", "npm", "Vercel", "Linux"].map(
                     (skill) => (
                       <SkillTag
                         key={skill}
