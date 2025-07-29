@@ -645,7 +645,7 @@ export default function Home() {
                 asChild
               >
                 <a
-                  href="mailto:your-email@example.com"
+                  href="mailto:barnetv7@gmail.com"
                   className="flex items-center justify-center sm:justify-start"
                 >
                   <Mail className="mr-2 h-5 w-5 transition-transform duration-300 ease-in-out group-hover:rotate-[360deg]" />
