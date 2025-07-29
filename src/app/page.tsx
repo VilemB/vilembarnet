@@ -15,6 +15,17 @@ import LazyCursor from "@/components/LazyCursor";
 // Define project data array
 const projectsData: ProjectCardProps[] = [
   {
+    title: "Travist",
+    description:
+      "An intelligent AI-powered travel planning platform that creates personalized itineraries using advanced language models and agent workflows to deliver seamless, tailored travel experiences.",
+    tags: ["Next.js", "TypeScript", "Python", "FastAPI", "LangChain", "LangGraph", "Tailwind", "Supabase"],
+    demoUrl: "https://www.travist.app",
+    codeUrl: "https://github.com/vilemb",
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
+    onClick: () => {},
+  },
+  {
     title: "eČtenářák",
     description:
       "A modern and user-friendly platform designed to help Czech students effectively manage their studies and prepare for literature final exams.",
