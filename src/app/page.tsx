@@ -20,7 +20,7 @@ const projectsData: ProjectCardProps[] = [
       "An app that allows you to upload 10-Q reports of companies, analyze them and discuss them with AI.",
     tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB", "RAG"],
     demoUrl: "",
-    codeUrl: "",
+    codeUrl: "https://github.com/vilemb",
     onMouseEnter: () => {},
     onMouseLeave: () => {},
     onClick: () => {},
@@ -52,7 +52,7 @@ const projectsData: ProjectCardProps[] = [
     description:
       "A dynamic flashcard generation tool that empowers users to easily create, customize, and study digital card sets for efficient learning.",
     tags: ["Next.js", "TypeScript", "OpenAI API", "Tailwind", "MongoDB"],
-    demoUrl: "https://gencards.vercel.app",
+    demoUrl: "",
     codeUrl: "https://github.com/vilemb/gencards",
     onMouseEnter: () => {},
     onMouseLeave: () => {},
