@@ -18,7 +18,7 @@ const projectsData: ProjectCardProps[] = [
     title: "StockFast",
     description:
       "An app that allows you to upload 10-Q reports of companies, analyze them and discuss them with AI.",
-    tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB", "RAG"],
+    tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB"],
     demoUrl: "",
     codeUrl: "https://github.com/vilemb",
     onMouseEnter: () => {},
