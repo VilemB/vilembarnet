@@ -517,7 +517,9 @@ export default function Home() {
                     "HTML5",
                     "CSS3",
                     "Tailwind CSS",
+                    "Shadcn UI",
                     "Anime.js",
+                    "Motion"
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
