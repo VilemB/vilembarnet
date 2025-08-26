@@ -37,6 +37,17 @@ const projectsData: ProjectCardProps[] = [
     onClick: () => {},
   },
   {
+    title: "Email Categorizer",
+    description:
+      "Fetches emails from a Gmail account, categorizes them based on their content, and lets you generate and send a response to them.",
+    tags: ["Python", "FastAPI", "Instructor", "Next.js", "TypeScript", "Tailwind", "OpenAI SDK", "Gmail API"],
+    demoUrl: "",
+    codeUrl: "https://github.com/vilemb",
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
+    onClick: () => {},
+  },
+  {
     title: "eČtenářák",
     description:
       "A modern and user-friendly platform designed to help Czech students effectively manage their studies and prepare for literature final exams.",
