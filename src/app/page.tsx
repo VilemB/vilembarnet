@@ -576,7 +576,7 @@ export default function Home() {
                   Databases
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["MongoDB", "Supabase", "MySQL" ].map((skill) => (
+                  {["MongoDB", "Supabase", "MySQL", "ChromaDB", "Pinecone" ].map((skill) => (
                     <SkillTag
                       key={skill}
                       skillName={skill}
