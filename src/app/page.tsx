@@ -99,24 +99,24 @@ const languageSkillsData: LanguageSkill[] = [
 ];
 
 // Define dummy blog article data
-const articlesData = [
-  {
-    title: "AI Weekly: Major Announcements from the Past Week",
-    snippet:
-      "What just happened in AI? Here's the short version.",
-    date: "22/05/2025",
-    mediumUrl:
-      "https://medium.com/@barnetvilem/ai-weekly-major-announcements-from-the-past-week-c42bf07b0172",
-  },
-  {
-    title: "Don't do what others want you to do, do what you love",
-    snippet:
-      "Why choosing passion over pressure is the smartest investment you'll ever make.",
-    date: "16/05/2025",
-    mediumUrl:
-      "https://medium.com/@barnetvilem/dont-do-what-others-want-you-to-do-do-what-you-love-72652fc3f68b",
-  },
-];
+// const articlesData = [
+//   {
+//     title: "AI Weekly: Major Announcements from the Past Week",
+//     snippet:
+//       "What just happened in AI? Here's the short version.",
+//     date: "22/05/2025",
+//     mediumUrl:
+//       "https://medium.com/@barnetvilem/ai-weekly-major-announcements-from-the-past-week-c42bf07b0172",
+//   },
+//   {
+//     title: "Don't do what others want you to do, do what you love",
+//     snippet:
+//       "Why choosing passion over pressure is the smartest investment you'll ever make.",
+//     date: "16/05/2025",
+//     mediumUrl:
+//       "https://medium.com/@barnetvilem/dont-do-what-others-want-you-to-do-do-what-you-love-72652fc3f68b",
+//   },
+// ];
 
 export default function Home() {
   const [isLazyCursorHovering, setIsLazyCursorHovering] = useState(false);
@@ -622,7 +622,7 @@ export default function Home() {
           </section>
 
           {/* Blog Section - New */}
-          <section
+          {/* <section
             id="blog"
             className="space-y-8 sm:space-y-12 max-w-3xl mx-auto pt-8"
           >
@@ -644,7 +644,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </section>
+          </section> */}
 
           {/* Contact Section */}
           <section

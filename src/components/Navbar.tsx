@@ -79,7 +79,7 @@ export default function Navbar() {
     { id: "about", text: "About" },
     { id: "work", text: "Work" },
     { id: "skills", text: "Skills" },
-    { id: "blog", text: "Blog" },
+    //{ id: "blog", text: "Blog" },
     { id: "contact", text: "Contact" },
   ];
 
