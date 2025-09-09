@@ -9,7 +9,7 @@ import LanguageSkillTag from "@/components/LanguageSkillTag";
 import SkillTag from "@/components/SkillTag";
 // import ArticleCard from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
-import { Mail, GithubIcon, TwitterIcon } from "lucide-react";
+import { Mail, GithubIcon, TwitterIcon, LinkedinIcon } from "lucide-react";
 import LazyCursor from "@/components/LazyCursor";
 
 // Define project data array
@@ -683,17 +683,6 @@ export default function Home() {
               </p>
               <div className="flex justify-center sm:justify-start space-x-6 sm:space-x-8 text-gray-600">
                 <a
-                  href="https://github.com/vilemb"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="GitHub"
-                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
-                  onMouseEnter={handleIconMouseEnter}
-                  onMouseLeave={handleIconMouseLeave}
-                >
-                  <GithubIcon size={24} className="sm:w-7 sm:h-7" />
-                </a>
-                <a
                   href="https://x.com/barnetvilem"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -703,6 +692,28 @@ export default function Home() {
                   onMouseLeave={handleIconMouseLeave}
                 >
                   <TwitterIcon size={24} className="sm:w-7 sm:h-7" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/vil%C3%A9m-barnet-67184a380/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="LinkedIn"
+                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
+                  onMouseEnter={handleIconMouseEnter}
+                  onMouseLeave={handleIconMouseLeave}
+                >
+                  <LinkedinIcon size={24} className="sm:w-7 sm:h-7" />
+                </a>
+                <a
+                  href="https://github.com/vilemb"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="GitHub"
+                  className="hover:text-sky-700 transition-colors duration-300 p-2 rounded-full hover:bg-gray-100"
+                  onMouseEnter={handleIconMouseEnter}
+                  onMouseLeave={handleIconMouseLeave}
+                >
+                  <GithubIcon size={24} className="sm:w-7 sm:h-7" />
                 </a>
               </div>
             </div>
