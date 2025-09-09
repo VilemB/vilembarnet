@@ -592,7 +592,7 @@ export default function Home() {
                   Tools & Other
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["LangSmith", "Git & GitHub", "Cursor", "Claude Code", "VS Code", "npm", "Vercel", "Linux"].map(
+                  {["LangSmith", "Git & GitHub", "Sanity CMS", "Cursor", "Claude Code", "VS Code", "npm", "Vercel", "Linux"].map(
                     (skill) => (
                       <SkillTag
                         key={skill}
