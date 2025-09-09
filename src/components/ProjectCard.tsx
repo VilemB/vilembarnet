@@ -7,7 +7,7 @@ export interface ProjectCardProps {
   description: string;
   tags: string[];
   demoUrl?: string;
-  codeUrl: string;
+  codeUrl?: string;
   onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -65,6 +65,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               Demo
             </a>
           )}
+          {codeUrl && (
           <a
             href={codeUrl}
             target="_blank"
@@ -73,9 +74,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               isHovering ? "bg-sky-50 text-sky-600 ring-1 ring-sky-200" : ""
             }`}
             onClick={(e) => e.stopPropagation()}
-          >
-            Code
-          </a>
+            >
+              Code
+            </a>
+          )}
         </div>
       </div>
 
