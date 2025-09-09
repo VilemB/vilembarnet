@@ -7,7 +7,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import ProjectCard, { ProjectCardProps } from "@/components/ProjectCard";
 import LanguageSkillTag from "@/components/LanguageSkillTag";
 import SkillTag from "@/components/SkillTag";
-import ArticleCard from "@/components/ArticleCard";
+// import ArticleCard from "@/components/ArticleCard";
 import { Button } from "@/components/ui/button";
 import { Mail, GithubIcon, TwitterIcon } from "lucide-react";
 import LazyCursor from "@/components/LazyCursor";
@@ -121,9 +121,9 @@ const languageSkillsData: LanguageSkill[] = [
 export default function Home() {
   const [isLazyCursorHovering, setIsLazyCursorHovering] = useState(false);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
-  const [hoveredArticleIndex, setHoveredArticleIndex] = useState<number | null>(
-    null
-  );
+  //const [hoveredArticleIndex, setHoveredArticleIndex] = useState<number | null>(
+  //  null
+  //);
 
   const handleButtonMouseEnter = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -240,41 +240,41 @@ export default function Home() {
   );
 
   // New handlers for ArticleCard hover
-  const handleArticleMouseEnter = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>, index: number) => {
-      setHoveredArticleIndex(index);
-      setIsLazyCursorHovering(true);
-      animate(
-        {
-          targets: event.currentTarget,
-          scale: 1.02,
-          boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
-          duration: 200,
-          easing: "easeOutQuad",
-        },
-        {}
-      );
-    },
-    []
-  );
+  // const handleArticleMouseEnter = useCallback(
+  //   (event: React.MouseEvent<HTMLDivElement>, index: number) => {
+  //     setHoveredArticleIndex(index);
+  //     setIsLazyCursorHovering(true);
+  //     animate(
+  //       {
+  //         targets: event.currentTarget,
+  //         scale: 1.02,
+  //         boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
+  //         duration: 200,
+  //         easing: "easeOutQuad",
+  //       },
+  //       {}
+  //     );
+  //   },
+  //   []
+  // );
 
-  const handleArticleMouseLeave = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      setHoveredArticleIndex(null);
-      setIsLazyCursorHovering(false);
-      animate(
-        {
-          targets: event.currentTarget,
-          scale: 1.0,
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-          duration: 300,
-          easing: "easeOutQuad",
-        },
-        {}
-      );
-    },
-    []
-  );
+  // const handleArticleMouseLeave = useCallback(
+  //   (event: React.MouseEvent<HTMLDivElement>) => {
+  //     setHoveredArticleIndex(null);
+  //     setIsLazyCursorHovering(false);
+  //     animate(
+  //       {
+  //         targets: event.currentTarget,
+  //         scale: 1.0,
+  //         boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+  //         duration: 300,
+  //         easing: "easeOutQuad",
+  //       },
+  //       {}
+  //     );
+  //   },
+  //   []
+  // );
 
   const [appIsLoading, setAppIsLoading] = useState(true);
   const [showLoadingScreenComponent, setShowLoadingScreenComponent] =
