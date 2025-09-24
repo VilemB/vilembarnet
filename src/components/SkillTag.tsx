@@ -5,7 +5,7 @@ import React from "react";
 interface SkillTagProps {
   skillName: string;
   // Define a set of allowed color themes based on your categories
-  categoryColorTheme: "sky" | "emerald" | "purple" | "amber" | "slate";
+  categoryColorTheme: "sky" | "emerald" | "purple" | "amber" | "slate" | "neutral";
 }
 
 const SkillTag: React.FC<SkillTagProps> = ({
@@ -14,6 +14,10 @@ const SkillTag: React.FC<SkillTagProps> = ({
 }) => {
   // Define base and hover classes for each theme
   const themes = {
+    neutral: {
+      base: "bg-neutral-100 text-neutral-800",
+      hover: "hover:bg-neutral-200",
+    },
     sky: {
       base: "bg-sky-100 text-sky-800",
       hover: "hover:bg-sky-200",

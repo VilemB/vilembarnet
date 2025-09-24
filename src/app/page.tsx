@@ -502,6 +502,26 @@ export default function Home() {
               Skills & Technologies
             </h2>
             <div className="space-y-6 sm:space-y-8">
+              {/* Programming Languages */}
+              <div className="skill-category">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
+                  Programming Languages
+                </h3>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
+                  {[
+                    "Python",
+                    "JavaScript",
+                    "TypeScript",
+                    "Swift",
+                  ].map((skill) => (
+                    <SkillTag
+                      key={skill}
+                      skillName={skill}
+                      categoryColorTheme="neutral"
+                    />
+                  ))}
+                </div>
+              </div>
               {/* Frontend */}
               <div className="skill-category">
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
@@ -511,8 +531,6 @@ export default function Home() {
                   {[
                     "React",
                     "Next.js",
-                    "TypeScript",
-                    "JavaScript (ES6+)",
                     "HTML5",
                     "CSS3",
                     "Tailwind CSS",
@@ -539,7 +557,6 @@ export default function Home() {
                     "Express.js",
                     "REST APIs",
                     "LLM integration",
-                    "Python",
                     "FastAPI",
                     "LangChain",
                     "LangGraph",
