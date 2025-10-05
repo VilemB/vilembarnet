@@ -17,7 +17,7 @@ const projectsData: ProjectCardProps[] = [
   {
     title: "RiffLingo",
     description:
-      "An app that allows you to learn languages by listening to audio files and speaking with AI.",
+      "Learn languages by listening to music you love. Understand lyrics, learn vocabulary, and nail your pronunciation.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Python", "FastAPI", "OpenAI SDK", "Instructor", "Supabase", "Shadcn"],
     demoUrl: "",
     codeUrl: "",
@@ -40,7 +40,7 @@ const projectsData: ProjectCardProps[] = [
     title: "Travist",
     description:
       "An intelligent AI-powered travel planning platform that creates personalized itineraries using advanced language models and agent workflows to deliver seamless, tailored travel experiences.",
-    tags: ["Next.js", "TypeScript", "Python", "FastAPI", "LangChain", "LangGraph", "Tailwind", "Supabase", "Instructor", ""],
+    tags: ["Next.js", "TypeScript", "Python", "FastAPI", "LangChain", "LangGraph", "Tailwind", "Supabase", "Instructor", "Amadeus API"],
     demoUrl: "https://www.travist.app",
     codeUrl: "",
     onMouseEnter: () => {},
@@ -62,7 +62,7 @@ const projectsData: ProjectCardProps[] = [
     title: "eČtenářák",
     description:
       "A modern and user-friendly platform designed to help Czech students effectively manage their studies and prepare for literature final exams.",
-    tags: ["Next.js", "TypeScript", "OpenAI API", "Tailwind", "MongoDB"],
+    tags: ["Next.js", "TypeScript", "OpenAI API", "Tailwind", "MongoDB", "Stripe"],
     demoUrl: "https://www.ectenarak.cz",
     codeUrl: "",
     onMouseEnter: () => {},
