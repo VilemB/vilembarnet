@@ -18,7 +18,7 @@ const projectsData: ProjectCardProps[] = [
     title: "RiffLingo",
     description:
       "Learn languages by listening to music you love. Understand lyrics, learn vocabulary, and nail your pronunciation.",
-    tags: ["Next.js", "TypeScript", "Tailwind", "Python", "FastAPI", "OpenAI SDK", "Instructor", "Supabase", "Shadcn"],
+    tags: ["Next.js", "TypeScript", "Tailwind", "Python", "FastAPI", "OpenAI SDK", "Instructor", "Supabase", "Shadcn", "Genius API"],
     demoUrl: "",
     codeUrl: "",
     onMouseEnter: () => {},
@@ -29,7 +29,7 @@ const projectsData: ProjectCardProps[] = [
     title: "StockFast",
     description:
       "An app that allows you to upload 10-Q reports of companies, analyze them and discuss them with AI.",
-    tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB", "Instructor", "Genius API"],
+    tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB", "Instructor"],
     demoUrl: "",
     codeUrl: "",
     onMouseEnter: () => {},
