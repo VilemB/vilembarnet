@@ -15,10 +15,21 @@ import LazyCursor from "@/components/LazyCursor";
 // Define project data array
 const projectsData: ProjectCardProps[] = [
   {
+    title: "RiffLingo",
+    description:
+      "An app that allows you to learn languages by listening to audio files and speaking with AI.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "Python", "FastAPI", "OpenAI SDK", "Instructor", "Supabase", "Shadcn"],
+    demoUrl: "",
+    codeUrl: "",
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
+    onClick: () => {},
+  },
+  {
     title: "StockFast",
     description:
       "An app that allows you to upload 10-Q reports of companies, analyze them and discuss them with AI.",
-    tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB"],
+    tags: ["LlamaIndex", "Python", "FastAPI", "Next.js", "TypeScript", "Tailwind", "Supabase", "ChromaDB", "Instructor", "Genius API"],
     demoUrl: "",
     codeUrl: "",
     onMouseEnter: () => {},
@@ -29,7 +40,7 @@ const projectsData: ProjectCardProps[] = [
     title: "Travist",
     description:
       "An intelligent AI-powered travel planning platform that creates personalized itineraries using advanced language models and agent workflows to deliver seamless, tailored travel experiences.",
-    tags: ["Next.js", "TypeScript", "Python", "FastAPI", "LangChain", "LangGraph", "Tailwind", "Supabase"],
+    tags: ["Next.js", "TypeScript", "Python", "FastAPI", "LangChain", "LangGraph", "Tailwind", "Supabase", "Instructor", ""],
     demoUrl: "https://www.travist.app",
     codeUrl: "",
     onMouseEnter: () => {},
