@@ -107,6 +107,7 @@ const languageSkillsData: LanguageSkill[] = [
   { name: "Greek", proficiency: "Basic" },
   { name: "Korean", proficiency: "Basic" },
   { name: "Indonesian", proficiency: "Basic" },
+  { name: "Portuguese", proficiency: "Basic" },
 ];
 
 // Define dummy blog article data
