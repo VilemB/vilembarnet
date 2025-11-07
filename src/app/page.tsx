@@ -521,9 +521,9 @@ export default function Home() {
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
                   {[
-                    "Python",
-                    "JavaScript",
                     "TypeScript",
+                    "JavaScript",
+                    "Python",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -542,13 +542,14 @@ export default function Home() {
                   {[
                     "React",
                     "Next.js",
+                    "TypeScript",
+                    "Tailwind CSS",
                     "HTML5",
                     "CSS3",
-                    "Tailwind CSS",
                     "Shadcn UI",
-                    "Anime.js",
+                    "TanStack Query",
                     "Motion",
-                    "TanStack Query"
+                    "Anime.js",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -566,23 +567,38 @@ export default function Home() {
                 <div className="flex flex-wrap gap-2 sm:gap-3">
                   {[
                     "Node.js",
-                    "Express.js",
-                    "FastAPI",
                     "REST APIs",
+                    "Express.js",
                     "Supabase",
-                    "n8n",
+                    "FastAPI",
+                    "OpenAI SDK",
                     "LLM integration",
                     "LangChain",
                     "LangGraph",
                     "Instructor",
-                    "OpenAI SDK",
                     "LlamaIndex",
                     "LangSmith",
+                    "n8n",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
                       skillName={skill}
                       categoryColorTheme="emerald"
+                    />
+                  ))}
+                </div>
+              </div>
+              {/* Databases */}
+              <div className="skill-category">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
+                  Databases
+                </h3>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
+                  {["MongoDB", "MySQL", "Pinecone", "ChromaDB" ].map((skill) => (
+                    <SkillTag
+                      key={skill}
+                      skillName={skill}
+                      categoryColorTheme="amber"
                     />
                   ))}
                 </div>
@@ -602,28 +618,13 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              {/* Databases */}
-              <div className="skill-category">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
-                  Databases
-                </h3>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["MongoDB", "MySQL", "ChromaDB", "Pinecone" ].map((skill) => (
-                    <SkillTag
-                      key={skill}
-                      skillName={skill}
-                      categoryColorTheme="amber"
-                    />
-                  ))}
-                </div>
-              </div>
               {/* Tools & Other */}
               <div className="skill-category">
                 <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 sm:mb-4">
                   Tools & Other
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["Stripe", "Git & GitHub", "Sanity CMS", "Cursor", "Claude Code", "VS Code", "npm", "Vercel"].map(
+                  {["Git & GitHub", "VS Code", "npm", "Vercel", "Railway", "Stripe", "Sanity CMS", "Claude Code", "Cursor"].map(
                     (skill) => (
                       <SkillTag
                         key={skill}
