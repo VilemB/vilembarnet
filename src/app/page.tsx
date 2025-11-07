@@ -524,7 +524,6 @@ export default function Home() {
                     "Python",
                     "JavaScript",
                     "TypeScript",
-                    "Swift",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -548,7 +547,8 @@ export default function Home() {
                     "Tailwind CSS",
                     "Shadcn UI",
                     "Anime.js",
-                    "Motion"
+                    "Motion",
+                    "TanStack Query"
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -567,15 +567,17 @@ export default function Home() {
                   {[
                     "Node.js",
                     "Express.js",
-                    "REST APIs",
-                    "LLM integration",
                     "FastAPI",
+                    "REST APIs",
+                    "Supabase",
+                    "n8n",
+                    "LLM integration",
                     "LangChain",
                     "LangGraph",
                     "Instructor",
                     "OpenAI SDK",
                     "LlamaIndex",
-                    "n8n",
+                    "LangSmith",
                   ].map((skill) => (
                     <SkillTag
                       key={skill}
@@ -606,7 +608,7 @@ export default function Home() {
                   Databases
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["MongoDB", "Supabase", "MySQL", "ChromaDB", "Pinecone" ].map((skill) => (
+                  {["MongoDB", "MySQL", "ChromaDB", "Pinecone" ].map((skill) => (
                     <SkillTag
                       key={skill}
                       skillName={skill}
@@ -621,7 +623,7 @@ export default function Home() {
                   Tools & Other
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["Stripe", "LangSmith", "Git & GitHub", "Sanity CMS", "Cursor", "Claude Code", "VS Code", "npm", "Vercel", "Linux"].map(
+                  {["Stripe", "Git & GitHub", "Sanity CMS", "Cursor", "Claude Code", "VS Code", "npm", "Vercel"].map(
                     (skill) => (
                       <SkillTag
                         key={skill}
