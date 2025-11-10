@@ -487,7 +487,7 @@ export default function Home() {
               Selected Work
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-              {projectsData.map((project, index) => (
+              {projectsData.slice(0, 6).map((project, index) => (
                 <ProjectCard
                   key={index}
                   title={project.title}
@@ -503,6 +503,11 @@ export default function Home() {
                 />
               ))}
             </div>
+            {projectsData.length > 6 && (
+              <p className="text-sm sm:text-base text-gray-500 italic text-center md:text-left">
+                And more..
+              </p>
+            )}
           </section>
 
           {/* Skills Section Updated */}
