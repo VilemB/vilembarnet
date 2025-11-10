@@ -548,6 +548,7 @@ export default function Home() {
                     "CSS3",
                     "Shadcn UI",
                     "TanStack Query",
+                    "GSAP",
                     "Motion",
                     "Anime.js",
                   ].map((skill) => (
