@@ -471,7 +471,7 @@ export default function Home() {
               Vilém Barnet
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-sky-700 font-semibold w-full">
-              Full-Stack Engineer Specializing in AI Integration
+              Full-Stack Engineer Building AI-Powered Applications
             </p>
             <p className="text-sm sm:text-base md:text-lg text-gray-700 leading-relaxed mt-1 w-full">
               Dedicated to seamlessly incorporating artificial intelligence into web applications, delivering efficient and user-centric solutions.
