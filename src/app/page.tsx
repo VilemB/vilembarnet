@@ -615,7 +615,7 @@ export default function Home() {
                   UI/UX Design
                 </h3>
                 <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {["Figma", "Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign"].map((skill) => (
+                  {["Figma", "Adobe Photoshop", "Adobe Illustrator", "Adobe InDesign", "Framer"].map((skill) => (
                     <SkillTag
                       key={skill}
                       skillName={skill}
