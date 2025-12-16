@@ -161,6 +161,7 @@ export default function RootLayout({
             })
           }}
         />
+        <script data-site="dHJhY2tfYmRhc3U0ZXg=" src="https://oculisanalytics.com/js/script.js"></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
