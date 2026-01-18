@@ -1,46 +1,48 @@
 @import "tailwindcss";
 
+/* Custom CSS Variables */
 :root {
-  --background: #ffffff; /* White background */
-  --foreground: #111827; /* Dark gray text (Tailwind gray-900) */
+  --color-light: #F3F0F0;
+  --color-dark: #001F3D;
+  --color-accent: #ED985F;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Tailwind CSS v4 Theme Configuration */
+@theme {
+  /* Custom Colors */
+  --color-light: #F3F0F0;
+  --color-dark: #001F3D;
+  --color-accent: #ED985F;
+
+  /* Font Families */
+  --font-heading: var(--font-italiana);
+  --font-body: var(--font-montserrat);
+
+  /* You can also use these for default sans/serif if needed */
+  --font-sans: var(--font-montserrat);
+  --font-serif: var(--font-italiana);
 }
 
-/* Remove or comment out the dark mode override */
-/*
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-*/
 
-@utilities {
-  /* Keep or adjust utility classes if needed */
-  .navbar-link {
-    @apply text-black no-underline p-2 rounded-lg; /* Adjust color */
-  }
-
-  .navbar {
-    @apply flex justify-between items-center p-4 bg-gray-200 rounded-l-lg w-1/5 h-12 mt-4 ml-4; /* Adjust color */
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif; /* Consider using the Geist font variables */
+  background-color: var(--color-light);
+  color: var(--color-dark);
+  font-family: var(--font-montserrat), sans-serif;
+  line-height: 1.6;
 }
 
-/* Hide default system cursor when LazyCursor is active */
-/* body.hide-cursor,
-body.hide-cursor * {
-  cursor: none !important;
-} */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-italiana), serif;
+  font-weight: 400;
+  line-height: 1.2;
+}
