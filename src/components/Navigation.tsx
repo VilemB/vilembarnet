@@ -1,14 +1,17 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+
 export default function Navigation() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-6 flex justify-between items-center">
-      <div className="text-2xl font-heading text-dark">VB</div>
-      <div className="flex gap-6 lg:gap-8 text-sm font-body">
-        <a href="#work" className="text-dark hover:text-accent transition-colors">work</a>
-        <a href="#about" className="text-dark hover:text-accent transition-colors">about</a>
-        <a href="#contact" className="text-dark hover:text-accent transition-colors">contact</a>
-        <a href="/blog" className="text-dark hover:text-accent transition-colors">blog</a>
+    <nav className="nav">
+      <Image src="/logos/logo.png" alt="Logo" width={40} height={40} />
+      <div className="nav-links">
+        <Link href="/work" className="text-dark hover:text-accent transition-colors">work</Link>
+        <Link href="/about" className="text-dark hover:text-accent transition-colors">about</Link>
+        <Link href="mailto:barnetv7@gmail.com" className="text-dark hover:text-accent transition-colors">contact</Link>
+        <Link href="/blog" className="text-dark hover:text-accent transition-colors">blog</Link>
       </div>
     </nav>
   );

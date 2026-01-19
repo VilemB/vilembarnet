@@ -70,7 +70,7 @@ export function useDistortion(options: DistortionOptions) {
       scene.add(planeMesh);
 
       renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setClearColor(0xffffff, 1);
+      renderer.setClearColor("#F3F0F0", 1);
       renderer.setSize(containerWidth, containerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -95,7 +95,7 @@ export function useDistortion(options: DistortionOptions) {
     }
 
     function handleMouseEnter(event: MouseEvent) {
-      easeFactor = 0.01;
+      easeFactor = 0.035;
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
 
@@ -106,7 +106,7 @@ export function useDistortion(options: DistortionOptions) {
     }
 
     function handleMouseLeave() {
-      easeFactor = 0.01;
+      easeFactor = 0.035;
       targetMousePosition = { ...prevPosition };
     }
 
