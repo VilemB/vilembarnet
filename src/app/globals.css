@@ -1,33 +1,35 @@
 @import "tailwindcss";
 
-/* Custom CSS Variables */
 :root {
   --color-light: #F3F0F0;
   --color-dark: #001F3D;
   --color-accent: #ED985F;
 }
 
-/* Tailwind CSS v4 Theme Configuration */
 @theme {
-  /* Custom Colors */
   --color-light: #F3F0F0;
   --color-dark: #001F3D;
   --color-accent: #ED985F;
 
-  /* Font Families */
   --font-heading: var(--font-italiana);
   --font-body: var(--font-montserrat);
 
-  /* You can also use these for default sans/serif if needed */
   --font-sans: var(--font-montserrat);
   --font-serif: var(--font-italiana);
 }
 
-/* Global Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -41,8 +43,31 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
   font-family: var(--font-italiana), serif;
   font-weight: 400;
   line-height: 1.2;
+}
+
+h3, h4, h5, h6 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+#textContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 100%;
+  height: 100%;
 }
