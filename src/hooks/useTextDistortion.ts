@@ -14,6 +14,8 @@ export interface TextDistortionOptions {
   radius?: number;
   easeFactor?: number;
   containerRef: RefObject<HTMLDivElement | null>;
+  containerWidth?: number;
+  containerHeight?: number;
 }
 
 export function useTextDistortion(options: TextDistortionOptions) {
@@ -29,6 +31,8 @@ export function useTextDistortion(options: TextDistortionOptions) {
     radius = 0.35,
     easeFactor = 0.02,
     containerRef,
+    containerWidth,
+    containerHeight,
   } = options;
 
   const textureFactory = useCallback(
@@ -40,8 +44,10 @@ export function useTextDistortion(options: TextDistortionOptions) {
         fontWeight,
         textColor,
         backgroundColor,
+        canvasWidth: containerWidth ? containerWidth * 2 : undefined,
+        canvasHeight: containerHeight ? containerHeight * 2 : undefined,
       }),
-    [text, font, fontSize, fontWeight, textColor, backgroundColor]
+    [text, font, fontSize, fontWeight, textColor, backgroundColor, containerWidth, containerHeight]
   );
 
   useDistortion({

@@ -7,6 +7,8 @@ export interface TextTextureOptions {
   fontWeight: string;
   textColor: string;
   backgroundColor: string;
+  canvasWidth?: number;
+  canvasHeight?: number;
 }
 
 export interface ImageTextureOptions {
@@ -16,13 +18,13 @@ export interface ImageTextureOptions {
 }
 
 export function createTextTexture(options: TextTextureOptions): THREE.Texture | null {
-  const { text, font, fontSize, fontWeight, textColor, backgroundColor } = options;
+  const { text, font, fontSize, fontWeight, textColor, backgroundColor, canvasWidth: providedWidth, canvasHeight: providedHeight } = options;
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  const canvasWidth = window.innerWidth * 2;
-  const canvasHeight = window.innerHeight * 2;
+  const canvasWidth = providedWidth ?? window.innerWidth * 2;
+  const canvasHeight = providedHeight ?? window.innerHeight * 2;
 
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
@@ -58,8 +60,7 @@ export function createTextTexture(options: TextTextureOptions): THREE.Texture | 
     canvasWidth / 2,
     canvasHeight / 2
   );
-
-  ctx.strokeStyle = "#F3F0F0";
+  
   ctx.lineWidth = computedFontSize * 0.005;
   for (let i = 0; i < 3; i++) {
     ctx.strokeText(text, 0, 0);

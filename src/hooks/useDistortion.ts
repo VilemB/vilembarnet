@@ -36,7 +36,9 @@ export function useDistortion(options: DistortionOptions) {
     function initializeScene(texture: THREE.Texture) {
       scene = new THREE.Scene();
 
-      const aspectRatio = window.innerWidth / window.innerHeight;
+      const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
+      const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
+      const aspectRatio = containerWidth / containerHeight;
       camera = new THREE.OrthographicCamera(
         -1,
         1,
@@ -69,7 +71,7 @@ export function useDistortion(options: DistortionOptions) {
 
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setClearColor(0xffffff, 1);
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(containerWidth, containerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
 
       containerRef.current?.appendChild(renderer.domElement);
@@ -108,15 +110,17 @@ export function useDistortion(options: DistortionOptions) {
       targetMousePosition = { ...prevPosition };
     }
 
-    function onWindowResize() {
-      const aspectRatio = window.innerWidth / window.innerHeight;
+    function onContainerResize() {
+      const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
+      const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
+      const aspectRatio = containerWidth / containerHeight;
       camera.left = -1;
       camera.right = 1;
       camera.top = 1 / aspectRatio;
       camera.bottom = -1 / aspectRatio;
       camera.updateProjectionMatrix();
 
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(containerWidth, containerHeight);
 
       reloadTexture();
     }
@@ -150,17 +154,24 @@ export function useDistortion(options: DistortionOptions) {
 
     animateScene();
 
+    const resizeObserver = new ResizeObserver(() => {
+      onContainerResize();
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
     containerRef.current?.addEventListener("mousemove", handleMouseMove);
     containerRef.current?.addEventListener("mouseenter", handleMouseEnter);
     containerRef.current?.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("resize", onWindowResize, false);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
       containerRef.current?.removeEventListener("mousemove", handleMouseMove);
       containerRef.current?.removeEventListener("mouseenter", handleMouseEnter);
       containerRef.current?.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("resize", onWindowResize);
 
       if (renderer) {
         renderer.dispose();
