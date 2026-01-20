@@ -1,35 +1,33 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useTextDistortion } from "@/hooks/useTextDistortion";
 
 export default function DistortionCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [fontSize, setFontSize] = useState(120);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    const updateDimensions = () => {
-      if (containerRef.current) {
-        setDimensions({
-          width: containerRef.current.clientWidth,
-          height: containerRef.current.clientHeight,
-        });
+    const updateFontSize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setFontSize(80);   // Mobile
+      } else if (width < 1024) {
+        setFontSize(100);  // Tablet
+      } else {
+        setFontSize(120);  // Desktop
       }
     };
 
-    updateDimensions();
-    const resizeObserver = new ResizeObserver(updateDimensions);
-    resizeObserver.observe(containerRef.current);
-
-    return () => resizeObserver.disconnect();
+    updateFontSize();
+    window.addEventListener('resize', updateFontSize);
+    return () => window.removeEventListener('resize', updateFontSize);
   }, []);
 
   useTextDistortion({
     text: "barnet",
     font: "Italiana",
-    fontSize: 1000,
+    fontSize: fontSize,
     fontWeight: "400",
     textColor: "#001F3D",
     backgroundColor: "#F3F0F0",
@@ -38,8 +36,6 @@ export default function DistortionCanvas() {
     radius: 0.2,
     easeFactor: 0.01,
     containerRef,
-    containerWidth: dimensions.width,
-    containerHeight: dimensions.height,
   });
 
   return <div ref={containerRef} id="textContainer" />;

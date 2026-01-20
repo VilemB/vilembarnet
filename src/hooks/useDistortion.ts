@@ -36,18 +36,43 @@ export function useDistortion(options: DistortionOptions) {
     function initializeScene(texture: THREE.Texture) {
       scene = new THREE.Scene();
 
-      const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
-      const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
-      const aspectRatio = containerWidth / containerHeight;
+      // Get texture's natural dimensions
+      const textureWidth = texture.image?.width || 800;
+      const textureHeight = texture.image?.height || 800;
+      const textureAspect = textureWidth / textureHeight;
+
+      // Calculate canvas size to maintain aspect ratio
+      // Scale down if needed, but keep aspect ratio
+      const maxWidth = containerRef.current?.clientWidth || 600;
+      const maxHeight = 800; // Maximum height for images
+
+      let canvasWidth = textureWidth;
+      let canvasHeight = textureHeight;
+
+      // Scale down if larger than max dimensions
+      if (canvasWidth > maxWidth || canvasHeight > maxHeight) {
+        const scaleX = maxWidth / canvasWidth;
+        const scaleY = maxHeight / canvasHeight;
+        const scale = Math.min(scaleX, scaleY);
+        canvasWidth = canvasWidth * scale;
+        canvasHeight = canvasHeight * scale;
+      }
+
+      // Set camera to match canvas aspect ratio
+      const canvasAspect = canvasWidth / canvasHeight;
       camera = new THREE.OrthographicCamera(
         -1,
         1,
-        1 / aspectRatio,
-        -1 / aspectRatio,
+        1 / canvasAspect,
+        -1 / canvasAspect,
         0.1,
         1000
       );
       camera.position.z = 1;
+
+      // Plane should fill the view
+      const planeWidth = 2;
+      const planeHeight = 2 / canvasAspect;
 
       const shaderUniforms = {
         u_mouse: { value: new THREE.Vector2() },
@@ -59,7 +84,7 @@ export function useDistortion(options: DistortionOptions) {
       };
 
       planeMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(2, 2),
+        new THREE.PlaneGeometry(planeWidth, planeHeight),
         new THREE.ShaderMaterial({
           uniforms: shaderUniforms,
           vertexShader: DISTORTION_VERTEX_SHADER,
@@ -71,7 +96,7 @@ export function useDistortion(options: DistortionOptions) {
 
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setClearColor("#F3F0F0", 1);
-      renderer.setSize(containerWidth, containerHeight);
+      renderer.setSize(canvasWidth, canvasHeight); // Use calculated size, not container size
       renderer.setPixelRatio(window.devicePixelRatio);
 
       containerRef.current?.appendChild(renderer.domElement);
@@ -79,8 +104,10 @@ export function useDistortion(options: DistortionOptions) {
 
     function reloadTexture() {
       const newTexture = createTexture();
-      if (newTexture) {
+      if (newTexture && planeMesh) {
         (planeMesh.material as THREE.ShaderMaterial).uniforms.u_texture.value = newTexture;
+        // Trigger resize to recalculate canvas and plane dimensions based on new texture
+        onContainerResize();
       }
     }
 
@@ -111,18 +138,42 @@ export function useDistortion(options: DistortionOptions) {
     }
 
     function onContainerResize() {
-      const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
-      const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
-      const aspectRatio = containerWidth / containerHeight;
+      // Recalculate based on texture dimensions, not container
+      const texture = (planeMesh.material as THREE.ShaderMaterial).uniforms.u_texture.value;
+      if (!texture?.image) return;
+
+      const textureWidth = texture.image.width;
+      const textureHeight = texture.image.height;
+      const textureAspect = textureWidth / textureHeight;
+
+      const maxWidth = containerRef.current?.clientWidth || 600;
+      const maxHeight = 800;
+
+      let canvasWidth = textureWidth;
+      let canvasHeight = textureHeight;
+
+      if (canvasWidth > maxWidth || canvasHeight > maxHeight) {
+        const scaleX = maxWidth / canvasWidth;
+        const scaleY = maxHeight / canvasHeight;
+        const scale = Math.min(scaleX, scaleY);
+        canvasWidth = canvasWidth * scale;
+        canvasHeight = canvasHeight * scale;
+      }
+
+      const canvasAspect = canvasWidth / canvasHeight;
       camera.left = -1;
       camera.right = 1;
-      camera.top = 1 / aspectRatio;
-      camera.bottom = -1 / aspectRatio;
+      camera.top = 1 / canvasAspect;
+      camera.bottom = -1 / canvasAspect;
       camera.updateProjectionMatrix();
 
-      renderer.setSize(containerWidth, containerHeight);
+      // Update plane to fill view
+      const planeWidth = 2;
+      const planeHeight = 2 / canvasAspect;
+      planeMesh.geometry.dispose();
+      planeMesh.geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
 
-      reloadTexture();
+      renderer.setSize(canvasWidth, canvasHeight);
     }
 
     const initialTexture = createTexture();

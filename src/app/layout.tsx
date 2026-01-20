@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Italiana, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import Navigation from "@/components/Navigation";
 
 const italiana = Italiana({
   weight: "400",
@@ -147,6 +148,7 @@ export default function RootLayout({
       <body
         className={`${italiana.variable} ${montserrat.variable} antialiased`}
       >
+        <Navigation />  
         {children}
         <Analytics />
       </body>

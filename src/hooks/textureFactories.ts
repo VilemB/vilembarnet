@@ -23,20 +23,32 @@ export function createTextTexture(options: TextTextureOptions): THREE.Texture | 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  const canvasWidth = providedWidth ?? window.innerWidth * 2;
-  const canvasHeight = providedHeight ?? window.innerHeight * 2;
-
-  canvas.width = canvasWidth;
-  canvas.height = canvasHeight;
-
   if (!ctx) {
     return null;
   }
 
+  // First, measure the text to determine natural dimensions
+  const computedFontSize = fontSize || 400;
+  ctx.font = `${fontWeight} ${computedFontSize}px "${font}"`;
+
+  const textMetrics = ctx.measureText(text);
+  const textWidth = textMetrics.width;
+  const textHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent;
+
+  // Create canvas sized to fit text with minimal padding
+  const padding = computedFontSize * 0.2;
+  const naturalCanvasWidth = textWidth + padding * 2;
+  const naturalCanvasHeight = textHeight + padding * 2;
+
+  // Use provided dimensions if available, otherwise use natural dimensions
+  const canvasWidth = providedWidth ?? naturalCanvasWidth;
+  const canvasHeight = providedHeight ?? naturalCanvasHeight;
+
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
   ctx.fillStyle = backgroundColor;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  const computedFontSize = fontSize || Math.floor(canvasWidth * 2);
 
   ctx.fillStyle = textColor;
   ctx.font = `${fontWeight} ${computedFontSize}px "${font}"`;
@@ -46,21 +58,20 @@ export function createTextTexture(options: TextTextureOptions): THREE.Texture | 
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
-  const textMetrics = ctx.measureText(text);
-  const textWidth = textMetrics.width;
-
-  const scaleFactor = Math.min(1, canvasWidth / textWidth);
-  const aspectCorrection = canvasWidth / canvasHeight;
+  // Calculate uniform scale factor to fit text in canvas
+  const scaleX = (canvasWidth * 0.9) / textWidth;
+  const scaleY = (canvasHeight * 0.9) / textHeight;
+  const scaleFactor = Math.min(scaleX, scaleY, 1);
 
   ctx.setTransform(
     scaleFactor,
     0,
     0,
-    scaleFactor / aspectCorrection,
+    scaleFactor,
     canvasWidth / 2,
     canvasHeight / 2
   );
-  
+
   ctx.lineWidth = computedFontSize * 0.005;
   for (let i = 0; i < 3; i++) {
     ctx.strokeText(text, 0, 0);
