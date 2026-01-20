@@ -55,7 +55,7 @@ export default function AboutPage() {
             <h1 className="about-heading">SOCIALS</h1>
             <div className="about-socials">
               <a href="https://x.com/barnetvilem" className="about-social-link">/ x (twitter)</a>
-              <a href="https://linkedin.com/in/yourusername" className="about-social-link">/ linkedin</a>
+              <a href="https://www.linkedin.com/in/vil%C3%A9m-barnet-67184a380" className="about-social-link">/ linkedin</a>
               <a href="https://github.com/VilemB" className="about-social-link">/ github</a>
               <a href="https://instagram.com/barnetvilem" className="about-social-link">/ instagram</a>
               <a href="https://tiktok.com/@barnetvilem" className="about-social-link">/ tiktok</a>
