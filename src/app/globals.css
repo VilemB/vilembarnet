@@ -321,8 +321,8 @@ canvas {
 
 @media (min-width: 1280px) {
   .about-grid {
-    grid-template-columns: 200px 1fr 1.5fr;
-    gap: 2.5rem;
+    grid-template-columns: 200px .7fr 2fr;
+    gap: 5rem;
   }
 }
 
