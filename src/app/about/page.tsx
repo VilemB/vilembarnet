@@ -6,8 +6,17 @@ import { useImageDistortion } from "@/hooks/useImageDistortion";
 export default function AboutPage() {
   const vilemImageRef = useRef<HTMLDivElement>(null);
   const laptopImageRef = useRef<HTMLDivElement>(null);
+  const mobileVilemImageRef = useRef<HTMLDivElement>(null);
 
-  // Apply distortion to both images
+  useImageDistortion({
+    src: "/website/vilem.png",
+    containerRef: mobileVilemImageRef,
+    gridSize: 80.0,
+    intensity: 0.2,
+    radius: 0.35,
+    easeFactor: 0.02,
+  });
+
   useImageDistortion({
     src: "/website/vilem.png",
     containerRef: vilemImageRef,
@@ -29,7 +38,7 @@ export default function AboutPage() {
   return (
     <section className="about-page">
       {/* Mobile-only image */}
-      <div className="about-mobile-image" ref={vilemImageRef} />
+      <div className="about-mobile-image" ref={mobileVilemImageRef} />
 
       <div className="about-grid">
         {/* Left Column: Headings and Social Links */}
@@ -45,11 +54,11 @@ export default function AboutPage() {
           <div>
             <h1 className="about-heading">SOCIALS</h1>
             <div className="about-socials">
-              <a href="https://x.com/yourusername" className="about-social-link">/ x (twitter)</a>
+              <a href="https://x.com/barnetvilem" className="about-social-link">/ x (twitter)</a>
               <a href="https://linkedin.com/in/yourusername" className="about-social-link">/ linkedin</a>
-              <a href="https://github.com/yourusername" className="about-social-link">/ github</a>
-              <a href="https://instagram.com/yourusername" className="about-social-link">/ instagram</a>
-              <a href="https://tiktok.com/@yourusername" className="about-social-link">/ tiktok</a>
+              <a href="https://github.com/VilemB" className="about-social-link">/ github</a>
+              <a href="https://instagram.com/barnetvilem" className="about-social-link">/ instagram</a>
+              <a href="https://tiktok.com/@barnetvilem" className="about-social-link">/ tiktok</a>
             </div>
           </div>
         </div>

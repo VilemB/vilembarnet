@@ -44,7 +44,7 @@ export function useDistortion(options: DistortionOptions) {
       // Calculate canvas size to maintain aspect ratio
       // Scale down if needed, but keep aspect ratio
       const maxWidth = containerRef.current?.clientWidth || 600;
-      const maxHeight = 800; // Maximum height for images
+      const maxHeight = 400; // Maximum height for images
 
       let canvasWidth = textureWidth;
       let canvasHeight = textureHeight;
@@ -147,7 +147,7 @@ export function useDistortion(options: DistortionOptions) {
       const textureAspect = textureWidth / textureHeight;
 
       const maxWidth = containerRef.current?.clientWidth || 600;
-      const maxHeight = 800;
+      const maxHeight = 400;
 
       let canvasWidth = textureWidth;
       let canvasHeight = textureHeight;
