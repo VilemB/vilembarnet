@@ -11,28 +11,28 @@ export default function AboutPage() {
   useImageDistortion({
     src: "/website/vilem.png",
     containerRef: mobileVilemImageRef,
-    gridSize: 80.0,
+    gridSize: 40.0,
     intensity: 0.2,
     radius: 0.35,
-    easeFactor: 0.02,
+    easeFactor: 0.06,
   });
 
   useImageDistortion({
     src: "/website/vilem.png",
     containerRef: vilemImageRef,
-    gridSize: 80.0,
-    intensity: 0.2,
+    gridSize: 20.0,
+    intensity: 0.4,
     radius: 0.35,
-    easeFactor: 0.02,
+    easeFactor: 0.06,
   });
 
   useImageDistortion({
     src: "/website/laptop.png",
     containerRef: laptopImageRef,
-    gridSize: 80.0,
-    intensity: 0.2,
+    gridSize: 20.0,
+    intensity: 0.4,
     radius: 0.35,
-    easeFactor: 0.02,
+    easeFactor: 0.06,
   });
 
   return (

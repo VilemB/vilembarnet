@@ -409,6 +409,11 @@ canvas {
   max-width: 100%;
 }
 
+.about-image-container:hover {
+  filter: grayscale(70%);
+  transition: filter 0.8s ease-in-out;
+}
+
 .about-image-container:first-child {
   width: 100%;
 }
