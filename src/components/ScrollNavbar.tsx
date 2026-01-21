@@ -25,8 +25,8 @@ export default function ScrollNavbar() {
       const isDesktop = window.innerWidth >= 720;
       if (!isDesktop) {
         navbarLogo?.classList.add("navbar-logo-pinned");
-        gsap.set(navbarLogo, { width: 250 });
-        gsap.set([navbarBg, navbarItems], { width: "100%", height: "100vh" });
+        gsap.set(navbarBg, { width: "100%", height: "100vh" });
+        gsap.set(navbarItems, { width: "100%", height: "auto" });
         return;
       }
 
