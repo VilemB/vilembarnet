@@ -25,9 +25,9 @@ export default function About() {
         });
 
         tl.to(firstLineRef.current, {
+            delay: .5,
             opacity: 0,
             y: -30,
-            duration: .4,
             ease: "power1.out",
         })
         .fromTo(secondLineRef.current, {
@@ -36,7 +36,11 @@ export default function About() {
         }, {
             opacity: 1,
             y: 0,
-            duration: .4,
+            ease: "power1.in",
+        })
+        .to(secondLineRef.current, {
+            delay: .5,
+            top: "30%",
             ease: "power1.in",
         })
         
@@ -47,6 +51,10 @@ export default function About() {
         <section ref={aboutRef} className="about">
             <h2 className="" ref={firstLineRef}>I enjoy designing and building digital products</h2>
             <h2 className="" ref={secondLineRef}>Here are some of the projects I've worked on</h2>
+
+            <div className="projects-container">
+
+            </div>
         </section>
     );
 }
