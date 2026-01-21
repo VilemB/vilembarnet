@@ -218,7 +218,6 @@ section.about {
   letter-spacing: -0.03em;
 }
 
-/* Hide mobile break on desktop */
 .mobile-break {
   display: none;
 }
@@ -233,7 +232,6 @@ section.about {
     aspect-ratio: unset;
   }
 
-  /* CSS Grid layout: Left links | Logo | Right links */
   .navbar-items {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -244,7 +242,6 @@ section.about {
     height: auto !important;
   }
 
-  /* First link group (work, about) - Left column */
   .navbar-links:nth-child(1) {
     grid-column: 1;
     grid-row: 1;
@@ -256,7 +253,6 @@ section.about {
     padding: 0;
   }
 
-  /* Second link group (blog, contact) - Right column */
   .navbar-links:nth-child(2) {
     grid-column: 3;
     grid-row: 1;
@@ -274,7 +270,6 @@ section.about {
     white-space: nowrap;
   }
 
-  /* Logo - Center column, row 1 */
   .navbar-logo,
   .navbar-logo.navbar-logo-pinned {
     grid-column: 2;
@@ -308,13 +303,11 @@ section.about {
     width: 100%;
   }
 
-  /* Show line break on mobile */
   .mobile-break {
     display: block;
   }
 }
 
-/* Extra small mobile devices */
 @media (max-width: 480px) {
   .hero h1 {
     font-size: clamp(1.75rem, 9vw, 2.5rem);
