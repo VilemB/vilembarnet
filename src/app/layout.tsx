@@ -1,19 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Italiana, Montserrat } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import Navigation from "@/components/Navigation";
 
-const italiana = Italiana({
-  weight: "400",
-  variable: "--font-italiana",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const montserrat = Montserrat({
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-montserrat",
+const bricolageGrotesque = Bricolage_Grotesque({
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",
 });
@@ -146,9 +138,8 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${italiana.variable} ${montserrat.variable} antialiased`}
+        className={`${bricolageGrotesque.variable} antialiased`}
       >
-        <Navigation />  
         {children}
         <Analytics />
       </body>
