@@ -28,7 +28,7 @@ export default function About() {
             opacity: 0,
             y: -30,
             duration: .4,
-            ease: "power3.out",
+            ease: "power1.out",
         })
         .fromTo(secondLineRef.current, {
             opacity: 0,
@@ -37,7 +37,7 @@ export default function About() {
             opacity: 1,
             y: 0,
             duration: .4,
-            ease: "power3.out",
+            ease: "power1.in",
         })
         
 
