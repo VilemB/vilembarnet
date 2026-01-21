@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import Loader from "@/components/Loader";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
@@ -140,6 +141,7 @@ export default function RootLayout({
       <body
         className={`${bricolageGrotesque.variable} antialiased`}
       >
+        <Loader />
         {children}
         <Analytics />
       </body>
