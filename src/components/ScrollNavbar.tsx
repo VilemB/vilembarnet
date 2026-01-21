@@ -106,15 +106,6 @@ export default function ScrollNavbar() {
   return (
     <>
       <div className="navbar-backdrop">
-        <div className="navbar-img">
-          <Image
-            src="/website/bg.webp"
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
         <div className="navbar-background"></div>
       </div>
 
@@ -133,22 +124,14 @@ export default function ScrollNavbar() {
             <Image
               src="/logos/logo.svg"
               alt="Logo"
-              width={50}
-              height={50}
+              width={40}
+              height={40}
               className="object-contain"
               priority
             />
           </a>
         </div>
       </div>
-
-      <section className="hero">
-        <h1>My name is Vilém Barnet</h1>
-      </section>
-
-      <section className="about">
-        <h2>I enjoy designing and building digital products <span className="italic font-bold">from scratch.</span></h2>
-      </section>
     </>
   );
 }

@@ -75,6 +75,7 @@ h3, h4, h5, h6 {
   height: 100svh;
   pointer-events: none;
   overflow: hidden;
+  background-color: var(--color-accent);
 }
 
 .navbar-background,
@@ -185,7 +186,7 @@ section.about {
   width: 50%;
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(3rem, 5vw, 5rem);
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1;
   letter-spacing: -0.03em;
 }

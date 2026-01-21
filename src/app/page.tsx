@@ -1,15 +1,13 @@
 import ScrollNavbar from "@/components/ScrollNavbar";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
 
 export default function Home() {
   return (
     <main>
       <ScrollNavbar />
-      <section className="hero">
-        <h1>Vilém Barnet</h1>
-      </section>
-      <section className="about">
-        <h1>About</h1>
-      </section>
+      <Hero />
+      <About />
     </main>
   );
 }
