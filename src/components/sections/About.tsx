@@ -5,13 +5,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { useRef } from "react";
-import Image from "next/image";
 
 export default function About() {
     const aboutRef = useRef<HTMLDivElement>(null);
     const firstLineRef = useRef<HTMLDivElement>(null);
     const secondLineRef = useRef<HTMLDivElement>(null);
-    const flowerRef = useRef<HTMLDivElement>(null);
     const waveRef = useRef<HTMLDivElement>(null);
     const wavePathRef = useRef<SVGPathElement>(null);
     const projectsRef = useRef<HTMLDivElement>(null);
@@ -23,71 +21,52 @@ export default function About() {
             scrollTrigger: {
                 trigger: aboutRef.current,
                 start: "bottom bottom",
-                end: "+=600",
-                scrub: 1,
+                end: "+=800",
+                scrub: 1.2,
                 pin: true,
                 markers: true,
             }
         });
 
         tl.to(firstLineRef.current, {
-            delay: .5,
             opacity: 0,
-            y: -30,
-            ease: "power1.out",
+            y: -40,
+            duration: 1,
+            ease: "power2.inOut",
         })
         .fromTo(secondLineRef.current, {
             opacity: 0,
-            y: 30,
+            y: 40,
         }, {
             opacity: 1,
             y: 0,
-        })
+            duration: 1,
+            ease: "power2.out",
+        }, "-=0.3")
         .to(secondLineRef.current, {
-            delay: .5,
             top: "40%",
-        })
+            duration: 1.2,
+            ease: "power3.inOut",
+        }, "+=0.2")
         .fromTo(projectsRef.current,
-            { yPercent: 100,
-                scale: 0.9
-             },
+            {
+                yPercent: 100,
+                scale: 0.92
+            },
             {
                 yPercent: 50,
                 scale: 1,
-                duration: 2,
-            }
+                duration: 1.5,
+                ease: "power2.out",
+            },
+            "-=0.4"
         )
         .to(waveRef.current, {
             yPercent: -200,
+            duration: 1.5,
+            ease: "power2.inOut",
         }, "<")
-
-
-        gsap.fromTo(flowerRef.current,
-            { scale: 0, rotation: -180, opacity: 0 },
-            {
-                scale: 1,
-                rotation: 0,
-                opacity: 0.8,
-                duration: 1,
-                ease: "back.out(1.7)",
-                scrollTrigger: {
-                    trigger: aboutRef.current,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse",
-                },
-            }
-        );
-
-        gsap.to(flowerRef.current, {
-            y: 50,
-            rotation: 50,
-            scrollTrigger: {
-                trigger: aboutRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1,
-            },
-        });
+        
 
         gsap.set(wavePathRef.current, { drawSVG: "0%" });
 
@@ -121,18 +100,6 @@ export default function About() {
             <h2 className="" ref={secondLineRef}>Here are some of the projects I've worked on</h2>
 
             <div
-                ref={flowerRef}
-                className="absolute right-[8%] top-[15%] md:right-[12%] md:top-[20%] scale-75 md:scale-100 pointer-events-none"
-            >
-                <Image
-                    src="/assets/flower.svg"
-                    alt=""
-                    width={100}
-                    height={100}
-                />
-            </div>
-
-            <div
                 ref={waveRef}
                 className="absolute left-[5%] bottom-[15%] md:left-[10%] md:bottom-[20%] scale-75 md:scale-100 pointer-events-none opacity-80"
             >
@@ -153,7 +120,7 @@ export default function About() {
                 </svg>
             </div>
 
-            <div ref={projectsRef} className="projects-container w-full h-full bg-dark rounded-2xl">
+            <div ref={projectsRef} className="projects-container w-full h-full bg-accent rounded-2xl">
 
             </div>
         </section>
