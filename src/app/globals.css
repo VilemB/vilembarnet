@@ -159,8 +159,7 @@ h3, h4, h5, h6 {
   opacity: 0.6;
 }
 
-section.hero,
-section.about {
+section.hero {
   position: relative;
   width: 100%;
   display: flex;
@@ -178,6 +177,21 @@ section.about {
   margin-top: 200svh;
 }
 
+
+section.about {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1;
+  padding: 2rem 1rem;
+  min-height: auto;
+}
+
 .about {
   height: 100svh;
 }
@@ -192,6 +206,10 @@ section.about {
 }
 
 .about h2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 50%;
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(1.5rem, 5vw, 3rem);
@@ -235,7 +253,7 @@ section.about {
   }
 
   .hero h1,
-  .about h1 {
+  .about h2 {
     padding: 2.5em;
     width: 100%;
   }
