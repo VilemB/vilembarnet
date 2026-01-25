@@ -33,10 +33,10 @@ interface Settings {
 export default function PixelatedText({
   children,
   className = "",
-  grid = 25,
-  mouse = 0.25,
-  strength = 0.1,
-  relaxation = 0.925,
+  grid = 40,
+  mouse = 0.2,
+  strength = 0.05,
+  relaxation = 0.8,
   mobileBreakpoint = 1000,
 }: PixelatedTextProps) {
   const containerRef = useRef<HTMLDivElement>(null);
