@@ -337,7 +337,7 @@ section.about {
   z-index: 1;
   width: 100%;
   padding: 2rem;
-  font-size: clamp(2rem, 16vw, 20rem);
+  font-size: clamp(2rem, 14vw, 18rem);
   color: var(--color-dark);
   opacity: 0;
   pointer-events: none;
