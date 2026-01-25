@@ -211,10 +211,12 @@ section.about {
 section.home {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding: 3rem;
+  height: 100svh;
+  padding: 2rem;
   gap: 1rem;
-  min-height: 100vh;
+  min-height: 100svh;
+  width: 100%;
+  overflow: hidden;
 }
 
 .home-top-row {
@@ -351,7 +353,7 @@ section.home {
   }
 
   section.home {
-    padding: 2rem;
+    padding: 1.5rem;
     gap: 1.5rem;
   }
 
@@ -402,7 +404,7 @@ section.home {
   }
 
   section.home {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .home-heading {
@@ -420,11 +422,12 @@ section.home {
 
 .pixelated-text {
   position: relative;
-  width: 50%;
+  width: 100%;
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .pixelated-text h1 {
