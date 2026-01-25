@@ -34,11 +34,10 @@ html {
 }
 
 section {
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
   width: 100%;
   position: relative;
-  min-height: 100vh;
 }
 
 body {
@@ -130,7 +129,7 @@ section.about {
 section.home {
   display: flex;
   flex-direction: column;
-  height: 100svh;
+  height: calc(100svh - 8rem);
   padding: 1rem 2rem 2rem 2rem;
   gap: 2rem;
   width: 100%;
@@ -287,7 +286,7 @@ section.home {
   position: relative;
   z-index: 1;
   width: 100%;
-  padding: 2rem;
+  padding-bottom: 2rem;
   font-size: clamp(2rem, 14vw, 24rem);
   color: var(--color-dark);
   opacity: 0;
@@ -322,6 +321,5 @@ section.home {
 @media (max-width: 480px) {
   .pixelated-text h1 {
     font-size: clamp(2rem, 14vw, 5rem);
-    padding: 0.125rem;
   }
 }
