@@ -236,7 +236,7 @@ section.home {
 }
 
 .home-heading {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: 1.5rem;
   font-weight: 500;
   margin-bottom: 1.5rem;
   line-height: 1.2;
@@ -247,9 +247,9 @@ section.home {
 }
 
 .home-description {
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-size: 1.125rem;
   line-height: 1.75;
-  max-width: 40rem;
+  max-width: 32rem;
 }
 
 .home-bottom-row {
