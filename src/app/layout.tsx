@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import { Analytics } from "@vercel/analytics/react";
 
