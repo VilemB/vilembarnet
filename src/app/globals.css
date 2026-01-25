@@ -208,6 +208,58 @@ section.about {
   letter-spacing: -0.03em;
 }
 
+section.home {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 3rem;
+  gap: 1rem;
+  min-height: 100vh;
+}
+
+.home-top-row {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1rem;
+}
+
+.home-content-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.home-empty-cell {
+  flex: 1;
+}
+
+.home-heading {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.home-bullet {
+  margin: 0 0.5rem;
+}
+
+.home-description {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.75;
+  max-width: 40rem;
+}
+
+.home-bottom-row {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+
 .mobile-break {
   display: none;
 }
@@ -297,6 +349,32 @@ section.about {
   .mobile-break {
     display: block;
   }
+
+  section.home {
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+
+  .home-top-row {
+    gap: 2rem;
+  }
+
+  .home-empty-cell {
+    display: none;
+  }
+
+  .home-heading {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .home-description {
+    font-size: 1rem;
+  }
+
+  .home-bottom-row {
+    padding-bottom: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -321,6 +399,22 @@ section.about {
   .navbar-logo img {
     width: 32px;
     height: 32px;
+  }
+
+  section.home {
+    padding: 1.5rem;
+  }
+
+  .home-heading {
+    font-size: 1.125rem;
+  }
+
+  .home-description {
+    font-size: 0.9375rem;
+  }
+
+  .home-bottom-row {
+    padding-bottom: 1rem;
   }
 }
 
