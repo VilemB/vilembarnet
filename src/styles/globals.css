@@ -111,15 +111,21 @@ section.home {
 }
 
 .home-heading {
-  font-size: clamp(1rem, 1.5vw, 2rem);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
   font-weight: 500;
   margin-bottom: 0.5rem;
   line-height: 1.1;
+  text-transform: lowercase;
   letter-spacing: -0.02em;
 }
 
 .home-bullet {
-  margin: 0 0.5rem;
+  color: var(--color-dark);
 }
 
 .home-description {
@@ -207,37 +213,9 @@ section.home {
     width: 100%;
   }
 
-  .home-top-row {
-    flex-direction: column;
-    flex: 0 1 auto;
-    justify-content: center;
-    gap: 1rem;
-    padding: 2rem;
-  }
-
-  .home-content-cell {
-    flex: none;
-  }
-
-  .home-empty-cell {
-    display: none;
-  }
-
   .home-heading {
-    font-size: clamp(1.5rem, 4vw + 0.25rem, 2.25rem);
+    font-size: clamp(0.7rem, 2vw, 1rem);
     margin: 0 0 0.5rem 0;
-    line-height: 1.1;
-  }
-
-  .home-description {
-    font-size: clamp(0.9rem, 2vw + 0.25rem, 1.15rem);
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .home-bottom-row {
-    align-items: center;
-    flex-shrink: 0;
   }
 }
 
@@ -247,13 +225,7 @@ section.home {
   }
 
   .home-heading {
-    font-size: clamp(1.25rem, 5vw + 0.25rem, 1.75rem);
-    margin: 0 0 0.25rem 0;
-    line-height: 1.1;
-  }
-
-  .home-description {
-    font-size: clamp(0.85rem, 3vw, 1rem);
-    margin: 0;
+    font-size: clamp(0.6rem, 1.5vw + 0.1rem, 0.9rem);
+    margin: 0 0 0.5rem 0;
   }
 }

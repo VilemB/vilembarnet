@@ -7,7 +7,11 @@ export default function Hero() {
       <Navbar />
       <div className="padding-section">
         <h2 className="home-heading">
-          web development <span className="home-bullet">•</span> design <span className="home-bullet">•</span> animation
+          <span>web development</span>
+          <span className="home-bullet">•</span>
+          <span>design</span>
+          <span className="home-bullet">•</span>
+          <span>animation</span>
         </h2>
         <hr />
         <div className="pixelated-text">
