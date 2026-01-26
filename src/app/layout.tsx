@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "@/styles/globals.css";
-import Navbar from "@/components/Navbar";
 import { Analytics } from "@vercel/analytics/react";
 
 const bricolageGrotesque = Bricolage_Grotesque({
@@ -142,7 +141,6 @@ export default function RootLayout({
         className={`${bricolageGrotesque.variable} antialiased`}
       >
         <div className="main-layout">
-          <Navbar />
           <main>{children}</main>
         </div>
         <Analytics />
