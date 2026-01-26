@@ -42,27 +42,27 @@ export default function Home() {
 
       <div className="padding-section hero-cta">
         <div className="cta-row">
-          <span>explore</span>
-          <span>my</span>
+          <span>explore&nbsp;</span>
+          <span>my&nbsp;</span>
           <span>work</span>
         </div>
         <hr />
         <div className="cta-row">
-          <span>get</span>
-          <span>to</span>
-          <span>know</span>
+          <span>get&nbsp;</span>
+          <span>to&nbsp;</span>
+          <span>know&nbsp;</span>
           <span>me</span>
         </div>
         <hr />
         <div className="cta-row">
-          <span>read</span>
-          <span>my</span>
-          <span>blog</span>
+          <span>read&nbsp;</span>
+          <span>my&nbsp;</span>
+          <span>blog&nbsp;</span>
         </div>
         <hr />
         <div className="cta-row">
-          <span>get</span>
-          <span>in</span>
+          <span>get&nbsp;</span>
+          <span>in&nbsp;</span>
           <span>touch</span>
         </div>
       </div>
