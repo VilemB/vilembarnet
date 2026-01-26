@@ -135,8 +135,6 @@ export default function PixelatedText({
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // Center the text in the container
-      // Add a small vertical offset (0.02 * fontSize) to visually center caps since 'middle' aligns to x-height
       const x = width / 2;
       const y = height / 2 + (fontSize * 0.02);
 
