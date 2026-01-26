@@ -4,7 +4,7 @@ import PixelatedPhoto from "@/components/PixelatedPhoto";
 
 export default function Home() {
   return (
-    
+
     <section className="home">
       <Navbar />
       <div className="padding-section hero-content">
@@ -37,6 +37,33 @@ export default function Home() {
             Design should evoke emotion and feel natural. Through thoughtful design and development,
             I focus on creating digital experiences that are clear and intentional.
           </p>
+        </div>
+      </div>
+
+      <div className="padding-section hero-cta">
+        <div className="cta-row">
+          <span>explore</span>
+          <span>my</span>
+          <span>work</span>
+        </div>
+        <hr />
+        <div className="cta-row">
+          <span>get</span>
+          <span>to</span>
+          <span>know</span>
+          <span>me</span>
+        </div>
+        <hr />
+        <div className="cta-row">
+          <span>read</span>
+          <span>my</span>
+          <span>blog</span>
+        </div>
+        <hr />
+        <div className="cta-row">
+          <span>get</span>
+          <span>in</span>
+          <span>touch</span>
         </div>
       </div>
 
