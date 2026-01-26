@@ -3,9 +3,9 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-
-interface PixelatedTextProps {
-  children: React.ReactNode;
+interface PixelatedPhotoProps {
+  src: string;
+  alt: string;
   className?: string;
   grid?: number;
   mouse?: number;
@@ -30,26 +30,27 @@ interface Settings {
   relaxation: number;
 }
 
-export default function PixelatedText({
-  children,
+export default function PixelatedPhoto({
+  src,
+  alt,
   className = "",
   grid = 40,
   mouse = 0.25,
   strength = 0.05,
   relaxation = 0.9,
   mobileBreakpoint = 1000,
-}: PixelatedTextProps) {
+}: PixelatedPhotoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number>(0);
   const isDestroyedRef = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
-    const textElement = textRef.current;
+    const imgElement = imgRef.current;
 
-    if (!container || !textElement) return;
+    if (!container || !imgElement) return;
 
     const isMobile = window.innerWidth < mobileBreakpoint;
     let time = 0;
@@ -70,7 +71,9 @@ export default function PixelatedText({
     let renderer: THREE.WebGLRenderer;
     let material: THREE.ShaderMaterial;
     let planeMesh: THREE.Mesh;
+    let planeGeometry: THREE.PlaneGeometry;
     let dataTexture: THREE.DataTexture;
+    let imageTexture: THREE.Texture;
 
     const createCleanGrid = () => {
       const size = settings.grid;
@@ -96,60 +99,58 @@ export default function PixelatedText({
       }
     };
 
-    const createThreeTexture = (canvas: HTMLCanvasElement) => {
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      texture.generateMipmaps = false;
-      texture.wrapS = THREE.ClampToEdgeWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
-      texture.flipY = true;
-      return texture;
-    };
-
-    const createTexture = async () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return null;
-
-      const dpr = window.devicePixelRatio || 2;
+    const updateCameraAndGeometry = () => {
       const width = container.offsetWidth;
       const height = container.offsetHeight;
 
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.scale(dpr, dpr);
-      ctx.clearRect(0, 0, width, height);
+      const imgWidth = imgElement.naturalWidth || 1920;
+      const imgHeight = imgElement.naturalHeight || 1080;
+      const containerAspect = width / height;
+      const imgAspect = imgWidth / imgHeight;
 
-      await document.fonts.ready;
+      let scaleX = 1;
+      let scaleY = 1;
 
-      const computedStyle = window.getComputedStyle(textElement);
-      const fontSize = parseFloat(computedStyle.fontSize);
-      const fontFamily = computedStyle.fontFamily;
-      const fontWeight = computedStyle.fontWeight;
-      const color = computedStyle.color;
+      if (containerAspect > imgAspect) {
+        scaleY = containerAspect / imgAspect;
+      } else {
+        scaleX = imgAspect / containerAspect;
+      }
 
-      ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-      ctx.fillStyle = color;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      const x = width / 2;
-      const y = height / 2 + (fontSize * 0.02);
-
-      ctx.fillText(textElement.textContent || "", x, y);
-
-      return createThreeTexture(canvas);
-    };
-
-    const initializeScene = (texture: THREE.Texture) => {
-      const width = container.offsetWidth;
-      const height = container.offsetHeight;
-
-      scene = new THREE.Scene();
       camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
       camera.position.z = 1;
 
+      if (planeGeometry) {
+        planeGeometry.dispose();
+      }
+      planeGeometry = new THREE.PlaneGeometry(2 * scaleX, 2 * scaleY);
+
+      return { width, height };
+    };
+
+    const createImageTexture = (): Promise<THREE.Texture> => {
+      return new Promise((resolve, reject) => {
+        const loader = new THREE.TextureLoader();
+        loader.load(
+          src,
+          (texture) => {
+            texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter;
+            texture.generateMipmaps = false;
+            texture.wrapS = THREE.ClampToEdgeWrapping;
+            texture.wrapT = THREE.ClampToEdgeWrapping;
+            imageTexture = texture;
+            resolve(texture);
+          },
+          undefined,
+          reject
+        );
+      });
+    };
+
+    const initializeScene = (texture: THREE.Texture) => {
+      scene = new THREE.Scene();
+      const { width, height } = updateCameraAndGeometry();
       createCleanGrid();
 
       const vertexShader = `
@@ -165,8 +166,7 @@ export default function PixelatedText({
         varying vec2 vUv;
         void main() {
           vec4 offset = texture2D(uDataTexture, vUv);
-          vec4 color = texture2D(uTexture, vUv - 0.02 * offset.rg);
-          gl_FragColor = color;
+          gl_FragColor = texture2D(uTexture, vUv - 0.02 * offset.rg);
         }`;
 
       material = new THREE.ShaderMaterial({
@@ -178,22 +178,24 @@ export default function PixelatedText({
         vertexShader,
         fragmentShader,
         side: THREE.DoubleSide,
-        transparent: true,
       });
 
-      planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+      planeMesh = new THREE.Mesh(planeGeometry, material);
       scene.add(planeMesh);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setClearColor(0xF3F0F0, 1);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setClearColor(0x000000, 1);
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       const canvas = renderer.domElement;
       canvas.style.cssText =
-        "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:auto;z-index:2";
+        "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:auto;z-index:1";
       container.appendChild(canvas);
       canvasRef.current = canvas;
+
+      // Hide original image
+      imgElement.style.opacity = "0";
     };
 
     const updateDataTexture = () => {
@@ -269,39 +271,43 @@ export default function PixelatedText({
     };
 
     let resizeTimeout: NodeJS.Timeout;
-    const handleResize = async () => {
+    const handleResize = () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(async () => {
-        const width = container.offsetWidth;
-        const height = container.offsetHeight;
+      resizeTimeout = setTimeout(() => {
+        const { width, height } = updateCameraAndGeometry();
+
+        if (planeMesh) {
+          planeMesh.geometry.dispose();
+          planeMesh.geometry = planeGeometry;
+        }
 
         if (renderer) renderer.setSize(width, height);
         createCleanGrid();
-
-        try {
-          const newTexture = await createTexture();
-          if (material && newTexture) {
-            material.uniforms.uTexture.value = newTexture;
-            material.uniforms.uTexture.value.needsUpdate = true;
-          }
-        } catch (error) {
-          console.error("Failed to recreate texture on resize:", error);
-        }
       }, 100);
     };
 
     const init = async () => {
       if (isMobile) {
-        textElement.style.opacity = "1";
+        imgElement.style.opacity = "1";
         return;
+      }
+
+      // Wait for image to load
+      if (!imgElement.complete) {
+        await new Promise<void>((resolve) => {
+          imgElement.onload = () => resolve();
+        });
       }
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const texture = await createTexture();
-      if (texture) {
+      try {
+        const texture = await createImageTexture();
         initializeScene(texture);
         render();
+      } catch (error) {
+        console.error("Failed to load image texture:", error);
+        imgElement.style.opacity = "1";
       }
     };
 
@@ -311,8 +317,9 @@ export default function PixelatedText({
     window.addEventListener("resize", handleResize);
 
     init().catch((error) => {
-      console.error("Failed to initialize pixelated text effect:", error);
+      console.error("Failed to initialize pixelated photo effect:", error);
     });
+
     return () => {
       isDestroyedRef.current = true;
 
@@ -330,16 +337,20 @@ export default function PixelatedText({
 
       if (renderer) renderer.dispose();
       if (material) material.dispose();
-      if (planeMesh?.geometry) planeMesh.geometry.dispose();
+      if (planeGeometry) planeGeometry.dispose();
+      if (imageTexture) imageTexture.dispose();
       if (dataTexture) dataTexture.dispose();
     };
-  }, [grid, mouse, strength, relaxation, mobileBreakpoint]);
+  }, [src, grid, mouse, strength, relaxation, mobileBreakpoint]);
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
-      <h1 ref={textRef} className="opacity-0">
-        {children}
-      </h1>
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover"
+      />
     </div>
   );
 }

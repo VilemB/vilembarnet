@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import PixelatedText from "@/components/PixelatedText";
+import PixelatedPhoto from "@/components/PixelatedPhoto";
 
 export default function Home() {
   return (
@@ -25,7 +26,11 @@ export default function Home() {
 
       <div className="padding-section hero-body">
         <div className="hero-image-container">
-          <img src="/website/vilem3.webp" alt="Vilem Barnet" />
+          <PixelatedPhoto
+            src="/website/vilem3.webp"
+            alt="Vilem Barnet"
+            className="w-full h-full"
+          />
         </div>
         <div className="hero-text-container">
           <p>
