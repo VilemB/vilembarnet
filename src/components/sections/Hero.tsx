@@ -21,6 +21,20 @@ export default function Hero() {
         </div>
         <hr />
       </div>
+
+      <div className="padding-section hero-body">
+        <div className="hero-image-container">
+          <img src="/website/vilem3.webp" alt="Vilem Barnet" />
+        </div>
+        <div className="hero-text-container">
+          <p>
+            Design should evoke emotion and feel natural. Through thoughtful design and development,
+            I focus on creating digital experiences that are clear and intentional.
+          </p>
+        </div>
+      </div>
+
+
     </section>
   );
 }
