@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import html2canvas from "html2canvas";
+
 
 interface PixelatedTextProps {
   children: React.ReactNode;
@@ -107,10 +107,10 @@ export default function PixelatedText({
       return texture;
     };
 
-    const createFallbackTexture = () => {
+    const createTexture = async () => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("Failed to get 2D context");
+      if (!ctx) return null;
 
       const dpr = window.devicePixelRatio || 2;
       const width = container.offsetWidth;
@@ -121,75 +121,28 @@ export default function PixelatedText({
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, width, height);
 
+      // Ensure fonts are loaded before drawing
+      await document.fonts.ready;
+
       const computedStyle = window.getComputedStyle(textElement);
       const fontSize = parseFloat(computedStyle.fontSize);
       const fontFamily = computedStyle.fontFamily;
       const fontWeight = computedStyle.fontWeight;
       const color = computedStyle.color;
 
-      const h1Rect = textElement.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-      const h1X = h1Rect.left - containerRect.left + h1Rect.width / 2;
-      const h1Y = h1Rect.top - containerRect.top + h1Rect.height / 2;
-
       ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
       ctx.fillStyle = color;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(textElement.textContent || "", h1X, h1Y);
+
+      // Center the text in the container
+      // Add a small vertical offset (0.02 * fontSize) to visually center caps since 'middle' aligns to x-height
+      const x = width / 2;
+      const y = height / 2 + (fontSize * 0.02);
+
+      ctx.fillText(textElement.textContent || "", x, y);
 
       return createThreeTexture(canvas);
-    };
-
-    const createTextTexture = async () => {
-      try {
-        textElement.style.opacity = "1";
-        await new Promise((resolve) => setTimeout(resolve, 50));
-
-        const h1Canvas = await html2canvas(textElement, {
-          backgroundColor: null,
-          scale: window.devicePixelRatio || 2,
-          useCORS: true,
-          allowTaint: true,
-          width: textElement.offsetWidth,
-          height: textElement.offsetHeight,
-          logging: false,
-          imageTimeout: 0,
-        });
-
-        textElement.style.opacity = "0";
-
-        const fullCanvas = document.createElement("canvas");
-        const ctx = fullCanvas.getContext("2d");
-        if (!ctx) throw new Error("Failed to get 2D context");
-
-        const dpr = window.devicePixelRatio || 2;
-        const width = container.offsetWidth;
-        const height = container.offsetHeight;
-
-        fullCanvas.width = width * dpr;
-        fullCanvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-        ctx.clearRect(0, 0, width, height);
-
-        const h1Rect = textElement.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const h1X = h1Rect.left - containerRect.left;
-        const h1Y = h1Rect.top - containerRect.top;
-
-        ctx.drawImage(
-          h1Canvas,
-          h1X,
-          h1Y,
-          h1Canvas.width / dpr,
-          h1Canvas.height / dpr
-        );
-
-        return createThreeTexture(fullCanvas);
-      } catch (error) {
-        console.error("Failed to create text texture:", error);
-        return createFallbackTexture();
-      }
     };
 
     const initializeScene = (texture: THREE.Texture) => {
@@ -235,7 +188,7 @@ export default function PixelatedText({
       scene.add(planeMesh);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setClearColor(0x000000, 0);
+      renderer.setClearColor(0xF3F0F0, 1);
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -329,8 +282,8 @@ export default function PixelatedText({
         createCleanGrid();
 
         try {
-          const newTexture = await createTextTexture();
-          if (material) {
+          const newTexture = await createTexture();
+          if (material && newTexture) {
             material.uniforms.uTexture.value = newTexture;
             material.uniforms.uTexture.value.needsUpdate = true;
           }
@@ -348,9 +301,11 @@ export default function PixelatedText({
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const texture = await createTextTexture();
-      initializeScene(texture);
-      render();
+      const texture = await createTexture();
+      if (texture) {
+        initializeScene(texture);
+        render();
+      }
     };
 
     if (!isMobile) {

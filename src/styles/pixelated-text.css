@@ -1,10 +1,7 @@
 .pixelated-text {
-  position: absolute;
-  bottom: 4rem;
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   overflow: visible;
 
 }
@@ -13,7 +10,9 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  padding-bottom: 3rem;
+  padding-bottom: 0;
+  margin: 0;
+  line-height: 1;
   font-size: clamp(1.5rem, 14vw, 24rem);
   color: var(--color-dark);
   opacity: 0;
@@ -37,13 +36,13 @@
 @media (max-width: 720px) {
   .pixelated-text h1 {
     font-size: clamp(1.5rem, 11vw, 4rem);
-    padding-bottom: 0.5rem;
+    padding: 0.5rem 0;
   }
 }
 
 @media (max-width: 480px) {
   .pixelated-text h1 {
     font-size: clamp(1.25rem, 12vw, 3rem);
-    padding-bottom: 0.25rem;
+    padding: 0.5rem 0;
   }
 }

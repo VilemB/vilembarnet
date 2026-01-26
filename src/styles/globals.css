@@ -79,11 +79,6 @@ section.home {
 }
 
 .home-top-row {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  justify-content: center;
-  min-height: 0;
   padding: 4rem;
 }
 
@@ -100,8 +95,7 @@ section.home {
 }
 
 .home-heading {
-  font-style: italic;
-  font-size: clamp(1rem, 2vw, 2.5rem);
+  font-size: clamp(1rem, 1.5vw, 2rem);
   font-weight: 500;
   margin-bottom: 0.5rem;
   line-height: 1.1;
