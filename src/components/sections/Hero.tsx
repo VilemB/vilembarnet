@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section className="home">
       <Navbar />
-      <div className="padding-section">
+      <div className="padding-section hero-content">
         <h2 className="home-heading">
           <span>web development</span>
           <span className="home-bullet">•</span>
