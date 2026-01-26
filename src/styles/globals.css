@@ -53,6 +53,22 @@ body {
    Layout Structure
    ============================================ */
 
+.padding-section {
+  padding: 4rem;
+}
+
+@media (max-width: 720px) {
+  .padding-section {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .padding-section {
+    padding: 1rem;
+  }
+}
+
 .main-layout {
   display: flex;
   flex-direction: column;
