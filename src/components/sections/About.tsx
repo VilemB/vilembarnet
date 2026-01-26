@@ -45,7 +45,7 @@ export default function About() {
     return (
         <section ref={aboutRef} className="about">
             <h2 className="" ref={firstLineRef}>hi, my name is Vilém Barnet</h2>
-            <h2 className="" ref={secondLineRef}>I enjoy designing and building digital products <span className="italic font-bold">from scratch.</span></h2>
+            <h2 className="" ref={secondLineRef}>and I enjoy designing and building digital products <span className="italic font-bold">from scratch.</span></h2>
         </section>
     );
 }
