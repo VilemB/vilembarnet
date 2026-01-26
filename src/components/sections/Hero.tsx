@@ -11,7 +11,7 @@ export default function Hero() {
             web development <span className="home-bullet">•</span> design
           </h2>
           <p className="home-description">
-            design should evoke emotion and feel natural. through thoughtful design and development, i focus on creating digital experiences that are clear and intentional.
+            design should evoke emotion and feel natural. through thoughtful design and development<br/>i focus on creating digital experiences that are clear and intentional.
           </p>
         </div>
 
