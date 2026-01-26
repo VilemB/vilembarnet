@@ -40,17 +40,12 @@ export default function About() {
                 duration: 1,
                 ease: "power2.out",
             }, "-=0.3")
-            .to(secondLineRef.current, {
-                top: "40%",
-                duration: 1.2,
-                ease: "power3.inOut",
-            }, "+=0.2")
     });
 
     return (
         <section ref={aboutRef} className="about">
-            <h2 className="" ref={firstLineRef}>I enjoy designing and building digital products <span className="italic font-bold">from scratch.</span></h2>
-            <h2 className="" ref={secondLineRef}>Here are some of the projects I've worked on</h2>
+            <h2 className="" ref={firstLineRef}>hi, my name is Vilém Barnet</h2>
+            <h2 className="" ref={secondLineRef}>I enjoy designing and building digital products <span className="italic font-bold">from scratch.</span></h2>
         </section>
     );
 }
