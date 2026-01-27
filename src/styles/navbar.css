@@ -19,8 +19,8 @@
 }
 
 .navbar-logo img {
-  width: clamp(35px, 4vw, 70px) !important;
-  height: clamp(35px, 4vw, 70px) !important;
+  width: clamp(35px, 3vw, 50px) !important;
+  height: clamp(35px, 3vw, 50px) !important;
 }
 
 .navbar-links {

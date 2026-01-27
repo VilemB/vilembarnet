@@ -372,11 +372,6 @@ section.home {
   font-weight: 400;
   color: var(--color-dark);
   text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-
-.footer-top a:hover {
-  opacity: 0.6;
 }
 
 .footer-logo {
@@ -386,8 +381,8 @@ section.home {
 }
 
 .footer-logo img {
-  width: clamp(40px, 5vw, 120px) !important;
-  height: clamp(40px, 5vw, 120px) !important;
+  width: clamp(40px, 3.5vw, 65px) !important;
+  height: clamp(40px, 3.5vw, 65px) !important;
 }
 
 .footer-bottom {
@@ -432,7 +427,6 @@ section.home {
   }
 }
 
-/* Mobile styles */
 @media (max-width: 480px) {
   .footer-container::before {
     left: 1rem;
