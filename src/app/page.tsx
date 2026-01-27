@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import PixelatedText from "@/components/PixelatedText";
 import PixelatedPhoto from "@/components/PixelatedPhoto";
 
@@ -6,7 +5,6 @@ export default function Home() {
   return (
 
     <section className="home">
-      <Navbar />
       <div className="padding-section hero-content">
         <h2 className="home-heading">
           <span>web development</span>
