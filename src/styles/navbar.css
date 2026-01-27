@@ -18,9 +18,9 @@
   align-items: center;
 }
 
-.navbar-logo img {
-  width: clamp(35px, 3vw, 50px) !important;
-  height: clamp(35px, 3vw, 50px) !important;
+.navbar-container .navbar-logo img {
+  width: clamp(35px, 3vw, 50px);
+  height: clamp(35px, 3vw, 50px);
 }
 
 .navbar-links {

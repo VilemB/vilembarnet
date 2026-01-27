@@ -339,7 +339,6 @@ section.home {
   width: 100%;
 }
 
-/* Vertical lines on sides */
 .footer-container::before,
 .footer-container::after {
   content: '';
@@ -380,9 +379,9 @@ section.home {
   justify-content: center;
 }
 
-.footer-logo img {
-  width: clamp(40px, 3.5vw, 65px) !important;
-  height: clamp(40px, 3.5vw, 65px) !important;
+.footer-top .footer-logo img {
+  width: clamp(40px, 3.5vw, 65px);
+  height: clamp(40px, 3.5vw, 65px);
 }
 
 .footer-bottom {
@@ -399,7 +398,6 @@ section.home {
   margin: 0;
 }
 
-/* Tablet styles */
 @media (max-width: 720px) {
   .footer-container::before {
     left: 2rem;
