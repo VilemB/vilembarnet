@@ -18,6 +18,11 @@
   align-items: center;
 }
 
+.navbar-logo img {
+  width: clamp(35px, 4vw, 70px) !important;
+  height: clamp(35px, 4vw, 70px) !important;
+}
+
 .navbar-links {
   display: flex;
   gap: 2.5rem;
@@ -27,7 +32,7 @@
 .navbar-links a {
   color: var(--color-dark);
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 1.5vw, 2rem);
   font-weight: 400;
   transition: opacity 0.2s ease;
 }
@@ -57,7 +62,7 @@
   }
 
   .navbar-links a {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
     line-height: 1.1;
   }
 }
