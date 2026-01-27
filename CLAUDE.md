@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a personal portfolio website for Vilém Barnet, built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS 4. The site features advanced GSAP-based animations and smooth scrolling interactions.
+Personal portfolio website for Vilém Barnet, built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS 4. Features Three.js-powered interactive effects and CSS-based animations.
 
 ## Development Commands
 
@@ -24,80 +24,117 @@ npm run lint
 
 ## Architecture and Key Patterns
 
-### Animation System
+### Interactive Effects System
 
-The site uses a sophisticated GSAP-based animation system with three main animation contexts:
+The site uses Three.js WebGL shaders for interactive distortion effects on text and images:
 
-1. **Loader Animation** (`src/components/Loader.tsx`)
-   - Runs once on initial page load
-   - Animates custom SVG logo (VB monogram) with staggered reveals
-   - Blocks body scroll during animation using `document.body.style.overflow`
-   - Self-removes from DOM when complete
+**PixelatedText Component** (`src/components/PixelatedText.tsx`)
+- Renders text to canvas, converts to Three.js texture
+- WebGL shader creates interactive distortion effect on mouse movement
+- Uses data texture to store displacement values in grid (default 40x40)
+- Mobile fallback: displays plain text without WebGL (< 1000px)
+- Cleanup: properly disposes Three.js resources on unmount
 
-2. **Navbar Scroll Animation** (`src/components/ScrollNavbar.tsx`)
-   - Integrates Lenis for smooth scrolling
-   - Uses GSAP ScrollTrigger and Flip plugins for morphing navbar
-   - Desktop: navbar expands from centered box to full viewport on scroll
-   - Mobile (< 720px): static grid layout without scroll animations
-   - Responsive behavior handled via resize listener that kills/recreates ScrollTriggers
+**PixelatedPhoto Component** (`src/components/PixelatedPhoto.tsx`)
+- Similar architecture to PixelatedText but for images
+- Handles image aspect ratio with object-fit cover behavior
+- Loads image via THREE.TextureLoader
+- Same mouse-based distortion and mobile fallback pattern
 
-3. **Section Animations** (e.g., `src/components/sections/About.tsx`)
-   - Uses `useGSAP` hook for section-specific scroll animations
-   - ScrollTrigger with pin and scrub for synchronized scroll effects
-   - Timeline-based sequential animations with staggered transitions
+**Shared Effect Parameters:**
+- `grid`: Resolution of distortion grid (default 40)
+- `mouse`: Radius of mouse influence (default 0.25)
+- `strength`: Intensity of distortion (default 0.05)
+- `relaxation`: Speed of effect decay (default 0.9)
+- Both components use identical shader logic and data texture update patterns
 
 ### Styling Architecture
 
-- **Tailwind CSS 4** with new `@theme` directive in `globals.css`
-- Custom CSS variables defined in `:root` and `@theme`:
+- **Tailwind CSS 4** with `@theme` directive
+- Custom CSS variables in `:root` and `@theme`:
   - `--color-light`: #F3F0F0
   - `--color-dark`: #001F3D
   - `--color-accent`: #ED985F
-- Font: Bricolage Grotesque (Google Fonts) loaded in layout
-- Mobile-first responsive design with breakpoints at 720px and 480px
-- Section-level styles defined globally in `globals.css` (`.hero`, `.about`, `.navbar-*`)
+- Font: Bricolage Grotesque (weights 200-800) loaded in layout
+- Responsive breakpoints: 720px (mobile), 480px (small mobile)
+- Section-level styles in `globals.css` (`.home`, `.hero-*`, `.cta-*`)
+- Additional CSS modules: `navbar.css`, `pixelated-text.css`
+
+### Layout Structure
+
+**Root Layout** (`src/app/layout.tsx`)
+- Server component with comprehensive SEO metadata
+- Vercel Analytics integration
+- JSON-LD structured data for Person schema
+- Font configuration with CSS variables
+- Layout uses `.main-layout` wrapper (flexbox, 100svh height)
+
+**Homepage** (`src/app/page.tsx`)
+- Single-page layout with multiple sections
+- Navbar component at top
+- Hero section with PixelatedText and PixelatedPhoto
+- CTA section with animated links (justify-center on hover)
+- All sections use `.padding-section` class for consistent spacing
 
 ### File Organization
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx         # Root layout with metadata, fonts, Analytics
+│   ├── layout.tsx         # Root layout, metadata, fonts
 │   ├── page.tsx           # Homepage composition
-│   ├── globals.css        # Global styles, Tailwind config, section styles
-│   ├── robots.ts          # SEO robots configuration
-│   └── sitemap.ts         # SEO sitemap generation
+│   ├── work/page.tsx      # Work page
+│   └── robots.ts          # SEO robots
+│   └── sitemap.ts         # SEO sitemap
 ├── components/
-│   ├── Loader.tsx         # Initial page load animation
-│   ├── ScrollNavbar.tsx   # Animated navigation with Lenis
-│   └── sections/          # Page section components
+│   ├── Navbar.tsx         # Static navigation
+│   ├── PixelatedText.tsx  # WebGL text distortion
+│   ├── PixelatedPhoto.tsx # WebGL image distortion
+│   └── sections/          # Page sections
 │       ├── Hero.tsx
-│       └── About.tsx
+│       ├── About.tsx
+│       └── CTA.tsx
+├── styles/
+│   ├── globals.css        # Global styles, Tailwind config
+│   ├── navbar.css         # Navbar-specific styles
+│   └── pixelated-text.css # Pixelated effect styles
 ```
 
 ### Path Aliases
 
-TypeScript path mapping configured in `tsconfig.json`:
-- `@/*` maps to `src/*`
+TypeScript (`tsconfig.json`):
+- `@/*` → `src/*`
 
-Shadcn/ui component aliases (defined in `components.json`):
+Shadcn/ui (`components.json`):
 - `@/components` → components
 - `@/lib/utils` → utilities
-- `@/ui` → UI components
-- `@/hooks` → React hooks
+- `@/ui` → components/ui
+- `@/hooks` → hooks
 
-### SEO Configuration
+## Important Technical Notes
 
-Comprehensive metadata configured in `src/app/layout.tsx`:
-- OpenGraph and Twitter cards
-- Structured data (JSON-LD) for Person schema
-- Multiple favicon formats and PWA manifest
-- Google verification and canonical URLs
+### Three.js Effects
+- Effects are client components (`"use client"`) - cannot be server-rendered
+- Both PixelatedText and PixelatedPhoto disable effects on mobile (< 1000px)
+- requestAnimationFrame loop must be cancelled in cleanup
+- All Three.js resources (renderer, material, geometry, textures) must be disposed
+- Canvas elements are dynamically appended/removed from container
 
-## Important Notes
+### SSR and Client-Side Code
+- **CRITICAL**: Never initialize browser-only libraries (Three.js, GSAP, Lenis) at module top-level
+- These must be initialized inside `useEffect` or client component lifecycle
+- Root layout is a server component - cannot use hooks or browser APIs
+- Use `"use client"` directive for any component using Three.js, GSAP, or browser events
 
-- **GSAP Plugins**: DrawSVGPlugin, ScrollTrigger, and Flip must be registered before use
-- **Lenis Integration**: Lenis is integrated with GSAP ticker in `ScrollNavbar.tsx` - don't create multiple Lenis instances
-- **Scroll Animations**: Desktop scroll animations use `100svh` for proper viewport height calculation
-- **Cleanup**: All GSAP animations and event listeners must be cleaned up in useEffect/useGSAP return functions
-- **Responsive**: Navbar has completely different rendering logic for mobile vs desktop - changes occur at 720px breakpoint
+### Styling Conventions
+- Responsive: mobile-first with max-width media queries
+- Layout: flexbox-based with `.main-layout`, `.padding-section` utilities
+- Typography: clamp() for fluid font sizing
+- Spacing: 4rem desktop, 2rem tablet, 1-2rem mobile
+- Colors: CSS variables for consistency
+
+### Performance
+- Three.js renderer uses `Math.min(window.devicePixelRatio, 2)` to cap pixel ratio
+- Resize handlers are debounced (100ms)
+- Mobile devices skip WebGL effects entirely
+- Images use next/image with priority flag where appropriate
