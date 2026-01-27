@@ -206,7 +206,7 @@ section.home {
   line-height: 1.6;
   color: var(--color-dark);
   font-weight: 400;
-  max-width: 35ch;
+  max-width: 40ch;
   text-align: left;
 }
 
@@ -224,7 +224,7 @@ section.home {
 
 
 
-.cta-row {
+.cta-row a {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -242,7 +242,7 @@ section.home {
   cursor: pointer;
 }
 
-.cta-row:hover {
+.cta-row:hover a {
   justify-content: center;
 }
 
