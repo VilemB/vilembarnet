@@ -130,6 +130,11 @@ export default function PixelatedPhoto({
 
     const createImageTexture = (): Promise<THREE.Texture> => {
       return new Promise((resolve, reject) => {
+        if (isDestroyedRef.current) {
+          reject(new Error("Component unmounted"));
+          return;
+        }
+
         const loader = new THREE.TextureLoader();
         loader.load(
           src,
@@ -149,6 +154,8 @@ export default function PixelatedPhoto({
     };
 
     const initializeScene = (texture: THREE.Texture) => {
+      if (isDestroyedRef.current) return;
+
       scene = new THREE.Scene();
       const { width, height } = updateCameraAndGeometry();
       createCleanGrid();
@@ -194,7 +201,6 @@ export default function PixelatedPhoto({
       container.appendChild(canvas);
       canvasRef.current = canvas;
 
-      // Hide original image
       imgElement.style.opacity = "0";
     };
 
@@ -292,22 +298,29 @@ export default function PixelatedPhoto({
         return;
       }
 
-      // Wait for image to load
       if (!imgElement.complete) {
         await new Promise<void>((resolve) => {
           imgElement.onload = () => resolve();
         });
       }
+      if (isDestroyedRef.current) return;
 
       await new Promise((resolve) => setTimeout(resolve, 100));
+      if (isDestroyedRef.current) return;
 
       try {
         const texture = await createImageTexture();
+        if (isDestroyedRef.current) return;
+
         initializeScene(texture);
+        if (isDestroyedRef.current) return;
+
         render();
       } catch (error) {
         console.error("Failed to load image texture:", error);
-        imgElement.style.opacity = "1";
+        if (!isDestroyedRef.current) {
+          imgElement.style.opacity = "1";
+        }
       }
     };
 
@@ -330,6 +343,10 @@ export default function PixelatedPhoto({
       container.removeEventListener("mousemove", handlePointerMove);
       window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimeout);
+
+      if (imgElement) {
+        imgElement.style.opacity = "1";
+      }
 
       if (canvasRef.current && container.contains(canvasRef.current)) {
         container.removeChild(canvasRef.current);

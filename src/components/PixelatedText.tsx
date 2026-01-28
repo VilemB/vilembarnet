@@ -108,6 +108,8 @@ export default function PixelatedText({
     };
 
     const createTexture = async () => {
+      if (isDestroyedRef.current) return null;
+
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       if (!ctx) return null;
@@ -143,6 +145,8 @@ export default function PixelatedText({
     };
 
     const initializeScene = (texture: THREE.Texture) => {
+      if (isDestroyedRef.current) return;
+
       const width = container.offsetWidth;
       const height = container.offsetHeight;
 
@@ -297,10 +301,14 @@ export default function PixelatedText({
       }
 
       await new Promise((resolve) => setTimeout(resolve, 100));
+      if (isDestroyedRef.current) return;
 
       const texture = await createTexture();
+      if (isDestroyedRef.current) return;
+
       if (texture) {
         initializeScene(texture);
+        if (isDestroyedRef.current) return;
         render();
       }
     };
@@ -323,6 +331,10 @@ export default function PixelatedText({
       container.removeEventListener("mousemove", handlePointerMove);
       window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimeout);
+
+      if (textElement) {
+        textElement.style.opacity = "1";
+      }
 
       if (canvasRef.current && container.contains(canvasRef.current)) {
         container.removeChild(canvasRef.current);
