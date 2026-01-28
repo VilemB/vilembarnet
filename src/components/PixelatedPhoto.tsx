@@ -52,6 +52,8 @@ export default function PixelatedPhoto({
 
     if (!container || !imgElement) return;
 
+    isDestroyedRef.current = false;
+
     const isMobile = window.innerWidth < mobileBreakpoint;
     let time = 0;
 

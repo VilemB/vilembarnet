@@ -51,6 +51,8 @@ export default function PixelatedText({
 
     if (!container || !textElement) return;
 
+    isDestroyedRef.current = false;
+
     const isMobile = window.innerWidth < mobileBreakpoint;
     let time = 0;
 
@@ -299,6 +301,8 @@ export default function PixelatedText({
         textElement.style.opacity = "1";
         return;
       }
+
+      textElement.style.opacity = "";
 
       await new Promise((resolve) => setTimeout(resolve, 100));
       if (isDestroyedRef.current) return;
