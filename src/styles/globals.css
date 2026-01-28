@@ -233,7 +233,7 @@ section.home {
   padding: 2.5rem 0;
 
   font-family: var(--font-bricolage), sans-serif;
-  font-size: clamp(2rem, 7.5vw, 9rem);
+  font-size: clamp(1.5rem, 6vw, 7rem);
   font-weight: 400;
   line-height: 1;
   color: var(--color-dark);
@@ -310,7 +310,7 @@ section.home {
 
   .cta-row a {
     padding: 1rem 0;
-    font-size: clamp(1.5rem, 6vw, 3rem);
+    font-size: clamp(1.25rem, 5vw, 2.5rem);
   }
 }
 
