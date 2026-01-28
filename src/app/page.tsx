@@ -25,7 +25,7 @@ export default function Home() {
       <div className="padding-section hero-body">
         <div className="hero-image-container">
           <PixelatedPhoto
-            src="/website/vilem3.webp"
+            src="/website/vilem.webp"
             alt="Vilem Barnet"
             className="w-full h-full"
           />
