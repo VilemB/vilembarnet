@@ -218,8 +218,8 @@ section.home {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-bottom: 6rem;
-  padding-top: 2rem;
+  padding-bottom: 8rem;
+  padding-top: 6rem;
 }
 
 
@@ -230,7 +230,7 @@ section.home {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 2.5rem 0;
+  padding: 3rem 0;
 
   font-family: var(--font-bricolage), sans-serif;
   font-size: clamp(1.5rem, 6vw, 7rem);
@@ -309,8 +309,13 @@ section.home {
   }
 
   .cta-row a {
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     font-size: clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  .hero-cta {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
   }
 }
 
@@ -321,6 +326,15 @@ section.home {
 
   .hero-content hr {
     margin: 1.5rem 0;
+  }
+
+  .hero-cta {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .cta-row a {
+    padding: 1.25rem 0;
   }
 }
 
