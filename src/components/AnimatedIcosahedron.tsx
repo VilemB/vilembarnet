@@ -26,7 +26,7 @@ export default function AnimatedIcosahedron({
   bloomRadius = 0.4,
   bloomThreshold = 0.4,
   mobileBreakpoint = 1000,
-  cameraZ = 2,
+  cameraZ = 2.5,
 }: AnimatedIcosahedronProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -62,7 +62,8 @@ export default function AnimatedIcosahedron({
 
       // Camera
       camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-      camera.position.z = cameraZ;
+      const adjustedCameraZ = width < height ? cameraZ * 1.4 : cameraZ;
+      camera.position.z = adjustedCameraZ;
 
       // Renderer
       renderer = new THREE.WebGLRenderer({
@@ -72,6 +73,7 @@ export default function AnimatedIcosahedron({
       renderer.setClearColor(0x000000, 0);
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
 
       const canvas = renderer.domElement;
       canvas.style.cssText =
@@ -79,18 +81,25 @@ export default function AnimatedIcosahedron({
       container.appendChild(canvas);
       canvasRef.current = canvas;
 
-      // Lighting
-      const dirLight = new THREE.DirectionalLight("#bd855f", 0.6);
-      dirLight.position.set(2, 2, 2);
+      // Lighting - Optimized for #ED985F accent
+      const dirLight = new THREE.DirectionalLight("#ED985F", 2.0);
+      dirLight.position.set(5, 5, 5);
 
-      const ambientLight = new THREE.AmbientLight("#dd884f", 0.5);
-      scene.add(dirLight, ambientLight);
+      const fillLight = new THREE.DirectionalLight("#4a5e75", 1.0);
+      fillLight.position.set(-5, 0, -5);
+
+      const ambientLight = new THREE.AmbientLight("#ffffff", 0.4);
+      scene.add(dirLight, fillLight, ambientLight);
 
       // Geometry
       const geometry = new THREE.IcosahedronGeometry(1, gridDetail);
 
       // Material with shader injection
-      material = new THREE.MeshStandardMaterial();
+      material = new THREE.MeshStandardMaterial({
+        color: "#ED985F",
+        roughness: 0.4,
+        metalness: 0.1,
+      });
       material.onBeforeCompile = (shader) => {
         // Store reference to shader
         material.userData.shader = shader;
@@ -165,13 +174,15 @@ export default function AnimatedIcosahedron({
 
         if (camera) {
           camera.aspect = newWidth / newHeight;
+          const adjustedCameraZ = newWidth < newHeight ? cameraZ * 1.4 : cameraZ;
+          camera.position.z = adjustedCameraZ;
           camera.updateProjectionMatrix();
         }
 
         if (renderer) {
           renderer.setSize(newWidth, newHeight);
         }
-      }, 100);
+      }, 50);
     };
 
     window.addEventListener("resize", handleResize);
