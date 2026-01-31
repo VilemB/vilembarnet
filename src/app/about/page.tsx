@@ -2,37 +2,28 @@ import AnimatedIcosahedron from "@/components/AnimatedIcosahedron";
 
 export default function About() {
   return (
-    <section className="about">
+    <section className="about-container">
       <div className="padding-section about-grid">
-        {/* Left Column: Section Labels */}
-        <nav className="about-nav">
-          <ul>
-            <li>INTRODUCTION</li>
-            <li>MY JOURNEY</li>
-            <li>CONTACT</li>
-          </ul>
-        </nav>
 
-        {/* Center Column: Icosahedron */}
-        <div className="about-visual">
+        <div className="about-visual area-visual">
           <AnimatedIcosahedron className="w-full h-full" />
         </div>
 
-        {/* Right Column: Content */}
-        <div className="about-content">
-          <section className="about-section">
-            <p>I'm Vilém Barnet, freelance web developer and designer based in the Czech Republic.</p>
-          </section>
+        <h2 className="about-label area-label-intro">INTRODUCTION</h2>
+        <div className="about-text area-text-intro">
+          <p>I'm Vilém Barnet, freelance web developer and designer based in the Czech Republic.</p>
+        </div>
 
-          <section className="about-section">
-            <p>I started studying graphic design in 2021. Soon, I wanted to build complete digital products, so I learned web development.</p>
-            <p>Since then, I've designed user interfaces and built several full-stack applications.</p>
-            <p>Today, I focus on working on innovative and creative projects.</p>
-          </section>
+        <h2 className="about-label area-label-journey">MY JOURNEY</h2>
+        <div className="about-text area-text-journey">
+          <p>I started studying graphic design in 2021. Soon, I wanted to build complete digital products, so I learned web development.</p>
+          <p>Since then, I've designed user interfaces and built several full-stack applications.</p>
+          <p>Today, I focus on working on innovative and creative projects.</p>
+        </div>
 
-          <section className="about-section">
-            <p>for business inquiries, contact me at barnetv7@gmail.com</p>
-          </section>
+        <h2 className="about-label area-label-contact">CONTACT</h2>
+        <div className="about-text area-text-contact">
+          <p>for business inquiries, contact me at <a href="mailto:barnetv7@gmail.com" className="email-link">barnetv7@gmail.com</a></p>
         </div>
       </div>
     </section>

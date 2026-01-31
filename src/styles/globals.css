@@ -250,143 +250,163 @@ section.home {
    About Section
    ============================================ */
 
-.about {
+/* ============================================
+   About Section
+   ============================================ */
+
+.about-container {
   min-height: 100svh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding: 4rem 0;
 }
 
 .about-grid {
   display: grid;
-  grid-template-columns: 150px 1fr 1fr;
-  gap: 3rem;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1600px;
+  margin: 0 auto;
+  grid-template-columns: 200px 1fr 1fr;
+  column-gap: 2rem;
+  row-gap: 4rem;
   align-items: start;
 }
 
-/* Left Column: Navigation Labels */
-.about-nav {
-  position: sticky;
-  top: 8rem;
+/* Grid Placement Areas */
+.area-label-intro {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.about-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
+.area-text-intro {
+  grid-column: 3;
+  grid-row: 1;
 }
 
-.about-nav li {
-  font-family: var(--font-bricolage), sans-serif;
-  font-size: clamp(0.75rem, 1vw, 0.9rem);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: var(--color-dark);
-  opacity: 0.7;
-  text-transform: uppercase;
+.area-label-journey {
+  grid-column: 1;
+  grid-row: 2;
 }
 
-/* Center Column: Icosahedron */
-.about-visual {
-  position: relative;
+.area-text-journey {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.area-label-contact {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.area-text-contact {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+.area-visual {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+  justify-self: center;
   width: 100%;
-  height: min(500px, 60vh);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 600px;
+  position: relative;
 }
 
-/* Right Column: Content */
-.about-content {
+.about-label {
+  font-family: var(--font-bricolage), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-dark);
+  margin: 0;
+  padding-top: 0.4rem;
+}
+
+.about-text {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  padding-top: 0.5rem;
+  gap: 1.5rem;
+  max-width: 50ch;
+  /* Optional: improve readability */
 }
 
-.about-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.about-section p {
-  font-size: clamp(0.95rem, 1.2vw, 1.2rem);
-  line-height: 1.6;
+.about-text p {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
   color: var(--color-dark);
   font-weight: 400;
   margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 900px) {
-  .about-grid {
-    grid-template-columns: 120px 1fr 1fr;
-    gap: 2rem;
-  }
-
-  .about-nav ul {
-    gap: 2rem;
-  }
-
-  .about-content {
-    gap: 2rem;
-  }
+.email-link {
+  color: var(--color-dark);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
 }
 
-@media (max-width: 720px) {
-  .about {
-    padding: 2rem 0;
+/* Responsive Design */
+@media (max-width: 900px) {
+  .about-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    height: auto;
+    min-height: auto;
+    display: block;
   }
 
   .about-grid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .about-nav {
-    position: static;
+  /* Mobile Ordering */
+  .area-label-intro {
+    order: 1;
   }
 
-  .about-nav ul {
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: center;
+  .area-text-intro {
+    order: 2;
   }
 
-  .about-visual {
-    height: min(400px, 50vh);
+  .area-visual {
+    order: 3;
+    height: 400px;
+    margin: 2rem 0;
   }
 
-  .about-content {
-    gap: 2rem;
+  .area-label-journey {
+    order: 4;
+    margin-top: 2rem;
+  }
+
+  .area-text-journey {
+    order: 5;
+  }
+
+  .area-label-contact {
+    order: 6;
+    margin-top: 2rem;
+  }
+
+  .area-text-contact {
+    order: 7;
+  }
+
+  .about-text {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .about-nav ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+  .area-visual {
+    height: 350px;
   }
 
-  .about-visual {
-    height: min(300px, 40vh);
-  }
-
-  .about-content {
-    gap: 1.5rem;
-  }
-
-  .about-section p {
-    font-size: 1rem;
+  .about-text p {
+    font-size: 1.1rem;
   }
 }
 
@@ -400,11 +420,9 @@ section.home {
   }
 }
 
-@media (max-width: 720px) {
-  .about-visual {
-    height: min(350px, 50vh);
-  }
 
+
+@media (max-width: 720px) {
   .hero-body {
     flex-direction: column;
     gap: 2rem;
