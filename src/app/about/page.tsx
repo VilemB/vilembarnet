@@ -6,7 +6,7 @@ export default function About() {
       <div className="padding-section about-grid">
 
         <div className="about-visual area-visual">
-          <AnimatedIcosahedron className="w-full h-full" />
+          <AnimatedIcosahedron className="icosahedron-wrapper" />
         </div>
 
         <h2 className="about-label area-label-intro">INTRODUCTION</h2>

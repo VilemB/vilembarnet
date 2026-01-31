@@ -38,7 +38,6 @@ export default function AnimatedIcosahedron({
 
     isDestroyedRef.current = false;
 
-    // Adjust grid detail based on screen size for performance
     const isMobile = window.innerWidth < mobileBreakpoint;
     const gridDetail = isMobile ? Math.floor(grid / 2) : grid;
 
@@ -54,15 +53,13 @@ export default function AnimatedIcosahedron({
     const init = () => {
       if (isDestroyedRef.current) return;
 
-      // Scene
       scene = new THREE.Scene();
 
-      // Camera
       camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-      const adjustedCameraZ = width < height ? cameraZ * 1.4 : cameraZ;
+      const aspect = width / height;
+      const adjustedCameraZ = aspect < 1 ? cameraZ / aspect : cameraZ;
       camera.position.z = adjustedCameraZ;
 
-      // Renderer
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
@@ -78,32 +75,27 @@ export default function AnimatedIcosahedron({
       container.appendChild(canvas);
       canvasRef.current = canvas;
 
-      const dirLight = new THREE.DirectionalLight("#ED985F", 3.0);
+      const dirLight = new THREE.DirectionalLight("#FFFFFF", 2.0); // Brighter white light
       dirLight.position.set(5, 5, 5);
 
       const fillLight = new THREE.DirectionalLight("#FFFFFF", 1.5);
       fillLight.position.set(-5, 0, -5);
 
-      const ambientLight = new THREE.AmbientLight("#ED985F", 0.8);
+      const ambientLight = new THREE.AmbientLight("#ED985F", 1.5); // Boost ambient light
       scene.add(dirLight, fillLight, ambientLight);
 
-      // Geometry
       const geometry = new THREE.IcosahedronGeometry(1, gridDetail);
 
-      // Material with shader injection
       material = new THREE.MeshStandardMaterial({
         color: "#ED985F",
-        roughness: 0.8,
-        metalness: 0.05,
+        roughness: 0.6, // Slightly smoother for better light interaction
+        metalness: 0.1,
       });
       material.onBeforeCompile = (shader) => {
-        // Store reference to shader
         material.userData.shader = shader;
 
-        // Add uniforms
         shader.uniforms.uTime = { value: 0 };
 
-        // Inject vertex shader code
         const parsVertexString = "#include <displacementmap_pars_vertex>";
         shader.vertexShader = shader.vertexShader.replace(
           parsVertexString,
@@ -116,7 +108,6 @@ export default function AnimatedIcosahedron({
           mainVertexString + vertexMain
         );
 
-        // Inject fragment shader code
         const parsFragmentString = "#include <bumpmap_pars_fragment>";
         shader.fragmentShader = shader.fragmentShader.replace(
           parsFragmentString,
@@ -131,6 +122,8 @@ export default function AnimatedIcosahedron({
       };
 
       icosahedron = new THREE.Mesh(geometry, material);
+      icosahedron.rotation.x = Math.PI * 0.15; // Better initial angle
+      icosahedron.rotation.y = Math.PI * 0.15;
       scene.add(icosahedron);
     };
 
@@ -139,12 +132,10 @@ export default function AnimatedIcosahedron({
 
       const time = performance.now() / 6000;
 
-      // Update shader uniform
       if (material?.userData?.shader?.uniforms?.uTime) {
         material.userData.shader.uniforms.uTime.value = time;
       }
 
-      // Render
       if (renderer && scene && camera) {
         renderer.render(scene, camera);
       }
@@ -163,7 +154,8 @@ export default function AnimatedIcosahedron({
 
         if (camera) {
           camera.aspect = newWidth / newHeight;
-          const adjustedCameraZ = newWidth < newHeight ? cameraZ * 1.4 : cameraZ;
+          const aspect = newWidth / newHeight;
+          const adjustedCameraZ = aspect < 1 ? cameraZ / aspect : cameraZ;
           camera.position.z = adjustedCameraZ;
           camera.updateProjectionMatrix();
         }
@@ -193,7 +185,6 @@ export default function AnimatedIcosahedron({
         container.removeChild(canvasRef.current);
       }
 
-      // Cleanup Three.js resources
       if (renderer) renderer.dispose();
       if (material) material.dispose();
       if (icosahedron?.geometry) icosahedron.geometry.dispose();

@@ -2,10 +2,6 @@
 @import "./navbar.css";
 @import "./pixelated-text.css";
 
-/* ============================================
-   CSS Variables
-   ============================================ */
-
 :root {
   --color-light: #F3F0F0;
   --color-dark: #001F3D;
@@ -22,10 +18,6 @@
   --font-sans: var(--font-bricolage);
   --font-serif: var(--font-bricolage);
 }
-
-/* ============================================
-   Global Resets
-   ============================================ */
 
 * {
   box-sizing: border-box;
@@ -48,10 +40,6 @@ body {
   font-family: var(--font-bricolage), sans-serif;
   line-height: 1.6;
 }
-
-/* ============================================
-   Layout Structure
-   ============================================ */
 
 .padding-section {
   padding: 4rem;
@@ -85,10 +73,6 @@ section {
   width: 100%;
   position: relative;
 }
-
-/* ============================================
-   Home Section
-   ============================================ */
 
 section.home {
   min-height: 100svh;
@@ -210,10 +194,6 @@ section.home {
   text-align: left;
 }
 
-/* ============================================
-   CTA Section
-   ============================================ */
-
 .hero-cta {
   display: flex;
   flex-direction: column;
@@ -221,8 +201,6 @@ section.home {
   padding-bottom: 8rem;
   padding-top: 6rem;
 }
-
-
 
 .cta-row a {
   display: flex;
@@ -246,20 +224,13 @@ section.home {
   justify-content: center;
 }
 
-/* ============================================
-   About Section
-   ============================================ */
-
-/* ============================================
-   About Section
-   ============================================ */
-
 .about-container {
   min-height: 100svh;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 8rem;
 }
 
 .about-grid {
@@ -268,12 +239,12 @@ section.home {
   max-width: 1600px;
   margin: 0 auto;
   grid-template-columns: 200px 1fr 1fr;
+  grid-template-rows: min-content min-content min-content;
   column-gap: 2rem;
-  row-gap: 4rem;
+  row-gap: 5rem;
   align-items: start;
 }
 
-/* Grid Placement Areas */
 .area-label-intro {
   grid-column: 1;
   grid-row: 1;
@@ -307,34 +278,42 @@ section.home {
 .area-visual {
   grid-column: 2;
   grid-row: 1 / span 3;
+  height: 0;
   align-self: center;
-  justify-self: center;
-  width: 100%;
-  height: 600px;
   position: relative;
+  z-index: -1;
+}
+
+.icosahedron-wrapper {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  max-width: 600px;
+  height: 600px;
 }
 
 .about-label {
   font-family: var(--font-bricolage), sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--color-dark);
   margin: 0;
-  padding-top: 0.4rem;
+  padding-top: 0;
 }
 
 .about-text {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   max-width: 50ch;
-  /* Optional: improve readability */
 }
 
 .about-text p {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
-  line-height: 1.5;
+  line-height: 1.4;
   color: var(--color-dark);
   font-weight: 400;
   margin: 0;
@@ -346,10 +325,9 @@ section.home {
   border-bottom: 1px solid currentColor;
 }
 
-/* Responsive Design */
 @media (max-width: 900px) {
   .about-container {
-    padding-top: 2rem;
+    padding-top: 0;
     padding-bottom: 2rem;
     height: auto;
     min-height: auto;
@@ -359,22 +337,33 @@ section.home {
   .about-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  /* Mobile Ordering */
-  .area-label-intro {
-    order: 1;
-  }
-
-  .area-text-intro {
-    order: 2;
+    gap: 2rem;
   }
 
   .area-visual {
+    order: 1;
+    height: 250px;
+    margin: 0;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .icosahedron-wrapper {
+    position: relative !important;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .area-label-intro {
+    order: 2;
+  }
+
+  .area-text-intro {
     order: 3;
-    height: 400px;
-    margin: 2rem 0;
   }
 
   .area-label-journey {
@@ -402,7 +391,7 @@ section.home {
 
 @media (max-width: 480px) {
   .area-visual {
-    height: 350px;
+    height: 250px;
   }
 
   .about-text p {
@@ -410,17 +399,11 @@ section.home {
   }
 }
 
-/* ============================================
-   Media Queries
-   ============================================ */
-
 @media (max-width: 900px) {
   .hero-body {
     gap: 2rem;
   }
 }
-
-
 
 @media (max-width: 720px) {
   .hero-body {
@@ -471,10 +454,6 @@ section.home {
     padding: 1.25rem 0;
   }
 }
-
-/* ============================================
-   Footer Section
-   ============================================ */
 
 .footer {
   width: 100%;
