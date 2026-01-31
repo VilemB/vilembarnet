@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-// import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import vertexPars from "@/shaders/vertex_pars";
 import vertexMain from "@/shaders/vertex_main";
@@ -48,8 +47,6 @@ export default function AnimatedIcosahedron({
     let renderer: THREE.WebGLRenderer;
     let material: THREE.MeshStandardMaterial;
     let icosahedron: THREE.Mesh;
-    // Uncomment for future use:
-    // let controls: OrbitControls;
 
     const width = container.offsetWidth;
     const height = container.offsetHeight;
@@ -81,14 +78,13 @@ export default function AnimatedIcosahedron({
       container.appendChild(canvas);
       canvasRef.current = canvas;
 
-      // Lighting - Optimized for #ED985F accent
-      const dirLight = new THREE.DirectionalLight("#ED985F", 2.0);
+      const dirLight = new THREE.DirectionalLight("#ED985F", 3.0);
       dirLight.position.set(5, 5, 5);
 
-      const fillLight = new THREE.DirectionalLight("#4a5e75", 1.0);
+      const fillLight = new THREE.DirectionalLight("#FFFFFF", 1.5);
       fillLight.position.set(-5, 0, -5);
 
-      const ambientLight = new THREE.AmbientLight("#ffffff", 0.4);
+      const ambientLight = new THREE.AmbientLight("#ED985F", 0.8);
       scene.add(dirLight, fillLight, ambientLight);
 
       // Geometry
@@ -97,8 +93,8 @@ export default function AnimatedIcosahedron({
       // Material with shader injection
       material = new THREE.MeshStandardMaterial({
         color: "#ED985F",
-        roughness: 0.4,
-        metalness: 0.1,
+        roughness: 0.8,
+        metalness: 0.05,
       });
       material.onBeforeCompile = (shader) => {
         // Store reference to shader
@@ -136,10 +132,6 @@ export default function AnimatedIcosahedron({
 
       icosahedron = new THREE.Mesh(geometry, material);
       scene.add(icosahedron);
-
-      // Uncomment for future use:
-      // controls = new OrbitControls(camera, renderer.domElement);
-      // controls.enableDamping = true;
     };
 
     const animate = () => {
@@ -151,9 +143,6 @@ export default function AnimatedIcosahedron({
       if (material?.userData?.shader?.uniforms?.uTime) {
         material.userData.shader.uniforms.uTime.value = time;
       }
-
-      // Uncomment for future use:
-      // if (controls) controls.update();
 
       // Render
       if (renderer && scene && camera) {
@@ -208,9 +197,6 @@ export default function AnimatedIcosahedron({
       if (renderer) renderer.dispose();
       if (material) material.dispose();
       if (icosahedron?.geometry) icosahedron.geometry.dispose();
-
-      // Uncomment for future use:
-      // if (controls) controls.dispose();
     };
   }, [grid, bloomStrength, bloomRadius, bloomThreshold, mobileBreakpoint, cameraZ]);
 
