@@ -1,12 +1,32 @@
+"use client";
+
 import AnimatedIcosahedron from "@/components/AnimatedIcosahedron";
+import { useEffect, useState } from "react";
 
 export default function About() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      setMousePosition({
+        x: (event.clientX / window.innerWidth) * 2 - 1,
+        y: -(event.clientY / window.innerHeight) * 2 + 1,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   return (
     <section className="about-container">
       <div className="padding-section about-grid">
 
         <div className="about-visual area-visual">
-          <AnimatedIcosahedron className="icosahedron-wrapper" />
+          <AnimatedIcosahedron className="icosahedron-wrapper" mouseX={mousePosition.x} mouseY={mousePosition.y} />
         </div>
 
         <h2 className="about-label area-label-intro">INTRODUCTION</h2>

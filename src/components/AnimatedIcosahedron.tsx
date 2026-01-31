@@ -16,6 +16,8 @@ interface AnimatedIcosahedronProps {
   bloomThreshold?: number;
   mobileBreakpoint?: number;
   cameraZ?: number;
+  mouseX?: number;
+  mouseY?: number;
 }
 
 export default function AnimatedIcosahedron({
@@ -26,11 +28,19 @@ export default function AnimatedIcosahedron({
   bloomThreshold = 0.4,
   mobileBreakpoint = 1000,
   cameraZ = 2.5,
+  mouseX = 0,
+  mouseY = 0,
 }: AnimatedIcosahedronProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number>(0);
   const isDestroyedRef = useRef(false);
+
+  const mouseRef = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    mouseRef.current = { x: mouseX, y: mouseY };
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -75,20 +85,20 @@ export default function AnimatedIcosahedron({
       container.appendChild(canvas);
       canvasRef.current = canvas;
 
-      const dirLight = new THREE.DirectionalLight("#FFFFFF", 2.0); // Brighter white light
+      const dirLight = new THREE.DirectionalLight("#FFFFFF", 2.0);
       dirLight.position.set(5, 5, 5);
 
       const fillLight = new THREE.DirectionalLight("#FFFFFF", 1.5);
       fillLight.position.set(-5, 0, -5);
 
-      const ambientLight = new THREE.AmbientLight("#ED985F", 1.5); // Boost ambient light
+      const ambientLight = new THREE.AmbientLight("#ED985F", 1.5);
       scene.add(dirLight, fillLight, ambientLight);
 
       const geometry = new THREE.IcosahedronGeometry(1, gridDetail);
 
       material = new THREE.MeshStandardMaterial({
         color: "#ED985F",
-        roughness: 0.6, // Slightly smoother for better light interaction
+        roughness: 0.6,
         metalness: 0.1,
       });
       material.onBeforeCompile = (shader) => {
@@ -134,6 +144,14 @@ export default function AnimatedIcosahedron({
 
       if (material?.userData?.shader?.uniforms?.uTime) {
         material.userData.shader.uniforms.uTime.value = time;
+      }
+
+      if (icosahedron) {
+        const targetRotationX = (Math.PI * 0.2) + (mouseRef.current.y * 0.6);
+        const targetRotationY = (Math.PI * 0.2) + (mouseRef.current.x * 0.6);
+
+        icosahedron.rotation.x += (targetRotationX - icosahedron.rotation.x) * 0.05;
+        icosahedron.rotation.y += (targetRotationY - icosahedron.rotation.y) * 0.05;
       }
 
       if (renderer && scene && camera) {
