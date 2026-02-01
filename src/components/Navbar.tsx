@@ -18,14 +18,11 @@ const Navbar = () => {
                     />
                 </Link>
                 <div className="navbar-links">
-                    <Link href="/work">
+                    <Link href="/#work">
                         work
                     </Link>
-                    <Link href="/about">
+                    <Link href="/#about">
                         about
-                    </Link>
-                    <Link href="/blog">
-                        blog
                     </Link>
                     <Link href="mailto:barnetv7@gmail.com">
                         contact

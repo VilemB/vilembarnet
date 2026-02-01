@@ -14,7 +14,7 @@ export default function Work() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="work">
+    <section className="work" id="work">
       <div className="padding-section work-content">
         {projects.map((project, index) => (
           <div
