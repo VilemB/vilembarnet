@@ -313,10 +313,11 @@ section.home {
 
 .about-text p {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
-  line-height: 1.4;
+  line-height: 1.6;
   color: var(--color-dark);
   font-weight: 400;
   margin: 0;
+  opacity: 0.85;
 }
 
 .email-link {
@@ -328,7 +329,7 @@ section.home {
 @media (max-width: 900px) {
   .about-container {
     padding-top: 0;
-    padding-bottom: 2rem;
+    padding-bottom: 12rem;
     height: auto;
     min-height: auto;
     display: block;
@@ -337,14 +338,14 @@ section.home {
   .about-grid {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
   }
 
   .area-visual {
     order: 1;
     height: 250px;
     margin: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: 3rem;
     width: 100%;
     z-index: 1;
   }
@@ -368,7 +369,7 @@ section.home {
 
   .area-label-journey {
     order: 4;
-    margin-top: 2rem;
+    margin-top: 5rem;
   }
 
   .area-text-journey {
@@ -377,7 +378,7 @@ section.home {
 
   .area-label-contact {
     order: 6;
-    margin-top: 2rem;
+    margin-top: 5rem;
   }
 
   .area-text-contact {

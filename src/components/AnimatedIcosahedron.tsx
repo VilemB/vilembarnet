@@ -49,7 +49,7 @@ export default function AnimatedIcosahedron({
     isDestroyedRef.current = false;
 
     const isMobile = window.innerWidth < mobileBreakpoint;
-    const gridDetail = isMobile ? Math.floor(grid / 2) : grid;
+    const gridDetail = isMobile ? Math.floor(grid / 1.5) : grid;
 
     let scene: THREE.Scene;
     let camera: THREE.PerspectiveCamera;
@@ -85,13 +85,13 @@ export default function AnimatedIcosahedron({
       container.appendChild(canvas);
       canvasRef.current = canvas;
 
-      const dirLight = new THREE.DirectionalLight("#FFFFFF", 2.0);
+      const dirLight = new THREE.DirectionalLight("#FFFFFF", 3.0);
       dirLight.position.set(5, 5, 5);
 
-      const fillLight = new THREE.DirectionalLight("#FFFFFF", 1.5);
+      const fillLight = new THREE.DirectionalLight("#FFFFFF", 2.0);
       fillLight.position.set(-5, 0, -5);
 
-      const ambientLight = new THREE.AmbientLight("#ED985F", 1.5);
+      const ambientLight = new THREE.AmbientLight("#ED985F", 2.5);
       scene.add(dirLight, fillLight, ambientLight);
 
       const geometry = new THREE.IcosahedronGeometry(1, gridDetail);
@@ -132,7 +132,7 @@ export default function AnimatedIcosahedron({
       };
 
       icosahedron = new THREE.Mesh(geometry, material);
-      icosahedron.rotation.x = Math.PI * 0.15; // Better initial angle
+      icosahedron.rotation.x = Math.PI * 0.15;
       icosahedron.rotation.y = Math.PI * 0.15;
       scene.add(icosahedron);
     };
@@ -140,18 +140,18 @@ export default function AnimatedIcosahedron({
     const animate = () => {
       if (isDestroyedRef.current) return;
 
-      const time = performance.now() / 6000;
+      const time = performance.now() / 10000;
 
       if (material?.userData?.shader?.uniforms?.uTime) {
         material.userData.shader.uniforms.uTime.value = time;
       }
 
       if (icosahedron) {
-        const targetRotationX = (Math.PI * 0.2) + (mouseRef.current.y * 0.6);
-        const targetRotationY = (Math.PI * 0.2) + (mouseRef.current.x * 0.6);
+        const targetRotationX = (Math.PI * 0.15) + (mouseRef.current.y * 0.15);
+        const targetRotationY = (Math.PI * 0.15) + (mouseRef.current.x * 0.15);
 
-        icosahedron.rotation.x += (targetRotationX - icosahedron.rotation.x) * 0.05;
-        icosahedron.rotation.y += (targetRotationY - icosahedron.rotation.y) * 0.05;
+        icosahedron.rotation.x += (targetRotationX - icosahedron.rotation.x) * 0.1;
+        icosahedron.rotation.y += (targetRotationY - icosahedron.rotation.y) * 0.1;
       }
 
       if (renderer && scene && camera) {
