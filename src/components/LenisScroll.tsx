@@ -31,7 +31,6 @@ export default function LenisScroll() {
 
         window.lenis = lenis;
 
-        // Start Lenis immediately
         lenis.start();
 
         return () => {
@@ -42,17 +41,12 @@ export default function LenisScroll() {
     }, []);
 
     useEffect(() => {
-        // Reset scroll position on route change
         window.scrollTo(0, 0);
 
         if (window.lenis) {
-            // Ensure Lenis is started (in case it was stopped during transition)
             window.lenis.start();
-
-            // Reset scroll position immediately
             window.lenis.scrollTo(0, { immediate: true, force: true });
 
-            // Refresh ScrollTrigger after a brief delay to ensure DOM is ready
             requestAnimationFrame(() => {
                 ScrollTrigger.refresh();
             });

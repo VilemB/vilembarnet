@@ -22,7 +22,6 @@ export default function DesignEthos() {
         const wordsElements = headingRef.current?.querySelectorAll(".ethos-word");
         if (!wordsElements || wordsElements.length === 0) return;
 
-        // 1. Text color reveal (existing)
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: sectionRef.current,
@@ -38,7 +37,6 @@ export default function DesignEthos() {
             ease: "power2.out",
         });
 
-        // 2. Content reveal (Button and description)
         if (bottomContentRef.current) {
             gsap.fromTo(bottomContentRef.current,
                 { y: 40, opacity: 0 },

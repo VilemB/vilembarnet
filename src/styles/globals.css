@@ -10,7 +10,6 @@
   --color-accent: #ED985F;
 }
 
-/* page transition */
 .transition-container {
   position: fixed;
   top: 0;
@@ -125,7 +124,6 @@ section {
   position: relative;
 }
 
-/* Top Navigation - Slides in/out on scroll */
 .top-navigation {
   position: fixed;
   top: 0;
@@ -150,15 +148,11 @@ section {
 
 .top-navigation.nav-open .top-nav-left {
   opacity: 1;
-  /* Slide up handles hiding now */
-}
+  }
 
 .top-navigation.nav-open .top-nav-divider {
   opacity: 1;
-  /* Slide up handles hiding now */
 }
-
-/* Handled by .menu-open class below */
 
 .top-nav-content {
   display: flex;
@@ -246,7 +240,6 @@ section {
   }
 }
 
-/* Hero Section - Full Screen Grid Layout */
 .hero-section {
   min-height: 100svh;
   height: 100svh;
@@ -265,7 +258,6 @@ section {
   align-items: start;
 }
 
-/* Center: PixelatedText */
 .hero-center {
   grid-column: 1 / -1;
   grid-row: 1;
@@ -276,8 +268,6 @@ section {
   padding-top: 2rem;
 }
 
-
-/* Bottom Left: Description + CTA */
 .hero-footer-left {
   grid-column: 1;
   grid-row: 2;
@@ -318,7 +308,6 @@ section {
   color: var(--color-light);
 }
 
-/* Bottom Right: Location + Clock */
 .hero-footer-right {
   grid-column: 2;
   grid-row: 2;
@@ -347,7 +336,6 @@ section {
   letter-spacing: 0.05em;
 }
 
-/* Responsive: Tablet (720px - 900px) */
 @media (max-width: 900px) {
   .hero-grid {
     gap: 1.5rem;
@@ -362,7 +350,6 @@ section {
   }
 }
 
-/* Responsive: Mobile (<720px) */
 @media (max-width: 720px) {
   .hero-section {
     height: 100svh;
@@ -416,7 +403,6 @@ section {
   }
 }
 
-/* Responsive: Small Mobile (<480px) */
 @media (max-width: 480px) {
   .hero-grid {
     padding: 1.5rem 1rem;
@@ -448,7 +434,6 @@ section {
   }
 }
 
-/* Driven Section */
 .driven-section {
   position: relative;
   height: 110vh;
@@ -968,9 +953,6 @@ section {
   }
 }
 
-
-/* Work page */
-
 section.work {
   min-height: 100svh;
   display: flex;
@@ -1087,7 +1069,6 @@ section.work {
   }
 }
 
-/* Design Ethos Section */
 .ethos-section {
   min-height: 100svh;
   display: flex;
@@ -1151,7 +1132,6 @@ section.work {
   max-width: 45ch;
 }
 
-/* Responsive DesignEthos */
 @media (max-width: 1024px) {
   .ethos-grid {
     grid-template-columns: 1fr;

@@ -3,7 +3,6 @@ import { SplitText } from "gsap/SplitText";
 
 gsap.registerPlugin(SplitText);
 
-// animation settings
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
 const DURATION = 0.25;
 const STAGGER = 50;
@@ -16,7 +15,6 @@ interface ScrambleOptions {
     maxIterations?: number | null;
 }
 
-// scrambles a single character with random chars
 function scrambleChar(
     char: any,
     showAfter = true,
@@ -24,7 +22,6 @@ function scrambleChar(
     charDelay = 50,
     maxIterations: number | null = null
 ) {
-    // store original text on the element
     if (!char.dataset.originalText) {
         char.dataset.originalText = char.textContent;
     }
@@ -34,7 +31,6 @@ function scrambleChar(
 
     if (showAfter) gsap.set(char, { opacity: 1 });
 
-    // clear any existing intervals/timeouts
     if (char.scrambleInterval) {
         clearInterval(char.scrambleInterval);
     }
@@ -43,7 +39,6 @@ function scrambleChar(
     }
 
     const interval = setInterval(() => {
-        // preserve spaces during scrambling
         if (originalText === " ") {
             char.textContent = " ";
         } else {
@@ -72,7 +67,6 @@ function scrambleChar(
     char.scrambleTimeout = timeout;
 }
 
-// scrambles multiple characters with stagger delay
 function scrambleText(
     elements: any[],
     showAfter = true,
@@ -88,7 +82,6 @@ function scrambleText(
             return;
         }
 
-        // clear any existing stagger timeout
         if (char.staggerTimeout) {
             clearTimeout(char.staggerTimeout);
         }
@@ -102,7 +95,6 @@ function scrambleText(
     });
 }
 
-// shows text with scramble effect using word-first splitting
 export function scrambleIn(element: HTMLElement, delay = 0, options: ScrambleOptions = {}) {
     if (!element.textContent?.trim()) return;
 
@@ -114,15 +106,11 @@ export function scrambleIn(element: HTMLElement, delay = 0, options: ScrambleOpt
         maxIterations = null,
     } = options;
 
-    // split into words first
     const wordSplit = new SplitText(element, { type: "words" });
 
-    // then split each word into characters
     const charSplits = wordSplit.words.map((word) => {
         return new SplitText(word, { type: "chars" });
     });
-
-    // collect all characters in order
     const allChars: HTMLElement[] = [];
     charSplits.forEach((split) => {
         allChars.push(...(split.chars as unknown as HTMLElement[]));
@@ -145,7 +133,6 @@ export function scrambleIn(element: HTMLElement, delay = 0, options: ScrambleOpt
     return { wordSplit, charSplits, allChars };
 }
 
-// hides text with scramble effect
 export function scrambleOut(element: HTMLElement, delay = 0) {
     const chars = element.querySelectorAll(".char");
     if (chars.length === 0) return;
@@ -157,7 +144,6 @@ export function scrambleOut(element: HTMLElement, delay = 0) {
     }, delay * 1000);
 }
 
-// scrambles text while keeping letters visible
 export function scrambleVisible(element: HTMLElement, delay = 0, options: ScrambleOptions = {}) {
     if (!element.textContent?.trim()) return;
 
@@ -169,15 +155,11 @@ export function scrambleVisible(element: HTMLElement, delay = 0, options: Scramb
         maxIterations = null,
     } = options;
 
-    // split into words first
     const wordSplit = new SplitText(element, { type: "words" });
 
-    // then split each word into characters
     const charSplits = wordSplit.words.map((word) => {
         return new SplitText(word, { type: "chars" });
     });
-
-    // collect all characters in order
     const allChars: HTMLElement[] = [];
     charSplits.forEach((split) => {
         allChars.push(...(split.chars as unknown as HTMLElement[]));

@@ -21,14 +21,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vilembarnet.com"),
+  metadataBase: new URL("https://barnetvilem.com"),
   title: {
     default: "Vilém Barnet | Full-Stack Engineer",
     template: "%s | Vilém Barnet",
   },
   description:
     "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.",
-  authors: [{ name: "Vilém Barnet", url: "https://vilembarnet.com" }],
+  authors: [{ name: "Vilém Barnet", url: "https://barnetvilem.com" }],
   creator: "Vilém Barnet",
   publisher: "Vilém Barnet",
   robots: {
@@ -120,7 +120,7 @@ export default function RootLayout({
               jobTitle: "Full-Stack Engineer",
               description:
                 "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration",
-              url: "https://vilembarnet.com",
+              url: "https://barnetvilem.com",
               sameAs: [
                 "https://github.com/vilemb",
                 "https://x.com/barnetvilem",

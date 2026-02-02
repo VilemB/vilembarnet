@@ -1,5 +1,3 @@
-/* Work Page Styles */
-
 .work-section {
     position: relative;
     width: 100%;
@@ -14,7 +12,6 @@
     display: flex;
     width: 100%;
     height: 100vh;
-    /* Enforce height to ensure ScrollTrigger pins correctly */
     position: relative;
     padding-top: 6rem;
     padding-bottom: 2rem;
@@ -23,7 +20,6 @@
     box-sizing: border-box;
 }
 
-/* Desktop Layout */
 .work-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -32,7 +28,6 @@
     gap: 2rem;
 }
 
-/* Left Side: Active Project Display */
 .work-display {
     position: relative;
     height: 100%;
@@ -43,7 +38,6 @@
     padding-top: 4rem;
 }
 
-/* On Desktop: Info above Image */
 .work-display-info {
     order: 1;
     display: flex;
@@ -103,7 +97,6 @@
     display: flex;
 }
 
-/* Right Side: Navigation & Previews */
 .work-navigation {
     display: flex;
     width: 100%;
@@ -115,7 +108,6 @@
     padding-top: 4rem;
 }
 
-/* Vertical Carousel of Previews */
 .work-previews-col {
     flex: 1;
     position: relative;
@@ -221,9 +213,7 @@
         padding: 6rem 1rem 1rem 1rem;
         flex-direction: column;
         height: 100vh;
-        /* Keep fixed height for pinning */
         overflow: hidden;
-        /* Prevent double scrollbars */
     }
 
     .work-grid {
@@ -233,16 +223,13 @@
         height: 100%;
     }
 
-    /* Mobile: Top Section (Big Preview) */
     .work-display {
         order: 1;
         flex: 1 1 auto;
-        /* Grow to take available space */
         gap: 1rem;
         margin-bottom: 1rem;
         padding-top: 0;
         height: 50%;
-        /* Explicitly take top half */
         justify-content: center;
     }
 
@@ -250,24 +237,18 @@
         order: 1;
         width: 100%;
         height: 100%;
-        /* Fill container */
         padding-bottom: 0;
-        /* Remove aspect ratio hack, rely on flex fill */
         position: relative;
     }
 
     .work-display-image {
         object-fit: cover;
-        /* or contain if full view is preferred */
     }
 
     .work-display-info {
         order: 2;
         margin-top: 0;
         position: absolute;
-        /* Overlay info on mobile? Or keep below? User design shows text separately. */
-        /* Design shows: Image top, then number left and name right below it. */
-        /* Let's keep it structurally below image but compact */
         position: relative;
         flex: 0 0 auto;
     }
@@ -280,21 +261,15 @@
         font-size: clamp(1.25rem, 3vw, 2rem);
     }
 
-
-    /* Mobile: Bottom Section (Previews + List) */
     .work-navigation {
         order: 2;
         flex: 1 1 auto;
-        /* Take remaining space */
         flex-direction: row;
         align-items: center;
-        /* Center vertically */
         gap: 1rem;
         height: 40%;
-        /* Take bottom chunk */
         padding-top: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
-        /* subtle separator */
     }
 
     .work-previews-col {
@@ -306,7 +281,6 @@
     .work-previews-container {
         width: 100%;
         margin-top: 15vh;
-        /* Adjusted start */
     }
 
     .work-preview-image-wrapper {
@@ -317,7 +291,6 @@
         width: 60%;
         padding-left: 0;
         padding-top: 15vh;
-        /* Align with preview start */
         justify-content: flex-start;
         height: 100%;
     }
@@ -328,7 +301,6 @@
 
     .work-list-item {
         font-size: 1rem;
-        /* readable size */
         padding-left: 1.5rem;
     }
 

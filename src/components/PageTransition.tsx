@@ -29,7 +29,6 @@ export default function PageTransition() {
         document.body.style.overflow = "";
         if (window.lenis) {
             window.lenis.start();
-            // Force Lenis to update after unlocking
             requestAnimationFrame(() => {
                 if (window.lenis) {
                     window.lenis.resize();
@@ -38,7 +37,6 @@ export default function PageTransition() {
         }
     };
 
-    // Kill any running progress tween
     const killProgressTween = () => {
         if (progressTweenRef.current) {
             progressTweenRef.current.kill();
@@ -46,7 +44,6 @@ export default function PageTransition() {
         }
     };
 
-    // Reveal the page (shared between initial load and transitions)
     const revealPage = useCallback(() => {
         if (loadingTimerRef.current) {
             clearTimeout(loadingTimerRef.current);
@@ -57,7 +54,6 @@ export default function PageTransition() {
             fallbackTimerRef.current = null;
         }
 
-        // Snap progress to 100%
         killProgressTween();
         if (progressRef.current) gsap.killTweensOf(progressRef.current);
         if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
@@ -71,7 +67,6 @@ export default function PageTransition() {
             isPendingRef.current = false;
             unlockScroll();
 
-            // Refresh ScrollTrigger after DOM is ready
             requestAnimationFrame(() => {
                 ScrollTrigger.refresh();
             });
@@ -83,7 +78,6 @@ export default function PageTransition() {
                 isPendingRef.current = false;
                 unlockScroll();
 
-                // Refresh ScrollTrigger after page is revealed and scroll is unlocked
                 requestAnimationFrame(() => {
                     ScrollTrigger.refresh();
                 });
@@ -104,13 +98,10 @@ export default function PageTransition() {
             transformOrigin: "top",
             overwrite: true,
             onStart: () => {
-                // Dispatch event to show navigation
                 window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
             }
         }, "-=0.05");
     }, []);
-
-    // Initial reveal — waits for the page to actually be ready
     useEffect(() => {
         lockScroll();
 
@@ -122,12 +113,10 @@ export default function PageTransition() {
 
         gsap.set(overlayRef.current, { scaleY: 1, transformOrigin: "top" });
 
-        // Show progress during initial load
         gsap.set(progressRef.current, { opacity: 1 });
         progressObjRef.current.value = 0;
         setProgress(0);
 
-        // Animate progress toward 90% while page loads
         progressTweenRef.current = gsap.to(progressObjRef.current, {
             value: 90,
             duration: 3,
@@ -142,7 +131,6 @@ export default function PageTransition() {
             if (revealed) return;
             revealed = true;
 
-            // Snap to 100% and reveal
             killProgressTween();
             if (progressRef.current) gsap.killTweensOf(progressRef.current);
             if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
@@ -155,7 +143,6 @@ export default function PageTransition() {
                     onComplete: () => {
                         unlockScroll();
 
-                        // Refresh ScrollTrigger after initial page load
                         requestAnimationFrame(() => {
                             ScrollTrigger.refresh();
                         });
@@ -187,7 +174,6 @@ export default function PageTransition() {
             reveal();
         } else {
             window.addEventListener("load", reveal, { once: true });
-            // Fallback: don't block the user longer than 3s
             const fallback = setTimeout(reveal, 3000);
             return () => {
                 window.removeEventListener("load", reveal);
@@ -196,7 +182,6 @@ export default function PageTransition() {
         }
     }, []);
 
-    // Intercept internal link clicks
     useEffect(() => {
         const handleLinkClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -206,7 +191,6 @@ export default function PageTransition() {
             const href = link.getAttribute("href");
             const targetAttr = link.getAttribute("target");
 
-            // Skip external links, mailto, tel, anchor, or new tab
             if (
                 !href ||
                 href.startsWith("http") ||
@@ -218,7 +202,6 @@ export default function PageTransition() {
                 return;
             }
 
-            // Skip same page navigation (just close menu if open)
             if (href === pathname || (href === "/" && pathname === "/")) {
                 const menuBtn = document.querySelector(".top-nav-menu-button.menu-open") as HTMLButtonElement;
                 if (menuBtn) {
@@ -232,13 +215,9 @@ export default function PageTransition() {
             if (isPendingRef.current) return;
             isPendingRef.current = true;
 
-            // Lock scroll immediately
             lockScroll();
 
-            // Dispatch event for other components (like Navigation) to hide
             window.dispatchEvent(new CustomEvent("pageTransitionStart"));
-
-            // Close menu if open
             const menuBtn = document.querySelector(".top-nav-menu-button.menu-open") as HTMLButtonElement;
             if (menuBtn) menuBtn.click();
 
@@ -247,21 +226,16 @@ export default function PageTransition() {
                 return;
             }
 
-            // Reset progress
             killProgressTween();
             progressObjRef.current.value = 0;
             setProgress(0);
 
-            // Quick cover (~300ms), then navigate immediately
             const tl = gsap.timeline({
                 onComplete: () => {
                     if (!isPendingRef.current) return;
-
-                    // Clean up old page (overlay covers screen, safe to revert)
                     ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
                     window.scrollTo(0, 0);
 
-                    // Start progress animation: 0 → 90% over 3s (eases out so it slows down)
                     progressTweenRef.current = gsap.to(progressObjRef.current, {
                         value: 90,
                         duration: 3,
@@ -271,7 +245,6 @@ export default function PageTransition() {
                         },
                     });
 
-                    // Show progress immediately (overlay is already covering the screen)
                     gsap.to(progressRef.current, {
                         opacity: 1,
                         duration: 0.3,
@@ -279,10 +252,8 @@ export default function PageTransition() {
                         overwrite: true,
                     });
 
-                    // Start navigation
                     router.push(href);
 
-                    // Safety fallback: reveal after 5s no matter what
                     fallbackTimerRef.current = setTimeout(() => {
                         revealPage();
                     }, 5000);
@@ -301,7 +272,6 @@ export default function PageTransition() {
         return () => document.removeEventListener("click", handleLinkClick, { capture: true });
     }, [pathname, router, revealPage]);
 
-    // Reveal after pathname changes (navigation complete)
     useEffect(() => {
         if (!isPendingRef.current) return;
         revealPage();

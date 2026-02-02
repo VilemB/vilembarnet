@@ -95,10 +95,6 @@
     font-size: clamp(6rem, 20vw, 15rem);
 }
 
-/* Handled in globals.css */
-
-/* Handled in globals.css */
-
 .menu-icon-svg {
     display: block;
     width: clamp(24px, 2.2vw, 36px);

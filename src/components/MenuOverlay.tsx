@@ -39,7 +39,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         { name: "Github", href: "https://github.com/vilemb" },
     ];
 
-    // Initialize roll animation for nav links
     useEffect(() => {
         if (!isOpen) return;
 
@@ -60,7 +59,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         if (!overlayRef.current) return;
 
         if (isOpen) {
-            // Open Menu
             gsap.to(overlayRef.current, {
                 clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
                 duration: 0.8,
@@ -70,7 +68,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 }
             });
 
-            // Animate items entrance
             const items = navItemsRef.current?.querySelectorAll(".nav-item");
             if (items && items.length > 0) {
                 gsap.to(items, {
@@ -84,7 +81,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             }
 
         } else {
-            // Close Menu
             gsap.to(overlayRef.current, {
                 clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)",
                 duration: 0.8,
@@ -94,7 +90,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 }
             });
 
-            // Reset items
             const items = navItemsRef.current?.querySelectorAll(".nav-item");
             if (items && items.length > 0) {
                 gsap.to(items, {

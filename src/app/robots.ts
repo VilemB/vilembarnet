@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://vilembarnet.com/sitemap.xml",
+    sitemap: "https://barnetvilem.com/sitemap.xml",
   };
 }
