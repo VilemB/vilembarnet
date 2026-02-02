@@ -18,7 +18,7 @@ export default function Hero() {
         {/* Bottom Left: Description + CTA */}
         <div className="hero-footer-left">
           <p className="hero-description">
-            I focus on creating digital experiences that are clear and intentional.
+            I design and build digital experiences with clarity and intention.
           </p>
           <Link href="mailto:barnetv7@gmail.com" className="cta-button">
             Work With Me
