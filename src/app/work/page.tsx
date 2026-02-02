@@ -21,25 +21,25 @@ const projects: Project[] = [
         id: 1,
         number: '01',
         title: 'Studio Eclipse',
-        images: ['/website/work/eclipse-studio.webp', '/website/work/eclipse-studio.webp']
+        images: ['/website/work/eclipse-studio1.webp']
     },
     {
         id: 2,
         number: '02',
         title: 'Stepps.AI',
-        images: ['/website/work/stepps.webp']
+        images: ['/website/work/stepps1.webp', '/website/work/stepps2.webp', '/website/work/stepps3.webp', '/website/work/stepps4.webp']
     },
     {
         id: 3,
         number: '03',
         title: 'Lumenapps',
-        images: ['/website/work/lumenapps.webp']
+        images: ['/website/work/lumenapps1.webp', '/website/work/lumenapps2.webp']
     },
     {
         id: 4,
         number: '04',
         title: 'Travist',
-        images: ['/website/work/travist.webp']
+        images: ['/website/work/travist1.webp']
     }
 ];
 
