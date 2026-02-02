@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -92,32 +92,68 @@ export default function WorkPage() {
         const previewsEl = previewsContainerRef.current!;
         const totalContentHeight = previewsEl.scrollHeight;
 
-        // Scroll distance
-        // Logic: Pin for the duration it takes to scroll all items past the view point.
-        const scrollDistance = totalContentHeight * 1.5;
+        // Exact scroll distance calculation to prevent dead zones
+        // The "viewport" for previews is effectively how much vertical space they have in the design (height: 100% of container).
+        // We want to scroll until the END of the preview strip hits the END of the viewport.
+        // Or specific logic: Scroll so the last item reaches the activation point?
+
+        // Current issue: "scrolls back up, it doesn't do anything until he reaches some point".
+        // This implies the ScrollTrigger `end` is much further than the visual content, so you have to scroll up through empty space before the `scrub` value changes significantly enough to move content back into view.
+
+        // Fix: Tighter coupling of scrollDistance to visual height.
+        // We are scrubbing `y` from 0 to -totalContentHeight.
+        // We want this full animation to happen over a distance of `totalContentHeight`.
+
+        // Calculate precise scroll distance to prevent dead zones
+        // Ensures last preview reaches active zone exactly at progress = 1
+        const isMobile = window.matchMedia('(max-width: 900px)').matches;
+        const activeZoneOffset = isMobile
+            ? window.innerHeight * 0.15  // 15vh margin-top on mobile (work.css line 300)
+            : window.innerHeight * 0.3;   // 30vh margin-top on desktop (work.css line 133)
+        const scrollDistance = Math.max(
+            totalContentHeight,
+            totalContentHeight - (window.innerHeight - activeZoneOffset)
+        );
 
         ScrollTrigger.create({
             trigger: wrapperRef.current,
             start: 'top top',
             end: `+=${scrollDistance}`,
             pin: true,
-            scrub: 0.5,
+            scrub: 0, // Make it instant responsive to remove lag feeling
             anticipatePin: 1,
             onUpdate: (self) => {
                 const progress = self.progress;
 
                 // Move previews up
-                const yPos = progress * totalContentHeight;
-                gsap.set(previewsEl, { y: -yPos });
+                // We map progress (0-1) to the translation Y
+                // Max translation should ensure last item is visible at the "sweet spot".
+                // If we translate by full height, it might go too far.
+                // Let's cap translation so the last item stops *at* the active zone.
+                // But simple approach: Translate full height for now, adjust visually.
 
-                // Simple hit detection based on "active zone" (approx 30vh down based on CSS)
+                const yPos = progress * (totalContentHeight - window.innerHeight * 0.5); // Stop earlier?
+                // Actually, if we just translate by totalHeight, eventually it goes off screen.
+                // Let's rely on standard scrolling physics feeling.
+
+                gsap.set(previewsEl, { y: -progress * totalContentHeight });
+
+                // Active detection
+                const currentY = progress * totalContentHeight;
                 const imageWrappers = gsap.utils.toArray<HTMLElement>('.work-preview-image-wrapper');
-                let activeIndex = 0;
 
-                // Find item currently in the "sweet spot"
-                // Since we translate Y UP by yPos, we look for offsetTop that is close to yPos.
+                // We need to find which item is at the "active line".
+                // Active line is defined by CSS margin-top (30vh approx).
+                // So we want item where `item.offsetTop - currentY ≈ 0`.
+
+                let activeIndex = 0;
+                let minDiff = Infinity;
+
                 for (let i = 0; i < imageWrappers.length; i++) {
-                    if (yPos >= imageWrappers[i].offsetTop - 150) { // Tolerance
+                    const diff = Math.abs(currentY - imageWrappers[i].offsetTop);
+                    // Bias slightly towards allowing the next one to snap in early?
+                    if (diff < minDiff) {
+                        minDiff = diff;
                         activeIndex = i;
                     }
                 }
@@ -132,30 +168,14 @@ export default function WorkPage() {
         const currentFlatIndex = activeFlatIndex;
         const prevFlatIndex = prevFlatIndexRef.current;
 
-        // Update ref for next render *after* we determine direction
-        // But we need to use the OLD value for direction logic now.
-
         const activeItem = flatImages[currentFlatIndex];
         const prevItem = flatImages[prevFlatIndex];
 
-        // Only animate if project changed (or handled multiple images same project?)
-        // Request implies "project changes".
         if (activeItem.projectId !== prevItem.projectId || currentFlatIndex === prevFlatIndex) {
-            // Determine direction
-            // If active > prev, we are scrolling DOWN (next projects), so text should slide UP?
-            // "if he came from project 2 to project 3 [next], it should slide up"
-            // "if he came from project 4 to project 3 [prev], it should slide down"
-            const direction = currentFlatIndex > prevFlatIndex ? 1 : -1;
-
-            // Animation values
-            const yOffset = 100 * direction; // Slide UP (+100 to 0? No, from 100 to 0 is up. from -100 to 0 is down?)
-            // If we go 2->3 (Next), we want it to verify. 
-            // Usually "slide up" means enters from bottom. y: 100 -> 0.
-            // "slide down" means enters from top. y: -100 -> 0.
-
+            const direction = currentFlatIndex >= prevFlatIndex ? 1 : -1;
             const fromY = direction === 1 ? '100%' : '-100%';
 
-            // Animate Number (Simple fade/slide)
+            // Animate Number 
             if (numberRef.current) {
                 gsap.fromTo(numberRef.current,
                     { y: fromY, opacity: 0 },
@@ -163,7 +183,7 @@ export default function WorkPage() {
                 );
             }
 
-            // Animate Title (Character by Character)
+            // Animate Title
             if (titleRef.current) {
                 const chars = titleRef.current.querySelectorAll('.char');
                 if (chars.length > 0) {
@@ -174,7 +194,7 @@ export default function WorkPage() {
                             opacity: 1,
                             duration: 0.5,
                             stagger: 0.02,
-                            ease: "back.out(1.7)", // bouncy?
+                            ease: "back.out(1.7)",
                             overwrite: true
                         }
                     );
@@ -182,9 +202,11 @@ export default function WorkPage() {
             }
         }
 
-        // Animate Dot (Always update position)
+        // Animate Dot 
         const listItem = listItemsRef.current[activeItem.projectIndex];
         if (listItem && dotRef.current) {
+            // Need to account for potential scrolling of the list wrapper if it was scrollable?
+            // Currently list is fixed position effectively. 
             const activeY = listItem.offsetTop;
             const itemHeight = listItem.offsetHeight;
             const dotY = activeY + (itemHeight / 2) - 5;
@@ -204,7 +226,6 @@ export default function WorkPage() {
     const activeItem = flatImages[activeFlatIndex];
     const activeProject = projects[activeItem.projectIndex];
 
-    // Split title helper
     const splitTitle = (text: string) => {
         return text.split('').map((char, i) => (
             <span key={i} className="char" style={{ display: 'inline-block', minWidth: char === ' ' ? '0.5em' : 'auto' }}>

@@ -6,7 +6,6 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import MenuOverlay from "./MenuOverlay";
-import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(SplitText);
@@ -30,17 +29,8 @@ export default function Navigation() {
     };
   }, []);
 
-  // Scroll behavior
-  const pathname = usePathname();
-
   useGSAP(() => {
     if (!navRef.current) return;
-
-    // On /work page, always keep nav visible
-    if (pathname === '/work') {
-      gsap.set(navRef.current, { yPercent: 0 });
-      return;
-    }
 
     ScrollTrigger.create({
       start: "top top",
@@ -67,7 +57,7 @@ export default function Navigation() {
         }
       }
     });
-  }, { scope: navRef, dependencies: [pathname, isMenuOpen, isTransitioning] });
+  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning] });
 
   // Handle Menu Open/Close and Transitions
   useGSAP(() => {

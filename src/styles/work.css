@@ -13,12 +13,14 @@
 .work-container {
     display: flex;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
+    /* Enforce height to ensure ScrollTrigger pins correctly */
     position: relative;
     padding-top: 6rem;
     padding-bottom: 2rem;
     padding-left: 4rem;
     padding-right: 4rem;
+    box-sizing: border-box;
 }
 
 /* Desktop Layout */
@@ -26,7 +28,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
-    height: calc(100vh - 8rem);
+    height: 100%;
     gap: 2rem;
 }
 
@@ -39,7 +41,6 @@
     justify-content: flex-start;
     gap: 2rem;
     padding-top: 4rem;
-    /* Move active project spot down */
 }
 
 /* On Desktop: Info above Image */
@@ -50,7 +51,6 @@
     align-items: flex-start;
     width: 100%;
     margin-top: 0;
-    /* Padding handled by container pivot */
 }
 
 .work-display-image-container {
@@ -88,7 +88,6 @@
     overflow: hidden;
     text-align: right;
     display: flex;
-    /* Flex for character alignment if needed */
     justify-content: flex-end;
 }
 
@@ -102,7 +101,6 @@
     text-align: right;
     margin: 0;
     display: flex;
-    /* For splitting chars */
 }
 
 /* Right Side: Navigation & Previews */
@@ -114,9 +112,7 @@
     position: relative;
     overflow: hidden;
     align-items: flex-start;
-    /* Align closer to top */
     padding-top: 4rem;
-    /* Align vaguely with left side content start */
 }
 
 /* Vertical Carousel of Previews */
@@ -128,17 +124,13 @@
     mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
     display: flex;
     justify-content: center;
-    /* Center smaller previews */
 }
 
 .work-previews-container {
     position: relative;
     width: 60%;
-    /* Make previews smaller (width based) */
     padding-top: 0;
-    /* JS handles positioning relative to scroll, reset static padding */
     margin-top: 30vh;
-    /* Start lower visually but ScrollTrigger handles Y */
 }
 
 .work-project-group {
@@ -174,18 +166,12 @@
     width: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    /* Center list vertically in screen? Or align with previews? */
-    /* Request: "start around the top of the project list" implies previews align with list top? */
-    /* Let's align list to roughly center of screen or stick to layout */
     justify-content: flex-start;
     padding-top: 30vh;
-    /* Align text list start with preview start */
     gap: 0;
     padding-left: 2rem;
     position: relative;
     pointer-events: none;
-    /* Let scroll pass through? No need, pin does it. */
 }
 
 .work-list-items-container {
@@ -232,72 +218,87 @@
 /* Mobile Styling */
 @media (max-width: 900px) {
     .work-container {
-        padding: 5rem 1rem 1rem 1rem;
+        padding: 6rem 1rem 1rem 1rem;
         flex-direction: column;
-        height: auto;
-        min-height: auto;
-        /* Allow flexible height */
+        height: 100vh;
+        /* Keep fixed height for pinning */
+        overflow: hidden;
+        /* Prevent double scrollbars */
     }
 
     .work-grid {
         display: flex;
         flex-direction: column;
         gap: 0;
-        height: auto;
+        height: 100%;
     }
 
     /* Mobile: Top Section (Big Preview) */
     .work-display {
         order: 1;
-        flex: 0 0 auto;
+        flex: 1 1 auto;
+        /* Grow to take available space */
         gap: 1rem;
         margin-bottom: 1rem;
         padding-top: 0;
+        height: 50%;
+        /* Explicitly take top half */
+        justify-content: center;
     }
 
     .work-display-image-container {
         order: 1;
-        padding-bottom: 60%;
+        width: 100%;
+        height: 100%;
+        /* Fill container */
+        padding-bottom: 0;
+        /* Remove aspect ratio hack, rely on flex fill */
+        position: relative;
+    }
+
+    .work-display-image {
+        object-fit: cover;
+        /* or contain if full view is preferred */
     }
 
     .work-display-info {
         order: 2;
         margin-top: 0;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
+        position: absolute;
+        /* Overlay info on mobile? Or keep below? User design shows text separately. */
+        /* Design shows: Image top, then number left and name right below it. */
+        /* Let's keep it structurally below image but compact */
+        position: relative;
+        flex: 0 0 auto;
     }
 
-    .work-display-title {
-        text-align: right;
-    }
 
     /* Mobile: Bottom Section (Previews + List) */
     .work-navigation {
         order: 2;
-        flex: 0 0 auto;
-        /* Stop stretching */
+        flex: 1 1 auto;
+        /* Take remaining space */
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
+        /* Center vertically */
         gap: 1rem;
-        height: 50vh;
-        /* Fixed height for scrollable area */
+        height: 40%;
+        /* Take bottom chunk */
         padding-top: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        /* subtle separator */
     }
 
     .work-previews-col {
-        width: 50%;
+        width: 40%;
         mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
         height: 100%;
-        overflow: hidden;
-        /* GSAP moves inner container */
     }
 
     .work-previews-container {
-        width: 80%;
-        /* Slightly larger on mobile */
-        margin-top: 20vh;
-        /* Start lower */
+        width: 100%;
+        margin-top: 15vh;
+        /* Adjusted start */
     }
 
     .work-preview-image-wrapper {
@@ -305,10 +306,10 @@
     }
 
     .work-list-col {
-        width: 50%;
+        width: 60%;
         padding-left: 0;
-        padding-top: 20vh;
-        /* Align with previews start */
+        padding-top: 15vh;
+        /* Align with preview start */
         justify-content: flex-start;
         height: 100%;
     }
@@ -318,25 +319,13 @@
     }
 
     .work-list-item {
-        font-size: 0.8rem;
-        padding-left: 1rem;
+        font-size: 1rem;
+        /* readable size */
+        padding-left: 1.5rem;
     }
 
     .accent-dot-absolute {
-        width: 6px;
-        height: 6px;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .work-display-number,
-    .work-display-title {
-        font-size: 1.5rem;
-    }
-
-    .work-navigation {
-        height: 45vh;
-        /* Slightly smaller on small screens */
+        width: 8px;
+        height: 8px;
     }
 }
