@@ -17,6 +17,10 @@ export default function LenisScroll() {
             touchMultiplier: isMobile ? 1.5 : 2,
         });
 
+        if (document.body.style.overflow === "hidden") {
+            lenis.stop();
+        }
+
         lenis.on("scroll", ScrollTrigger.update);
 
         const ticker = (time: number) => {

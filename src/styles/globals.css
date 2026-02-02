@@ -33,6 +33,7 @@
   transform: scaleY(1);
   transform-origin: top;
   will-change: transform;
+  pointer-events: auto;
 }
 
 .transition-progress {
