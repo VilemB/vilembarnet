@@ -132,7 +132,6 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
 
         const handleMouseEnter = (e: MouseEvent) => {
             const link = e.currentTarget as HTMLElement;
-            link.style.color = "var(--color-accent)";
             scrambleVisible(link, 0, {
                 duration: 0.2,
                 charDelay: 40,
@@ -162,7 +161,10 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         <div
             ref={overlayRef}
             className="nav-overlay"
-            style={{ pointerEvents: isOpen ? "all" : "none" }}
+            style={{
+                pointerEvents: isOpen ? "all" : "none",
+                padding: "8rem 0 2rem 0"
+            }}
         >
             <div className="nav-background-clock">
                 <Clock />

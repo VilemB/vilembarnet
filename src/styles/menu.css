@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100svh;
-    background: rgba(0, 31, 61, 0.98);
+    background: var(--color-dark);
     backdrop-filter: blur(15px);
     color: var(--color-light);
     clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
@@ -42,19 +42,14 @@
     letter-spacing: -0.02em;
 }
 
-.nav-item a:hover {
-    color: var(--color-accent);
-}
-
 .nav-footer {
-    position: absolute;
-    bottom: 0;
     width: 100%;
-    padding: 3rem 4rem;
+    padding: 2rem 4rem 3rem 4rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     z-index: 2;
+    margin-top: auto;
 }
 
 .nav-footer-item.socials {
@@ -71,14 +66,8 @@
     transition: color 0.3s ease;
     letter-spacing: 0.05em;
     opacity: 1;
-    /* Pure light color */
 }
 
-.nav-footer-item a:hover {
-    color: var(--color-accent);
-}
-
-/* Watermark Clock - Still needs subtle opacity for watermark effect */
 .nav-background-clock {
     position: absolute;
     bottom: 4rem;

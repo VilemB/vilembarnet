@@ -11,7 +11,7 @@ export default function Hero() {
         {/* Center: PixelatedText */}
         <div className="hero-center">
           <div className="pixelated-text">
-            <PixelatedText>@barnetvilem</PixelatedText>
+            <PixelatedText>BARNETVILEM</PixelatedText>
           </div>
         </div>
 
