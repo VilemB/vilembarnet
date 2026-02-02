@@ -198,7 +198,9 @@ section {
   align-items: center;
   justify-content: center;
   width: 100%;
+  padding-top: 2rem;
 }
+
 
 /* Bottom Left: Description + CTA */
 .hero-footer-left {
@@ -306,8 +308,9 @@ section {
     min-height: 40vh;
     align-items: center;
     justify-content: center;
-    padding-top: 0;
+    padding-top: 2rem;
   }
+
 
   .hero-footer-left {
     grid-column: 1;
