@@ -117,6 +117,25 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 padding: "8rem 0 2rem 0"
             }}
         >
+            <div className="absolute top-0 left-0 w-full z-50 pointer-events-none">
+                <div className="top-nav-content">
+                    <div className="top-nav-left opacity-0"></div> {/* Spacer to match layout */}
+                    <div className="top-nav-right">
+                        <button
+                            onClick={onClose}
+                            className="top-nav-menu-button pointer-events-auto"
+                            aria-label="Close Menu"
+                        >
+                            <img
+                                src="/icons/menu.svg"
+                                alt="Close Menu"
+                                style={{ filter: "invert(1)" }}
+                            />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div className="nav-background-clock">
                 <Clock />
             </div>
