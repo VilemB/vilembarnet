@@ -84,6 +84,10 @@ export default function PageTransition() {
             ease: "power4.inOut",
             transformOrigin: "top",
             overwrite: true,
+            onStart: () => {
+                // Dispatch event to show navigation
+                window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
+            }
         }, "-=0.05");
     }, []);
 
@@ -146,6 +150,9 @@ export default function PageTransition() {
                     ease: "power4.inOut",
                     transformOrigin: "top",
                     overwrite: true,
+                    onStart: () => {
+                        window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
+                    }
                 }, "-=0.1");
             });
         };
@@ -201,6 +208,9 @@ export default function PageTransition() {
 
             // Lock scroll immediately
             lockScroll();
+
+            // Dispatch event for other components (like Navigation) to hide
+            window.dispatchEvent(new CustomEvent("pageTransitionStart"));
 
             // Close menu if open
             const menuBtn = document.querySelector(".top-nav-menu-button.menu-open") as HTMLButtonElement;

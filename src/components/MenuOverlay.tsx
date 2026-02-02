@@ -9,8 +9,8 @@ declare global {
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
+import { initRollAnimation } from "@/lib/animations/roll";
 import { SplitText } from "gsap/SplitText";
-import { scrambleIn, scrambleOut, scrambleVisible } from "@/lib/animations/scramble";
 import Clock from "./Clock";
 
 gsap.registerPlugin(SplitText);
@@ -40,25 +40,22 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         { name: "Github", href: "https://github.com/vilemb" },
     ];
 
-    const cleanupScrambleInstances = () => {
-        scrambleInstances.current.forEach((instance) => {
-            if (instance && instance.wordSplit) {
-                instance.wordSplit.revert();
-            }
-        });
-        scrambleInstances.current = [];
-    };
+    // Initialize roll animation for nav links
+    useEffect(() => {
+        if (!isOpen) return;
 
-    const resetAllTextToOriginal = () => {
-        const allLinks = overlayRef.current?.querySelectorAll("a");
-        allLinks?.forEach((link: any) => {
-            link.style.color = "";
-            const originalText = link.dataset.originalText || link.textContent;
-            if (link.querySelector(".char")) {
-                link.innerHTML = originalText;
-            }
+        const links = navItemsRef.current?.querySelectorAll(".nav-item a");
+        const cleanups: (() => void)[] = [];
+
+        links?.forEach((link: any) => {
+            const cleanup = initRollAnimation(link);
+            if (cleanup) cleanups.push(cleanup);
         });
-    };
+
+        return () => {
+            cleanups.forEach(c => c());
+        };
+    }, [isOpen]);
 
     useEffect(() => {
         if (!overlayRef.current) return;
@@ -74,36 +71,18 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 }
             });
 
-            cleanupScrambleInstances();
-            resetAllTextToOriginal();
-
-            // Animate nav items
+            // Animate items entrance
             const items = navItemsRef.current?.querySelectorAll(".nav-item");
-            items?.forEach((item: any, index: number) => {
-                const link = item.querySelector("a");
-                if (link) {
-                    gsap.set(item, { opacity: 1, transform: "translateY(0%)" });
-                    const instance = scrambleIn(link, 0.4 + index * 0.1, {
-                        duration: 0.2,
-                        charDelay: 40,
-                        stagger: 20,
-                        maxIterations: 8,
-                    });
-                    scrambleInstances.current.push(instance);
-                }
-            });
-
-            // Animate footer links
-            const footerLinks = footerRef.current?.querySelectorAll("a");
-            footerLinks?.forEach((link: any, index: number) => {
-                const instance = scrambleIn(link, 0.8 + index * 0.05, {
-                    duration: 0.15,
-                    charDelay: 30,
-                    stagger: 15,
-                    maxIterations: 5,
+            if (items && items.length > 0) {
+                gsap.to(items, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power4.out",
+                    delay: 0.4
                 });
-                scrambleInstances.current.push(instance);
-            });
+            }
 
         } else {
             // Close Menu
@@ -116,45 +95,17 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 }
             });
 
-            // Scramble out
-            const items = navItemsRef.current?.querySelectorAll(".nav-item a");
-            items?.forEach((link: any, index: number) => {
-                scrambleOut(link, index * 0.05);
-            });
+            // Reset items
+            const items = navItemsRef.current?.querySelectorAll(".nav-item");
+            if (items && items.length > 0) {
+                gsap.to(items, {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.4,
+                    ease: "power2.in"
+                });
+            }
         }
-    }, [isOpen]);
-
-    // Hover effects
-    useEffect(() => {
-        if (!isOpen) return;
-
-        const allLinks = overlayRef.current?.querySelectorAll("a");
-
-        const handleMouseEnter = (e: MouseEvent) => {
-            const link = e.currentTarget as HTMLElement;
-            scrambleVisible(link, 0, {
-                duration: 0.2,
-                charDelay: 40,
-                stagger: 20,
-            });
-        };
-
-        const handleMouseLeave = (e: MouseEvent) => {
-            const link = e.currentTarget as HTMLElement;
-            link.style.color = "";
-        };
-
-        allLinks?.forEach(link => {
-            link.addEventListener("mouseenter", handleMouseEnter as any);
-            link.addEventListener("mouseleave", handleMouseLeave as any);
-        });
-
-        return () => {
-            allLinks?.forEach(link => {
-                link.removeEventListener("mouseenter", handleMouseEnter as any);
-                link.removeEventListener("mouseleave", handleMouseLeave as any);
-            });
-        };
     }, [isOpen]);
 
     return (

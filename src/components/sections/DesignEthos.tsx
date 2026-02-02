@@ -13,6 +13,7 @@ if (typeof window !== "undefined") {
 export default function DesignEthos() {
     const sectionRef = useRef<HTMLElement>(null);
     const headingRef = useRef<HTMLHeadingElement>(null);
+    const bottomContentRef = useRef<HTMLDivElement>(null);
 
     const text = "DESIGN SHOULD EVOKE EMOTION AND FEEL NATURAL.";
     const words = text.split(" ");
@@ -21,22 +22,38 @@ export default function DesignEthos() {
         const wordsElements = headingRef.current?.querySelectorAll(".ethos-word");
         if (!wordsElements || wordsElements.length === 0) return;
 
-        // Create the timeline
+        // 1. Text color reveal (existing)
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: sectionRef.current,
-                start: "top 85%", // Starts earlier
-                end: "top 20%",   // Ends before it leaves the viewport
-                scrub: 1,         // Slightly more smoothing for Lenis
+                start: "top 85%",
+                end: "top 20%",
+                scrub: 1,
             }
         });
 
-        // Animate each word from a very light version of dark to the full dark color
         tl.to(wordsElements, {
-            color: "#001F3D", // --color-dark
+            color: "#001F3D",
             stagger: 0.1,
             ease: "power2.out",
         });
+
+        // 2. Content reveal (Button and description)
+        if (bottomContentRef.current) {
+            gsap.fromTo(bottomContentRef.current,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: bottomContentRef.current,
+                        start: "top 90%",
+                    }
+                }
+            );
+        }
 
     }, { scope: sectionRef });
 
@@ -53,19 +70,20 @@ export default function DesignEthos() {
                     </h2>
                 </div>
 
-                <div className="ethos-bottom-left">
-                    <Button href="/work" className="ethos-button">
-                        EXPLORE MY WORK
-                    </Button>
-                </div>
+                <div ref={bottomContentRef} className="ethos-bottom-content-wrapper" style={{ display: 'contents' }}>
+                    <div className="ethos-bottom-left">
+                        <Button href="/work" className="ethos-button">
+                            EXPLORE MY WORK
+                        </Button>
+                    </div>
 
-                <div className="ethos-bottom-right">
-                    <p className="ethos-text">
-                        BEYOND STRUCTURE AND USABILITY, DESIGN IS ABOUT HOW THINGS FEEL. I FOCUS ON BUILDING DIGITAL EXPERIENCES THAT EARN ATTENTION THROUGH THOUGHTFUL INTERACTION, VISUAL CLARITY, AND CARE FOR DETAIL, CREATING INTERFACES THAT FEEL NATURAL AND CONSIDERED.
-                    </p>
+                    <div className="ethos-bottom-right">
+                        <p className="ethos-text">
+                            BEYOND STRUCTURE AND USABILITY, DESIGN IS ABOUT HOW THINGS FEEL. I FOCUS ON BUILDING DIGITAL EXPERIENCES THAT EARN ATTENTION THROUGH THOUGHTFUL INTERACTION, VISUAL CLARITY, AND CARE FOR DETAIL, CREATING INTERFACES THAT FEEL NATURAL AND CONSIDERED.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
     );
 }
-

@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const projects = [
   { number: "01", name: "Studio Eclipse", image: "/work/eclipse-studio.webp" },
@@ -12,9 +19,31 @@ const projects = [
 
 export default function Work() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    const items = gsap.utils.toArray(".work-item");
+
+    items.forEach((item: any) => {
+      gsap.fromTo(item,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: item,
+            start: "top 92%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    });
+  }, { scope: sectionRef });
 
   return (
-    <section className="work" id="work">
+    <section ref={sectionRef} className="work" id="work">
       <div className="padding-section work-content">
         {projects.map((project, index) => (
           <div

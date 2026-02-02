@@ -1,17 +1,20 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Button from "@/components/Button";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function DrivenSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const bgImageRef = useRef<HTMLDivElement>(null);
+    const headingRef = useRef<HTMLHeadingElement>(null);
 
     useGSAP(() => {
         if (!bgImageRef.current || !sectionRef.current) return;
@@ -29,6 +32,21 @@ export default function DrivenSection() {
                 },
             }
         );
+
+        gsap.fromTo(headingRef.current,
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: headingRef.current,
+                    start: "top 92%",
+                }
+            }
+        );
+
     }, { scope: sectionRef });
 
     return (
@@ -47,7 +65,7 @@ export default function DrivenSection() {
 
             <div className="padding-section driven-content">
                 <div className="driven-top">
-                    <h2 className="driven-heading">
+                    <h2 ref={headingRef} className="driven-heading">
                         DRIVEN BY A PASSION<br />FOR BUILDING.
                     </h2>
                 </div>
