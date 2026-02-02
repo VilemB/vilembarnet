@@ -3,6 +3,7 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function PageTransition() {
     const pathname = usePathname();
@@ -25,8 +26,16 @@ export default function PageTransition() {
     };
 
     const unlockScroll = () => {
-        if (window.lenis) window.lenis.start();
         document.body.style.overflow = "";
+        if (window.lenis) {
+            window.lenis.start();
+            // Force Lenis to update after unlocking
+            requestAnimationFrame(() => {
+                if (window.lenis) {
+                    window.lenis.resize();
+                }
+            });
+        }
     };
 
     // Kill any running progress tween
@@ -61,6 +70,11 @@ export default function PageTransition() {
             gsap.set(progressRef.current, { opacity: 0 });
             isPendingRef.current = false;
             unlockScroll();
+
+            // Refresh ScrollTrigger after DOM is ready
+            requestAnimationFrame(() => {
+                ScrollTrigger.refresh();
+            });
             return;
         }
 
@@ -68,6 +82,11 @@ export default function PageTransition() {
             onComplete: () => {
                 isPendingRef.current = false;
                 unlockScroll();
+
+                // Refresh ScrollTrigger after page is revealed and scroll is unlocked
+                requestAnimationFrame(() => {
+                    ScrollTrigger.refresh();
+                });
             },
         });
 
@@ -133,7 +152,14 @@ export default function PageTransition() {
 
             requestAnimationFrame(() => {
                 const tl = gsap.timeline({
-                    onComplete: () => unlockScroll(),
+                    onComplete: () => {
+                        unlockScroll();
+
+                        // Refresh ScrollTrigger after initial page load
+                        requestAnimationFrame(() => {
+                            ScrollTrigger.refresh();
+                        });
+                    },
                 });
 
                 tl.to(progressRef.current, {
@@ -230,6 +256,10 @@ export default function PageTransition() {
             const tl = gsap.timeline({
                 onComplete: () => {
                     if (!isPendingRef.current) return;
+
+                    // Clean up old page (overlay covers screen, safe to revert)
+                    ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
+                    window.scrollTo(0, 0);
 
                     // Start progress animation: 0 → 90% over 3s (eases out so it slows down)
                     progressTweenRef.current = gsap.to(progressObjRef.current, {

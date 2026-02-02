@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(SplitText);
 
 export default function Navigation() {
+  const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -57,7 +59,7 @@ export default function Navigation() {
         }
       }
     });
-  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning] });
+  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning, pathname] });
 
   // Handle Menu Open/Close and Transitions
   useGSAP(() => {

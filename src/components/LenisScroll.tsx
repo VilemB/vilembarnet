@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function LenisScroll() {
+    const pathname = usePathname();
+
     useEffect(() => {
         const isMobile = window.innerWidth <= 1000;
 
@@ -16,10 +19,6 @@ export default function LenisScroll() {
             syncTouch: true,
             touchMultiplier: isMobile ? 1.5 : 2,
         });
-
-        if (document.body.style.overflow === "hidden") {
-            lenis.stop();
-        }
 
         lenis.on("scroll", ScrollTrigger.update);
 
@@ -32,12 +31,33 @@ export default function LenisScroll() {
 
         window.lenis = lenis;
 
+        // Start Lenis immediately
+        lenis.start();
+
         return () => {
             gsap.ticker.remove(ticker);
             lenis.destroy();
             window.lenis = null;
         };
     }, []);
+
+    useEffect(() => {
+        // Reset scroll position on route change
+        window.scrollTo(0, 0);
+
+        if (window.lenis) {
+            // Ensure Lenis is started (in case it was stopped during transition)
+            window.lenis.start();
+
+            // Reset scroll position immediately
+            window.lenis.scrollTo(0, { immediate: true, force: true });
+
+            // Refresh ScrollTrigger after a brief delay to ensure DOM is ready
+            requestAnimationFrame(() => {
+                ScrollTrigger.refresh();
+            });
+        }
+    }, [pathname]);
 
     return null;
 }
