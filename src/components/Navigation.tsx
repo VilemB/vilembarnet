@@ -38,11 +38,16 @@ export default function Navigation() {
     });
   }, { scope: navRef, dependencies: [isMenuOpen] });
 
-  // Sync background state with menu state with a delay when closing
+  // Sync background state with menu state with a delay
   useEffect(() => {
     if (isMenuOpen) {
-      setShowNavBackground(false);
+      // Delay transparency and light text until overlay is almost fully expanded
+      const timer = setTimeout(() => {
+        setShowNavBackground(false);
+      }, 700);
+      return () => clearTimeout(timer);
     } else {
+      // When closing, wait for overlay to start closing before switching back
       const timer = setTimeout(() => {
         setShowNavBackground(true);
       }, 600);
@@ -53,13 +58,50 @@ export default function Navigation() {
   useGSAP(() => {
     if (!navRef.current) return;
 
-    if (showNavBackground && !isMenuOpen) {
+    if (isMenuOpen) {
+      // On menu open: hide the nav quickly so it doesn't transition color while visible
+      gsap.to(navRef.current, {
+        yPercent: -100,
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
+    } else if (!isMenuOpen && !showNavBackground) {
+      // On menu close start: slide it out if it was in the menu state
+      gsap.to(navRef.current, {
+        yPercent: -100,
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
+    }
+  }, { scope: navRef, dependencies: [isMenuOpen, showNavBackground] });
+
+  useGSAP(() => {
+    if (!navRef.current) return;
+
+    if (!showNavBackground && isMenuOpen) {
+      // After showNavBackground turns false (menu is open), animate it back in
+      gsap.fromTo(navRef.current,
+        { yPercent: -100 },
+        {
+          yPercent: 0,
+          duration: 0.8,
+          ease: "power4.out",
+          delay: 0.1
+        }
+      );
+    } else if (showNavBackground && !isMenuOpen) {
+      // When closing is done and background is restored, slide it back in for the page
       gsap.fromTo(navRef.current,
         { yPercent: -100, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 0.8, ease: "power4.out" }
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power4.out"
+        }
       );
     }
-  }, { scope: navRef, dependencies: [showNavBackground] });
+  }, { scope: navRef, dependencies: [showNavBackground, isMenuOpen] });
 
   return (
     <>
@@ -68,8 +110,7 @@ export default function Navigation() {
         className={`top-navigation ${!showNavBackground ? 'nav-open' : ''}`}
         style={{
           backgroundColor: !showNavBackground ? 'transparent' : 'var(--color-light)',
-          borderBottom: !showNavBackground ? 'none' : '1px solid transparent',
-          transition: 'background-color 0.8s ease'
+          borderBottom: !showNavBackground ? 'none' : '1px solid transparent'
         }}
       >
         <div className="top-nav-content">
