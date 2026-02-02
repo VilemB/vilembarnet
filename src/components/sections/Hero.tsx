@@ -1,8 +1,8 @@
 "use client";
 
 import PixelatedText from "@/components/PixelatedText";
-import Link from "next/link";
 import Clock from "@/components/Clock";
+import Button from "@/components/Button";
 
 export default function Hero() {
   return (
@@ -20,9 +20,9 @@ export default function Hero() {
           <p className="hero-description">
             I design and build digital experiences with clarity and intention.
           </p>
-          <Link href="mailto:barnetv7@gmail.com" className="cta-button">
+          <Button href="mailto:barnetv7@gmail.com">
             Work With Me
-          </Link>
+          </Button>
         </div>
 
         {/* Bottom Right: Scroll Hint */}
