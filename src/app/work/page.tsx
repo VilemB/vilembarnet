@@ -43,7 +43,6 @@ const projects: Project[] = [
     }
 ];
 
-// Flat list helper for indexing
 type FlatImage = {
     uniqueId: string;
     projectId: number;

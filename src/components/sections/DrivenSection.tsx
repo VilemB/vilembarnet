@@ -5,7 +5,6 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import Button from "@/components/Button";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -75,12 +74,6 @@ export default function DrivenSection() {
                         <div className="driven-service">[ WEB APPLICATIONS ]</div>
                         <div className="driven-service">[ WEB DESIGN ]</div>
                         <div className="driven-service">[ BRANDING ]</div>
-                    </div>
-
-                    <div className="driven-bottom-right">
-                        <Button href="/about" className="driven-button">
-                            GET TO KNOW ME
-                        </Button>
                     </div>
                 </div>
             </div>

@@ -529,17 +529,6 @@ section {
   opacity: 0.9;
 }
 
-.driven-button {
-  border-color: var(--color-light) !important;
-  color: var(--color-light) !important;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-.driven-button:hover {
-  background-color: var(--color-light) !important;
-  color: var(--color-dark) !important;
-}
 
 @media (max-width: 900px) {
   .driven-section {
@@ -558,14 +547,6 @@ section {
     gap: 3rem;
   }
 
-  .driven-bottom-right {
-    width: 100%;
-  }
-
-  .driven-button {
-    width: 100%;
-    text-align: center;
-  }
 }
 
 

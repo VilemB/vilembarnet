@@ -29,8 +29,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
     const navLinks = [
         { name: "Home", href: "/" },
         { name: "Work", href: "/work" },
-        { name: "About", href: "/about" },
-        { name: "Contact", href: "/contact" },
+        { name: "Contact", href: "mailto:barnetv7@gmail.com" },
     ];
 
     const socials = [
