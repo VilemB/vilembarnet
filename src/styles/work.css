@@ -16,7 +16,6 @@
     min-height: 100vh;
     position: relative;
     padding-top: 6rem;
-    /* Space for nav */
     padding-bottom: 2rem;
     padding-left: 4rem;
     padding-right: 4rem;
@@ -28,7 +27,6 @@
     grid-template-columns: 1fr 1fr;
     width: 100%;
     height: calc(100vh - 8rem);
-    /* viewport minus padding */
     gap: 2rem;
 }
 
@@ -38,19 +36,33 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    /* Align bottom by default, adjusted specific elements */
+    justify-content: flex-start;
+    gap: 2rem;
+    padding-top: 4rem;
+    /* Move active project spot down */
+}
+
+/* On Desktop: Info above Image */
+.work-display-info {
+    order: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 0;
+    /* Padding handled by container pivot */
 }
 
 .work-display-image-container {
+    order: 2;
     position: relative;
     width: 100%;
     height: 0;
     padding-bottom: 60%;
-    /* Aspect ratio */
     overflow: hidden;
     margin-bottom: 1rem;
 }
+
 
 .work-display-image {
     position: absolute;
@@ -62,13 +74,6 @@
     transition: opacity 0.5s ease;
 }
 
-.work-display-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 100%;
-    margin-top: 1rem;
-}
 
 .work-display-number {
     font-family: var(--font-bricolage);
@@ -76,6 +81,15 @@
     font-weight: 300;
     color: var(--color-accent);
     line-height: 1;
+    overflow: hidden;
+}
+
+.work-display-title-wrapper {
+    overflow: hidden;
+    text-align: right;
+    display: flex;
+    /* Flex for character alignment if needed */
+    justify-content: flex-end;
 }
 
 .work-display-title {
@@ -86,6 +100,9 @@
     color: var(--color-dark);
     line-height: 1;
     text-align: right;
+    margin: 0;
+    display: flex;
+    /* For splitting chars */
 }
 
 /* Right Side: Navigation & Previews */
@@ -96,7 +113,10 @@
     gap: 2rem;
     position: relative;
     overflow: hidden;
-    /* Hide overflowing previews */
+    align-items: flex-start;
+    /* Align closer to top */
+    padding-top: 4rem;
+    /* Align vaguely with left side content start */
 }
 
 /* Vertical Carousel of Previews */
@@ -104,35 +124,42 @@
     flex: 1;
     position: relative;
     height: 100%;
-    /* Overflow for this column is manipulated by GSAP usually, but we need to hide native scroll */
     overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+    display: flex;
+    justify-content: center;
+    /* Center smaller previews */
 }
 
 .work-previews-container {
     position: relative;
-    width: 100%;
-    /* Will be transformed by GSAP */
+    width: 60%;
+    /* Make previews smaller (width based) */
+    padding-top: 0;
+    /* JS handles positioning relative to scroll, reset static padding */
+    margin-top: 30vh;
+    /* Start lower visually but ScrollTrigger handles Y */
 }
 
 .work-project-group {
     margin-bottom: 4rem;
-    /* Larger gap between projects */
 }
 
 .work-preview-image-wrapper {
     width: 100%;
     margin-bottom: 0.5rem;
-    /* Small gap between photos of same project */
     opacity: 0.3;
     transition: opacity 0.3s ease;
-}
-
-.work-preview-image-wrapper:last-child {
-    margin-bottom: 0;
+    filter: grayscale(100%);
 }
 
 .work-preview-image-wrapper.active {
     opacity: 1;
+    filter: grayscale(0%);
+}
+
+.work-preview-image-wrapper:last-child {
+    margin-bottom: 0;
 }
 
 .work-preview-image {
@@ -145,13 +172,28 @@
 /* Project List with Accent Dot */
 .work-list-col {
     width: 200px;
-    /* Fixed width for list */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1.5rem;
+    /* Center list vertically in screen? Or align with previews? */
+    /* Request: "start around the top of the project list" implies previews align with list top? */
+    /* Let's align list to roughly center of screen or stick to layout */
+    justify-content: flex-start;
+    padding-top: 30vh;
+    /* Align text list start with preview start */
+    gap: 0;
     padding-left: 2rem;
     position: relative;
+    pointer-events: none;
+    /* Let scroll pass through? No need, pin does it. */
+}
+
+.work-list-items-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    pointer-events: auto;
 }
 
 .work-list-item {
@@ -166,6 +208,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    padding-left: 1.5rem;
 }
 
 .work-list-item.active {
@@ -173,96 +216,127 @@
     font-weight: 500;
 }
 
-.accent-dot {
+/* Animated Accent Dot */
+.accent-dot-absolute {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 10px;
     height: 10px;
     background-color: var(--color-accent);
     border-radius: 50%;
-    display: inline-block;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.work-list-item.active .accent-dot {
-    opacity: 1;
+    display: block;
+    pointer-events: none;
 }
 
 /* Mobile Styling */
 @media (max-width: 900px) {
     .work-container {
-        padding: 6rem 2rem 2rem 2rem;
+        padding: 5rem 1rem 1rem 1rem;
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+        /* Allow flexible height */
     }
 
     .work-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        gap: 3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
         height: auto;
-        /* Allow growth */
-        min-height: calc(100vh - 8rem);
     }
 
-    /* Mobile: Display Top */
+    /* Mobile: Top Section (Big Preview) */
     .work-display {
         order: 1;
-        justify-content: flex-start;
+        flex: 0 0 auto;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding-top: 0;
     }
 
     .work-display-image-container {
-        padding-bottom: 70%;
-    }
-
-    /* Mobile: Previews Bottom */
-    .work-navigation {
-        order: 2;
-        flex-direction: column-reverse;
-        /* List at bottom? No request logic again: "mini previews ... on the bottom, and the big preview... on the top" */
-        /* It says "mini previews with accent dot and names are on the bottom, and the big preview ... on the top" */
-        /* So stacked: Big Preview (Top) | Carousel + List (Bottom) */
-    }
-
-    .work-navigation {
-        flex-direction: row;
-        /* Keep side by side for tablet/large phone? */
-        height: 50vh;
-        /* Give it space to scroll */
+        order: 1;
+        padding-bottom: 60%;
     }
 
     .work-display-info {
-        position: relative;
+        order: 2;
+        margin-top: 0;
         flex-direction: row;
+        align-items: flex-start;
         justify-content: space-between;
-        margin-top: 1rem;
-    }
-}
-
-@media (max-width: 720px) {
-    .work-container {
-        padding: 5rem 1rem 1rem 1rem;
     }
 
+    .work-display-title {
+        text-align: right;
+    }
+
+    /* Mobile: Bottom Section (Previews + List) */
     .work-navigation {
-        flex-direction: column-reverse;
-        /* List at very bottom */
-        height: auto;
-        gap: 1rem;
-    }
-
-    .work-list-col {
-        width: 100%;
+        order: 2;
+        flex: 0 0 auto;
+        /* Stop stretching */
         flex-direction: row;
-        flex-wrap: wrap;
-        padding-left: 0;
-        justify-content: center;
-        padding-bottom: 2rem;
+        align-items: flex-start;
+        gap: 1rem;
+        height: 50vh;
+        /* Fixed height for scrollable area */
+        padding-top: 0;
     }
 
     .work-previews-col {
-        height: 40vh;
-        /* Fixed height for scroll area */
+        width: 50%;
+        mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        height: 100%;
+        overflow: hidden;
+        /* GSAP moves inner container */
+    }
+
+    .work-previews-container {
+        width: 80%;
+        /* Slightly larger on mobile */
+        margin-top: 20vh;
+        /* Start lower */
+    }
+
+    .work-preview-image-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .work-list-col {
+        width: 50%;
+        padding-left: 0;
+        padding-top: 20vh;
+        /* Align with previews start */
+        justify-content: flex-start;
+        height: 100%;
+    }
+
+    .work-list-items-container {
+        gap: 1rem;
     }
 
     .work-list-item {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        padding-left: 1rem;
+    }
+
+    .accent-dot-absolute {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .work-display-number,
+    .work-display-title {
+        font-size: 1.5rem;
+    }
+
+    .work-navigation {
+        height: 45vh;
+        /* Slightly smaller on small screens */
     }
 }

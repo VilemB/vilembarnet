@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,7 +21,6 @@ const projects: Project[] = [
         id: 1,
         number: '01',
         title: 'Studio Eclipse',
-        // Creating distinct images for array provided (reusing same source for demo if needed, but logic supports multiple)
         images: ['/website/work/eclipse-studio.webp', '/website/work/eclipse-studio.webp']
     },
     {
@@ -70,99 +70,168 @@ const flattenImages = (projs: Project[]): FlatImage[] => {
 
 export default function WorkPage() {
     const [activeFlatIndex, setActiveFlatIndex] = useState(0);
+    // Track previous flat index to determine direction
+    const prevFlatIndexRef = useRef(0);
+
     const containerRef = useRef<HTMLDivElement>(null);
     const previewsContainerRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
+    // Refs for animated elements
+    const numberRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
+    const dotRef = useRef<HTMLSpanElement>(null);
+    const listItemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
     const flatImages = useRef(flattenImages(projects)).current;
 
-    useEffect(() => {
+    // Scroll Logic
+    useGSAP(() => {
         if (!wrapperRef.current || !previewsContainerRef.current) return;
 
-        const ctx = gsap.context(() => {
-            // Measure total height of the content
-            const previewsEl = previewsContainerRef.current!;
-            const totalContentHeight = previewsEl.scrollHeight;
-            const viewportHeight = window.innerHeight;
+        const previewsEl = previewsContainerRef.current!;
+        const totalContentHeight = previewsEl.scrollHeight;
 
-            // We want to scroll such that the last image eventually leaves or reaches top
-            // Basically we scroll the entire height of the container minus the viewport height (or just to end)
-            // But logic says: "based on the photo that is at the right spot (the initial place of the first photo)"
-            // The initial place is top of container.
-            // So we want to scroll until the last photo hits the top.
-            // Distance = totalContentHeight. 
-            // Actually, if we want the last photo to be active, we scroll until it hits top.
-            // If we scroll further, it goes out.
+        // Scroll distance
+        // Logic: Pin for the duration it takes to scroll all items past the view point.
+        const scrollDistance = totalContentHeight * 1.5;
 
-            // Let's refine: We want to pin the section.
-            // And scroll the preview column upwards.
-            // Distance: We need to move the container UP by (totalContentHeight - heightOfLastItem).
-            // This ensures last item stops at top.
-            // Or maybe just scroll entire height?
+        ScrollTrigger.create({
+            trigger: wrapperRef.current,
+            start: 'top top',
+            end: `+=${scrollDistance}`,
+            pin: true,
+            scrub: 0.5,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+                const progress = self.progress;
 
-            const lastItem = previewsEl.lastElementChild?.lastElementChild as HTMLElement; // unsafe assume structure
-            // safer calculation:
-            const maxTranslate = totalContentHeight - (viewportHeight / 2); // approximate
+                // Move previews up
+                const yPos = progress * totalContentHeight;
+                gsap.set(previewsEl, { y: -yPos });
 
-            // To be precise: We want to map scroll progress to the position of the previews.
-            // Let's capture the offsets of each image wrapper relative to the container.
-            const imageWrappers = gsap.utils.toArray<HTMLElement>('.work-preview-image-wrapper');
-            const offsets = imageWrappers.map(el => el.offsetTop);
+                // Simple hit detection based on "active zone" (approx 30vh down based on CSS)
+                const imageWrappers = gsap.utils.toArray<HTMLElement>('.work-preview-image-wrapper');
+                let activeIndex = 0;
 
-            // Pin distance: Make it feel substantial.
-            const scrollDistance = totalContentHeight;
-
-            ScrollTrigger.create({
-                trigger: wrapperRef.current,
-                start: 'top top',
-                end: `+=${scrollDistance}`,
-                pin: true,
-                scrub: 0.5, // smooth scrubbing
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    const currentScrollY = progress * (totalContentHeight - imageWrappers[0].offsetHeight); // Adjust max scroll
-
-                    // Move the container
-                    // We move it UP, so translateY is negative.
-                    gsap.set(previewsEl, { y: -currentScrollY });
-
-                    // Determine which item is active.
-                    // The "active point" is the top of the container (y=0 relative to view).
-                    // Since we translated container by -currentScrollY, the element at y=currentScrollY in original coords is now at 0.
-                    // So we find the element whose offset is closest to currentScrollY.
-
-                    // Simple search
-                    let activeIndex = 0;
-                    for (let i = 0; i < offsets.length; i++) {
-                        // We check if the currentScrollY is within this item's zone.
-                        // Zone is from its offset to next item's offset.
-                        // Actually, simplified: "closest to top".
-                        // If offsets[i] <= currentScrollY, it's a candidate.
-                        // We want the one that has most recently passed or is passing the top.
-                        if (currentScrollY >= offsets[i] - 100) { // -100 tolerance for entering
-                            activeIndex = i;
-                        }
+                // Find item currently in the "sweet spot"
+                // Since we translate Y UP by yPos, we look for offsetTop that is close to yPos.
+                for (let i = 0; i < imageWrappers.length; i++) {
+                    if (yPos >= imageWrappers[i].offsetTop - 150) { // Tolerance
+                        activeIndex = i;
                     }
-                    setActiveFlatIndex(activeIndex);
                 }
+                setActiveFlatIndex(activeIndex);
+            }
+        });
+
+    }, { scope: wrapperRef });
+
+    // Animation Logic (Text, Dot, Directional)
+    useGSAP(() => {
+        const currentFlatIndex = activeFlatIndex;
+        const prevFlatIndex = prevFlatIndexRef.current;
+
+        // Update ref for next render *after* we determine direction
+        // But we need to use the OLD value for direction logic now.
+
+        const activeItem = flatImages[currentFlatIndex];
+        const prevItem = flatImages[prevFlatIndex];
+
+        // Only animate if project changed (or handled multiple images same project?)
+        // Request implies "project changes".
+        if (activeItem.projectId !== prevItem.projectId || currentFlatIndex === prevFlatIndex) {
+            // Determine direction
+            // If active > prev, we are scrolling DOWN (next projects), so text should slide UP?
+            // "if he came from project 2 to project 3 [next], it should slide up"
+            // "if he came from project 4 to project 3 [prev], it should slide down"
+            const direction = currentFlatIndex > prevFlatIndex ? 1 : -1;
+
+            // Animation values
+            const yOffset = 100 * direction; // Slide UP (+100 to 0? No, from 100 to 0 is up. from -100 to 0 is down?)
+            // If we go 2->3 (Next), we want it to verify. 
+            // Usually "slide up" means enters from bottom. y: 100 -> 0.
+            // "slide down" means enters from top. y: -100 -> 0.
+
+            const fromY = direction === 1 ? '100%' : '-100%';
+
+            // Animate Number (Simple fade/slide)
+            if (numberRef.current) {
+                gsap.fromTo(numberRef.current,
+                    { y: fromY, opacity: 0 },
+                    { y: '0%', opacity: 1, duration: 0.5, ease: "power3.out", overwrite: true }
+                );
+            }
+
+            // Animate Title (Character by Character)
+            if (titleRef.current) {
+                const chars = titleRef.current.querySelectorAll('.char');
+                if (chars.length > 0) {
+                    gsap.fromTo(chars,
+                        { y: fromY, opacity: 0 },
+                        {
+                            y: '0%',
+                            opacity: 1,
+                            duration: 0.5,
+                            stagger: 0.02,
+                            ease: "back.out(1.7)", // bouncy?
+                            overwrite: true
+                        }
+                    );
+                }
+            }
+        }
+
+        // Animate Dot (Always update position)
+        const listItem = listItemsRef.current[activeItem.projectIndex];
+        if (listItem && dotRef.current) {
+            const activeY = listItem.offsetTop;
+            const itemHeight = listItem.offsetHeight;
+            const dotY = activeY + (itemHeight / 2) - 5;
+
+            gsap.to(dotRef.current, {
+                y: dotY,
+                duration: 0.3,
+                ease: "power2.out",
+                overwrite: true
             });
+        }
 
-        }, wrapperRef);
+        prevFlatIndexRef.current = currentFlatIndex;
 
-        return () => ctx.revert();
-    }, [flatImages]);
+    }, [activeFlatIndex]);
 
     const activeItem = flatImages[activeFlatIndex];
     const activeProject = projects[activeItem.projectIndex];
+
+    // Split title helper
+    const splitTitle = (text: string) => {
+        return text.split('').map((char, i) => (
+            <span key={i} className="char" style={{ display: 'inline-block', minWidth: char === ' ' ? '0.5em' : 'auto' }}>
+                {char}
+            </span>
+        ));
+    };
 
     return (
         <section ref={wrapperRef} className="work-section">
             <div className="work-container">
                 <div className="work-grid">
-                    {/* Active Display */}
+                    {/* Display Section */}
                     <div className="work-display">
+                        <div className="work-display-info">
+                            <div className="work-display-number" style={{ overflow: 'hidden' }}>
+                                <div ref={numberRef}>
+                                    {activeProject.number}
+                                </div>
+                            </div>
+                            <div className="work-display-title-wrapper" style={{ overflow: 'hidden' }}>
+                                <h2 ref={titleRef} className="work-display-title">
+                                    {splitTitle(activeProject.title)}
+                                </h2>
+                            </div>
+                        </div>
                         <div className="work-display-image-container">
-                            {/* Only show the current active photo */}
                             {flatImages.map((item, index) => (
                                 <Image
                                     key={item.uniqueId}
@@ -178,25 +247,16 @@ export default function WorkPage() {
                                 />
                             ))}
                         </div>
-                        <div className="work-display-info">
-                            <div className="work-display-number">
-                                {activeProject.number}
-                            </div>
-                            <h2 className="work-display-title">
-                                {activeProject.title}
-                            </h2>
-                        </div>
                     </div>
 
-                    {/* Navigation */}
+                    {/* Navigation Section */}
                     <div className="work-navigation">
-                        {/* Carousel */}
+                        {/* Previews */}
                         <div className="work-previews-col">
                             <div ref={previewsContainerRef} className="work-previews-container">
                                 {projects.map((project, pIdx) => (
                                     <div key={project.id} className="work-project-group">
                                         {project.images.map((img, imgIdx) => {
-                                            // Find global index for matching
                                             const globalIndex = flatImages.findIndex(
                                                 f => f.projectId === project.id && f.indexInProject === imgIdx
                                             );
@@ -208,8 +268,8 @@ export default function WorkPage() {
                                                     <Image
                                                         src={img}
                                                         alt="preview"
-                                                        width={500}
-                                                        height={300}
+                                                        width={300}
+                                                        height={200}
                                                         className="work-preview-image"
                                                     />
                                                 </div>
@@ -220,17 +280,20 @@ export default function WorkPage() {
                             </div>
                         </div>
 
-                        {/* List - now driven by activeProject, not activeFlatIndex directly */}
+                        {/* List */}
                         <div className="work-list-col">
-                            {projects.map((project, index) => (
-                                <div
-                                    key={project.id}
-                                    className={`work-list-item ${index === activeItem.projectIndex ? 'active' : ''}`}
-                                >
-                                    <span className="accent-dot"></span>
-                                    {project.title}
-                                </div>
-                            ))}
+                            <div className="work-list-items-container">
+                                <span ref={dotRef} className="accent-dot-absolute"></span>
+                                {projects.map((project, index) => (
+                                    <div
+                                        key={project.id}
+                                        ref={el => { listItemsRef.current[index] = el; }}
+                                        className={`work-list-item ${index === activeItem.projectIndex ? 'active' : ''}`}
+                                    >
+                                        {project.title}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
