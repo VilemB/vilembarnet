@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./navbar.css";
 @import "./pixelated-text.css";
+@import "./menu.css";
 
 :root {
   --color-light: #F3F0F0;

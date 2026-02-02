@@ -25,9 +25,11 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* Bottom Right: Location + Clock */}
+        {/* Bottom Right: Scroll Hint */}
         <div className="hero-footer-right">
-          <Clock />
+          <div className="scroll-hint">
+            [ SCROLL TO CONTINUE ]
+          </div>
         </div>
       </div>
     </section>
