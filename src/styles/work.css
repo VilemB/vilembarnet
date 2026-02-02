@@ -272,6 +272,14 @@
         flex: 0 0 auto;
     }
 
+    .work-display-number {
+        font-size: clamp(1.25rem, 3vw, 2rem);
+    }
+
+    .work-display-title {
+        font-size: clamp(1.25rem, 3vw, 2rem);
+    }
+
 
     /* Mobile: Bottom Section (Previews + List) */
     .work-navigation {
