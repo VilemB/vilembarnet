@@ -9,6 +9,44 @@
   --color-accent: #ED985F;
 }
 
+/* page transition */
+.transition-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transition-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-dark);
+  transform: scaleY(1);
+  transform-origin: top;
+  will-change: transform;
+}
+
+.transition-progress {
+  position: relative;
+  z-index: 1001;
+  color: var(--color-light);
+  font-family: var(--font-bricolage), sans-serif;
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
 @theme {
   --color-light: #F3F0F0;
   --color-dark: #001F3D;

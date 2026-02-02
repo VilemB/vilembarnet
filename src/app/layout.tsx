@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/Footer";
 import LenisScroll from "@/components/LenisScroll";
 import Navigation from "@/components/Navigation";
+import PageTransition from "@/components/PageTransition";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
@@ -143,6 +144,7 @@ export default function RootLayout({
       <body
         className={`${bricolageGrotesque.variable} antialiased`}
       >
+        <PageTransition />
         <LenisScroll />
         <div className="main-layout">
           <Navigation />
