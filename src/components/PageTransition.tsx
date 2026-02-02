@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 
@@ -9,47 +9,165 @@ export default function PageTransition() {
     const router = useRouter();
     const overlayRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
+    const isPendingRef = useRef(false);
+    const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const progressTweenRef = useRef<gsap.core.Tween | null>(null);
+    const progressObjRef = useRef({ value: 0 });
     const [progress, setProgress] = useState(0);
-    const [isPending, setIsPending] = useState(false);
 
-    // Initial reveal on site entry (Loader)
-    useEffect(() => {
-        const tl = gsap.timeline();
+    const prefersReducedMotion = () =>
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        // Set initial state
-        gsap.set(overlayRef.current, { scaleY: 1, transformOrigin: "top" });
-        gsap.set(progressRef.current, { opacity: 1 });
+    const lockScroll = () => {
+        if (window.lenis) window.lenis.stop();
+        document.body.style.overflow = "hidden";
+    };
 
-        // Simulate initial loading progress
-        tl.to({}, {
-            duration: 1.2,
-            onUpdate: function () {
-                setProgress(Math.round(this.progress() * 100));
-            }
+    const unlockScroll = () => {
+        if (window.lenis) window.lenis.start();
+        document.body.style.overflow = "";
+    };
+
+    // Kill any running progress tween
+    const killProgressTween = () => {
+        if (progressTweenRef.current) {
+            progressTweenRef.current.kill();
+            progressTweenRef.current = null;
+        }
+    };
+
+    // Reveal the page (shared between initial load and transitions)
+    const revealPage = useCallback(() => {
+        if (loadingTimerRef.current) {
+            clearTimeout(loadingTimerRef.current);
+            loadingTimerRef.current = null;
+        }
+        if (fallbackTimerRef.current) {
+            clearTimeout(fallbackTimerRef.current);
+            fallbackTimerRef.current = null;
+        }
+
+        // Snap progress to 100%
+        killProgressTween();
+        if (progressRef.current) gsap.killTweensOf(progressRef.current);
+        if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
+
+        progressObjRef.current.value = 100;
+        setProgress(100);
+
+        if (prefersReducedMotion()) {
+            gsap.set(overlayRef.current, { scaleY: 0 });
+            gsap.set(progressRef.current, { opacity: 0 });
+            isPendingRef.current = false;
+            unlockScroll();
+            return;
+        }
+
+        const tl = gsap.timeline({
+            onComplete: () => {
+                isPendingRef.current = false;
+                unlockScroll();
+            },
         });
 
-        // Fade out progress
         tl.to(progressRef.current, {
             opacity: 0,
-            duration: 0.4,
-            ease: "power2.inOut"
+            duration: 0.2,
+            ease: "power2.inOut",
+            overwrite: true,
         });
 
-        // Reveal page
         tl.to(overlayRef.current, {
             scaleY: 0,
-            duration: 0.8,
+            duration: 0.6,
             ease: "power4.inOut",
-            transformOrigin: "top"
-        }, "-=0.1");
+            transformOrigin: "top",
+            overwrite: true,
+        }, "-=0.05");
     }, []);
 
-    // Intercept internal link clicks to trigger transition
+    // Initial reveal — waits for the page to actually be ready
+    useEffect(() => {
+        lockScroll();
+
+        if (prefersReducedMotion()) {
+            gsap.set(overlayRef.current, { scaleY: 0 });
+            unlockScroll();
+            return;
+        }
+
+        gsap.set(overlayRef.current, { scaleY: 1, transformOrigin: "top" });
+
+        // Show progress during initial load
+        gsap.set(progressRef.current, { opacity: 1 });
+        progressObjRef.current.value = 0;
+        setProgress(0);
+
+        // Animate progress toward 90% while page loads
+        progressTweenRef.current = gsap.to(progressObjRef.current, {
+            value: 90,
+            duration: 3,
+            ease: "power2.out",
+            onUpdate: () => {
+                setProgress(Math.round(progressObjRef.current.value));
+            },
+        });
+
+        let revealed = false;
+        const reveal = () => {
+            if (revealed) return;
+            revealed = true;
+
+            // Snap to 100% and reveal
+            killProgressTween();
+            if (progressRef.current) gsap.killTweensOf(progressRef.current);
+            if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
+
+            progressObjRef.current.value = 100;
+            setProgress(100);
+
+            requestAnimationFrame(() => {
+                const tl = gsap.timeline({
+                    onComplete: () => unlockScroll(),
+                });
+
+                tl.to(progressRef.current, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: "power2.inOut",
+                    delay: 0.15,
+                    overwrite: true,
+                });
+
+                tl.to(overlayRef.current, {
+                    scaleY: 0,
+                    duration: 0.8,
+                    ease: "power4.inOut",
+                    transformOrigin: "top",
+                    overwrite: true,
+                }, "-=0.1");
+            });
+        };
+
+        if (document.readyState === "complete") {
+            reveal();
+        } else {
+            window.addEventListener("load", reveal, { once: true });
+            // Fallback: don't block the user longer than 3s
+            const fallback = setTimeout(reveal, 3000);
+            return () => {
+                window.removeEventListener("load", reveal);
+                clearTimeout(fallback);
+            };
+        }
+    }, []);
+
+    // Intercept internal link clicks
     useEffect(() => {
         const handleLinkClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
             const link = target.closest("a");
-
             if (!link) return;
 
             const href = link.getAttribute("href");
@@ -67,7 +185,7 @@ export default function PageTransition() {
                 return;
             }
 
-            // Skip same page navigation (unless we want to trigger it anyway)
+            // Skip same page navigation (just close menu if open)
             if (href === pathname || (href === "/" && pathname === "/")) {
                 const menuBtn = document.querySelector(".top-nav-menu-button.menu-open") as HTMLButtonElement;
                 if (menuBtn) {
@@ -78,77 +196,79 @@ export default function PageTransition() {
             }
 
             e.preventDefault();
+            if (isPendingRef.current) return;
+            isPendingRef.current = true;
 
-            if (isPending) return;
-            setIsPending(true);
+            // Lock scroll immediately
+            lockScroll();
 
             // Close menu if open
             const menuBtn = document.querySelector(".top-nav-menu-button.menu-open") as HTMLButtonElement;
             if (menuBtn) menuBtn.click();
 
-            // Start transition animation (Covering)
+            if (prefersReducedMotion()) {
+                router.push(href);
+                return;
+            }
+
+            // Reset progress
+            killProgressTween();
+            progressObjRef.current.value = 0;
+            setProgress(0);
+
+            // Quick cover (~300ms), then navigate immediately
             const tl = gsap.timeline({
                 onComplete: () => {
+                    if (!isPendingRef.current) return;
+
+                    // Start progress animation: 0 → 90% over 3s (eases out so it slows down)
+                    progressTweenRef.current = gsap.to(progressObjRef.current, {
+                        value: 90,
+                        duration: 3,
+                        ease: "power2.out",
+                        onUpdate: () => {
+                            setProgress(Math.round(progressObjRef.current.value));
+                        },
+                    });
+
+                    // Show progress immediately (overlay is already covering the screen)
+                    gsap.to(progressRef.current, {
+                        opacity: 1,
+                        duration: 0.3,
+                        ease: "power2.out",
+                        overwrite: true,
+                    });
+
+                    // Start navigation
                     router.push(href);
-                }
+
+                    // Safety fallback: reveal after 5s no matter what
+                    fallbackTimerRef.current = setTimeout(() => {
+                        revealPage();
+                    }, 5000);
+                },
             });
 
-            // Cover screen from bottom
             tl.set(overlayRef.current, { transformOrigin: "bottom" });
             tl.to(overlayRef.current, {
                 scaleY: 1,
-                duration: 0.6,
-                ease: "power4.inOut"
-            });
-
-            // Show and animate progress
-            tl.to(progressRef.current, {
-                opacity: 1,
                 duration: 0.3,
-                ease: "power2.out"
-            }, "-=0.2");
-
-            tl.to({}, {
-                duration: 0.7,
-                onUpdate: function () {
-                    setProgress(Math.round(this.progress() * 100));
-                }
+                ease: "power4.inOut",
             });
         };
 
         document.addEventListener("click", handleLinkClick, { capture: true });
         return () => document.removeEventListener("click", handleLinkClick, { capture: true });
-    }, [pathname, router, isPending]);
+    }, [pathname, router, revealPage]);
 
-    // Reveal after pathname change
+    // Reveal after pathname changes (navigation complete)
     useEffect(() => {
-        // Check if we are currently covered (scaleY is 1)
-        const scaleY = gsap.getProperty(overlayRef.current, "scaleY") as number;
-
-        if (scaleY > 0.9) {
-            const tl = gsap.timeline({
-                onComplete: () => setIsPending(false)
-            });
-
-            // Delay slightly to ensure page is rendered
-            tl.to(progressRef.current, {
-                opacity: 0,
-                duration: 0.3,
-                ease: "power2.inOut",
-                delay: 0.2
-            });
-
-            tl.to(overlayRef.current, {
-                scaleY: 0,
-                duration: 0.8,
-                ease: "power4.inOut",
-                transformOrigin: "top"
-            }, "-=0.1");
-        }
-    }, [pathname]);
+        if (!isPendingRef.current) return;
+        revealPage();
+    }, [pathname, revealPage]);
 
     return (
-        <div className="transition-container">
+        <div className="transition-container" role="presentation" aria-hidden="true">
             <div ref={overlayRef} className="transition-overlay" />
             <div ref={progressRef} className="transition-progress">
                 [&nbsp;&nbsp;{progress}%&nbsp;&nbsp;]
