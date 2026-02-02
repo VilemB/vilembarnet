@@ -219,6 +219,7 @@ section {
   line-height: 1.6;
   color: var(--color-dark);
   font-weight: 400;
+  text-transform: uppercase;
   max-width: 40ch;
   margin: 0;
   opacity: 0.9;
@@ -494,6 +495,55 @@ section {
 }
 
 
+/* Contact CTA Section */
+.contact-cta-section {
+  width: 100%;
+  padding: 10rem 0;
+  background-color: var(--color-light);
+}
+
+.contact-cta-container {
+  text-align: left;
+  width: 100%;
+}
+
+.contact-cta-heading {
+  font-size: clamp(2.5rem, 8vw, 8rem);
+  font-weight: 500;
+  color: var(--color-dark);
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.contact-link {
+  display: block;
+  color: #5C748E;
+  font-size: clamp(2.5rem, 8vw, 8rem);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 12px;
+  text-decoration-thickness: 3px;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .contact-cta-section {
+    padding: 6rem 0;
+  }
+
+  .contact-cta-heading {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+  }
+
+  .mobile-only {
+    display: block;
+  }
+}
+
 .about-container {
   min-height: 100svh;
   width: 100%;
@@ -710,10 +760,11 @@ section {
 }
 
 .footer-top a {
-  font-size: clamp(0.85rem, 1.5vw, 2rem);
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
   font-weight: 400;
   color: var(--color-dark);
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .footer-logo {
@@ -735,10 +786,11 @@ section {
 }
 
 .footer-bottom p {
-  font-size: clamp(0.8rem, 1.2vw, 1.5rem);
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
   font-weight: 400;
   color: var(--color-dark);
   margin: 0;
+  text-transform: uppercase;
 }
 
 @media (max-width: 720px) {

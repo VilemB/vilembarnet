@@ -174,7 +174,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 {navLinks.map((link) => (
                     <div key={link.name} className="nav-item">
                         <Link href={link.href} onClick={onClose}>
-                            {link.name}
+                            {link.name.toUpperCase()}
                         </Link>
                     </div>
                 ))}
@@ -184,7 +184,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 <div className="nav-footer-item socials">
                     {socials.map((social) => (
                         <a key={social.name} href={social.href} target="_blank" rel="noopener noreferrer">
-                            {social.name}
+                            {social.name.toUpperCase()}
                         </a>
                     ))}
                 </div>

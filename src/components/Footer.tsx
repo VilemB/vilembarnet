@@ -7,10 +7,10 @@ export default function Footer() {
             <div className="footer-container">
                 <div className="footer-top">
                     <Link href="https://x.com/barnetvilem" target="_blank" rel="noopener noreferrer">
-                        X (Twitter)
+                        X (TWITTER)
                     </Link>
                     <Link href="https://www.linkedin.com/in/vilém-barnet-497003365/" target="_blank" rel="noopener noreferrer">
-                        LinkedIn
+                        LINKEDIN
                     </Link>
                     <Link href="/" className="footer-logo">
                         <Image
@@ -22,14 +22,14 @@ export default function Footer() {
                         />
                     </Link>
                     <Link href="https://instagram.com/barnetvilem" target="_blank" rel="noopener noreferrer">
-                        Instagram
+                        INSTAGRAM
                     </Link>
                     <Link href="https://github.com/vilemb" target="_blank" rel="noopener noreferrer">
-                        Github
+                        GITHUB
                     </Link>
                 </div>
                 <div className="footer-bottom">
-                    <p>© 2026 Vilém Barnet</p>
+                    <p>© 2026 VILÉM BARNET</p>
                 </div>
             </div>
         </footer>

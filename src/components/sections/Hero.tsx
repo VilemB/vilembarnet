@@ -18,10 +18,10 @@ export default function Hero() {
         {/* Bottom Left: Description + CTA */}
         <div className="hero-footer-left">
           <p className="hero-description">
-            I design and build digital experiences with clarity and intention.
+            I DESIGN AND BUILD DIGITAL EXPERIENCES WITH CLARITY AND INTENTION.
           </p>
           <Button href="mailto:barnetv7@gmail.com">
-            Work With Me
+            WORK WITH ME
           </Button>
         </div>
 

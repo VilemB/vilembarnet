@@ -54,9 +54,9 @@ export default function DrivenSection() {
 
                 <div className="driven-bottom">
                     <div className="driven-bottom-left">
-                        <div className="driven-service">WEB APPLICATIONS</div>
-                        <div className="driven-service">WEB DESIGN</div>
-                        <div className="driven-service">BRANDING</div>
+                        <div className="driven-service">[ WEB APPLICATIONS ]</div>
+                        <div className="driven-service">[ WEB DESIGN ]</div>
+                        <div className="driven-service">[ BRANDING ]</div>
                     </div>
 
                     <div className="driven-bottom-right">
