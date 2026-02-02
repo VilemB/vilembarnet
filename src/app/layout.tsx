@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import Footer from "@/components/Footer";
 import LenisScroll from "@/components/LenisScroll";
 import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
@@ -149,7 +148,6 @@ export default function RootLayout({
         <div className="main-layout">
           <Navigation />
           <main>{children}</main>
-          <Footer />
         </div>
         <Analytics />
       </body>

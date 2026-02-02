@@ -1,0 +1,268 @@
+/* Work Page Styles */
+
+.work-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-light);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.work-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 6rem;
+    /* Space for nav */
+    padding-bottom: 2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+}
+
+/* Desktop Layout */
+.work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    height: calc(100vh - 8rem);
+    /* viewport minus padding */
+    gap: 2rem;
+}
+
+/* Left Side: Active Project Display */
+.work-display {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Align bottom by default, adjusted specific elements */
+}
+
+.work-display-image-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 60%;
+    /* Aspect ratio */
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.work-display-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+}
+
+.work-display-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.work-display-number {
+    font-family: var(--font-bricolage);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 300;
+    color: var(--color-accent);
+    line-height: 1;
+}
+
+.work-display-title {
+    font-family: var(--font-bricolage);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 300;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    line-height: 1;
+    text-align: right;
+}
+
+/* Right Side: Navigation & Previews */
+.work-navigation {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+    /* Hide overflowing previews */
+}
+
+/* Vertical Carousel of Previews */
+.work-previews-col {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    /* Overflow for this column is manipulated by GSAP usually, but we need to hide native scroll */
+    overflow: hidden;
+}
+
+.work-previews-container {
+    position: relative;
+    width: 100%;
+    /* Will be transformed by GSAP */
+}
+
+.work-project-group {
+    margin-bottom: 4rem;
+    /* Larger gap between projects */
+}
+
+.work-preview-image-wrapper {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    /* Small gap between photos of same project */
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.work-preview-image-wrapper:last-child {
+    margin-bottom: 0;
+}
+
+.work-preview-image-wrapper.active {
+    opacity: 1;
+}
+
+.work-preview-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Project List with Accent Dot */
+.work-list-col {
+    width: 200px;
+    /* Fixed width for list */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.work-list-item {
+    position: relative;
+    font-family: var(--font-bricolage);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.work-list-item.active {
+    opacity: 1;
+    font-weight: 500;
+}
+
+.accent-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.work-list-item.active .accent-dot {
+    opacity: 1;
+}
+
+/* Mobile Styling */
+@media (max-width: 900px) {
+    .work-container {
+        padding: 6rem 2rem 2rem 2rem;
+    }
+
+    .work-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        gap: 3rem;
+        height: auto;
+        /* Allow growth */
+        min-height: calc(100vh - 8rem);
+    }
+
+    /* Mobile: Display Top */
+    .work-display {
+        order: 1;
+        justify-content: flex-start;
+    }
+
+    .work-display-image-container {
+        padding-bottom: 70%;
+    }
+
+    /* Mobile: Previews Bottom */
+    .work-navigation {
+        order: 2;
+        flex-direction: column-reverse;
+        /* List at bottom? No request logic again: "mini previews ... on the bottom, and the big preview... on the top" */
+        /* It says "mini previews with accent dot and names are on the bottom, and the big preview ... on the top" */
+        /* So stacked: Big Preview (Top) | Carousel + List (Bottom) */
+    }
+
+    .work-navigation {
+        flex-direction: row;
+        /* Keep side by side for tablet/large phone? */
+        height: 50vh;
+        /* Give it space to scroll */
+    }
+
+    .work-display-info {
+        position: relative;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 720px) {
+    .work-container {
+        padding: 5rem 1rem 1rem 1rem;
+    }
+
+    .work-navigation {
+        flex-direction: column-reverse;
+        /* List at very bottom */
+        height: auto;
+        gap: 1rem;
+    }
+
+    .work-list-col {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-left: 0;
+        justify-content: center;
+        padding-bottom: 2rem;
+    }
+
+    .work-previews-col {
+        height: 40vh;
+        /* Fixed height for scroll area */
+    }
+
+    .work-list-item {
+        font-size: 0.9rem;
+    }
+}

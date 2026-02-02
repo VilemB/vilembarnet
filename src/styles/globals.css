@@ -2,6 +2,7 @@
 @import "./navbar.css";
 @import "./pixelated-text.css";
 @import "./menu.css";
+@import "./work.css";
 
 :root {
   --color-light: #F3F0F0;
