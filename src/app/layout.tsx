@@ -145,6 +145,7 @@ export default function RootLayout({
       >
         <LenisScroll />
         <div className="main-layout">
+          <Navigation />
           <main>{children}</main>
           <Footer />
         </div>

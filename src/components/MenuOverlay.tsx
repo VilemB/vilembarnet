@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { scrambleIn, scrambleOut, scrambleVisible } from "@/scramble.js";
+import { scrambleIn, scrambleOut, scrambleVisible } from "@/lib/animations/scramble";
 import Clock from "./Clock";
 
 gsap.registerPlugin(SplitText);
@@ -27,7 +27,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
     const scrambleInstances = useRef<any[]>([]);
 
     const navLinks = [
-        { name: "Index", href: "/" },
+        { name: "Home", href: "/" },
         { name: "Work", href: "/work" },
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
@@ -67,7 +67,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             // Open Menu
             gsap.to(overlayRef.current, {
                 clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                duration: 0.6,
+                duration: 0.8,
                 ease: "power4.inOut",
                 onStart: () => {
                     if (window.lenis) window.lenis.stop();
@@ -109,7 +109,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             // Close Menu
             gsap.to(overlayRef.current, {
                 clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)",
-                duration: 0.6,
+                duration: 0.8,
                 ease: "power4.inOut",
                 onComplete: () => {
                     if (window.lenis) window.lenis.start();
@@ -164,6 +164,10 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             className="nav-overlay"
             style={{ pointerEvents: isOpen ? "all" : "none" }}
         >
+            <div className="nav-background-clock">
+                <Clock />
+            </div>
+
             <div ref={navItemsRef} className="nav-items">
                 {navLinks.map((link) => (
                     <div key={link.name} className="nav-item">

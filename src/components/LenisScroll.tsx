@@ -17,7 +17,6 @@ export default function LenisScroll() {
             touchMultiplier: isMobile ? 1.5 : 2,
         });
 
-        // integrate with gsap and scrolltrigger
         lenis.on("scroll", ScrollTrigger.update);
 
         const ticker = (time: number) => {

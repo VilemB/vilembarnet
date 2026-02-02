@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Navigation() {
   const navRef = useRef<HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showNavBackground, setShowNavBackground] = useState(true);
 
   useGSAP(() => {
     if (!navRef.current) return;
@@ -27,7 +28,7 @@ export default function Navigation() {
       start: "top top",
       end: "max",
       onUpdate: (self) => {
-        // Show at the very top, or when scrolling up
+        if (isMenuOpen) return;
         if (self.direction === -1 || self.scroll() < 50) {
           showAnim.play();
         } else {
@@ -35,27 +36,39 @@ export default function Navigation() {
         }
       },
     });
-  }, { scope: navRef });
+  }, { scope: navRef, dependencies: [isMenuOpen] });
+
+  // Sync background state with menu state with a delay when closing
+  useEffect(() => {
+    if (isMenuOpen) {
+      setShowNavBackground(false);
+    } else {
+      // Delay reappearing of solid background
+      const timer = setTimeout(() => {
+        setShowNavBackground(true);
+      }, 500); // Wait for menu animation to partially complete
+      return () => clearTimeout(timer);
+    }
+  }, [isMenuOpen]);
 
   return (
     <>
       <nav
         ref={navRef}
-        className={`top-navigation ${isMenuOpen ? 'nav-open' : ''}`}
+        className={`top-navigation ${!showNavBackground ? 'nav-open' : ''}`}
         style={{
-          backgroundColor: isMenuOpen ? 'transparent' : 'var(--color-light)',
-          borderBottom: isMenuOpen ? 'none' : '1px solid transparent'
+          backgroundColor: !showNavBackground ? 'transparent' : 'var(--color-light)',
+          borderBottom: !showNavBackground ? 'none' : '1px solid transparent',
+          transition: 'background-color 0.6s ease'
         }}
       >
         <div className="top-nav-content">
-          {/* Left: Navigation Text */}
           <div className="top-nav-left">
             <span>WEB DEVELOPER</span>
             <span className="top-nav-divider"></span>
             <span>DESIGNER</span>
           </div>
 
-          {/* Right: Menu Icon */}
           <div className="top-nav-right">
             <button
               className={`top-nav-menu-button ${isMenuOpen ? 'menu-open' : ''}`}
@@ -63,7 +76,7 @@ export default function Navigation() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Image
-                src={isMenuOpen ? "/icons/close.svg" : "/icons/menu.svg"}
+                src="/icons/menu.svg"
                 alt="Menu"
                 width={32}
                 height={32}
