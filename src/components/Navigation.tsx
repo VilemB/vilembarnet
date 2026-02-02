@@ -43,13 +43,23 @@ export default function Navigation() {
     if (isMenuOpen) {
       setShowNavBackground(false);
     } else {
-      // Delay reappearing of solid background
       const timer = setTimeout(() => {
         setShowNavBackground(true);
-      }, 500); // Wait for menu animation to partially complete
+      }, 600);
       return () => clearTimeout(timer);
     }
   }, [isMenuOpen]);
+
+  useGSAP(() => {
+    if (!navRef.current) return;
+
+    if (showNavBackground && !isMenuOpen) {
+      gsap.fromTo(navRef.current,
+        { yPercent: -100, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.8, ease: "power4.out" }
+      );
+    }
+  }, { scope: navRef, dependencies: [showNavBackground] });
 
   return (
     <>
@@ -59,7 +69,7 @@ export default function Navigation() {
         style={{
           backgroundColor: !showNavBackground ? 'transparent' : 'var(--color-light)',
           borderBottom: !showNavBackground ? 'none' : '1px solid transparent',
-          transition: 'background-color 0.6s ease'
+          transition: 'background-color 0.8s ease'
         }}
       >
         <div className="top-nav-content">
@@ -75,13 +85,18 @@ export default function Navigation() {
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <Image
-                src="/icons/menu.svg"
-                alt="Menu"
-                width={32}
-                height={32}
-                priority
-              />
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 33 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="menu-icon-svg"
+              >
+                <path d="M31.5 21L11 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M31.5 1L11 0.999998" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="M21.5 11L1 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
         </div>
