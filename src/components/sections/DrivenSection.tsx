@@ -16,16 +16,19 @@ export default function DrivenSection() {
     useGSAP(() => {
         if (!bgImageRef.current || !sectionRef.current) return;
 
-        gsap.to(bgImageRef.current, {
-            yPercent: 35,
-            ease: "none",
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-            },
-        });
+        gsap.fromTo(bgImageRef.current,
+            { yPercent: -20 },
+            {
+                yPercent: 0,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            }
+        );
     }, { scope: sectionRef });
 
     return (
