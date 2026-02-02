@@ -1,47 +1,11 @@
-import PixelatedText from "@/components/PixelatedText";
-import PixelatedPhoto from "@/components/PixelatedPhoto";
-import Work from "@/components/sections/Work";
-import About from "@/components/sections/About";
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/sections/Hero";
 
 export default function Home() {
   return (
     <>
-      <section className="home">
-        <div className="padding-section hero-content">
-          <h2 className="home-heading">
-            <span>web development</span>
-            <span className="home-bullet">•</span>
-            <span>design</span>
-            <span className="home-bullet">•</span>
-            <span>animation</span>
-          </h2>
-          <hr />
-          <div className="pixelated-text">
-            <PixelatedText>
-              @barnetvilem
-            </PixelatedText>
-          </div>
-          <hr />
-        </div>
-
-        <div className="padding-section hero-body">
-          <div className="hero-image-container">
-            <PixelatedPhoto
-              src="/website/vilem.webp"
-              alt="Vilem Barnet"
-              className="w-full h-full"
-            />
-          </div>
-          <div className="hero-text-container">
-            <p>
-              Design should evoke emotion and feel natural. Through thoughtful design and development,
-              I focus on creating digital experiences that are clear and intentional.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <Work />
+      <Navigation />
+      <Hero />
     </>
   );
 }

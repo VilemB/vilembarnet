@@ -3,7 +3,6 @@ import { Bricolage_Grotesque } from "next/font/google";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   weight: ["200", "300", "400", "500", "600", "700", "800"],
@@ -143,7 +142,6 @@ export default function RootLayout({
         className={`${bricolageGrotesque.variable} antialiased`}
       >
         <div className="main-layout">
-          <Navbar />
           <main>{children}</main>
           <Footer />
         </div>
