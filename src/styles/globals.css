@@ -30,9 +30,8 @@
   width: 100%;
   height: 100%;
   background-color: var(--color-accent);
-  transform: scaleY(1);
-  transform-origin: top;
-  will-change: transform;
+  clip-path: inset(0 0 0 0);
+  will-change: clip-path;
   pointer-events: auto;
 }
 
@@ -50,7 +49,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .transition-overlay {
-    transform: scaleY(0) !important;
+    clip-path: inset(0 0 100% 0) !important;
   }
 
   .transition-progress {

@@ -62,7 +62,7 @@ export default function PageTransition() {
         setProgress(100);
 
         if (prefersReducedMotion()) {
-            gsap.set(overlayRef.current, { scaleY: 0 });
+            gsap.set(overlayRef.current, { clipPath: "inset(0 0 100% 0)" });
             gsap.set(progressRef.current, { opacity: 0 });
             isPendingRef.current = false;
             unlockScroll();
@@ -92,10 +92,9 @@ export default function PageTransition() {
         });
 
         tl.to(overlayRef.current, {
-            scaleY: 0,
-            duration: 0.6,
+            clipPath: "inset(0 0 100% 0)",
+            duration: 0.7,
             ease: "power4.inOut",
-            transformOrigin: "top",
             overwrite: true,
             onStart: () => {
                 window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
@@ -106,12 +105,12 @@ export default function PageTransition() {
         lockScroll();
 
         if (prefersReducedMotion()) {
-            gsap.set(overlayRef.current, { scaleY: 0 });
+            gsap.set(overlayRef.current, { clipPath: "inset(0 0 100% 0)" });
             unlockScroll();
             return;
         }
 
-        gsap.set(overlayRef.current, { scaleY: 1, transformOrigin: "top" });
+        gsap.set(overlayRef.current, { clipPath: "inset(0 0 0 0)" });
 
         gsap.set(progressRef.current, { opacity: 1 });
         progressObjRef.current.value = 0;
@@ -158,10 +157,9 @@ export default function PageTransition() {
                 });
 
                 tl.to(overlayRef.current, {
-                    scaleY: 0,
+                    clipPath: "inset(0 0 100% 0)",
                     duration: 0.8,
                     ease: "power4.inOut",
-                    transformOrigin: "top",
                     overwrite: true,
                     onStart: () => {
                         window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
@@ -260,10 +258,11 @@ export default function PageTransition() {
                 },
             });
 
-            tl.set(overlayRef.current, { transformOrigin: "bottom" });
+            // Cover the page: wipe overlay from bottom to top
+            gsap.set(overlayRef.current, { clipPath: "inset(100% 0 0 0)" });
             tl.to(overlayRef.current, {
-                scaleY: 1,
-                duration: 0.3,
+                clipPath: "inset(0% 0 0 0)",
+                duration: 0.5,
                 ease: "power4.inOut",
             });
         };

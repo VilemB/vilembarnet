@@ -34,16 +34,16 @@ export function initRollAnimation(element: HTMLElement) {
     const handleEnter = () => {
         gsap.to(chars, {
             yPercent: -100,
-            duration: 0.5,
-            ease: "power3.inOut",
-            stagger: 0.015,
+            duration: 0.45,
+            ease: "power4.out",
+            stagger: { each: 0.02, from: "start" },
             overwrite: true
         });
         gsap.to(clones, {
             yPercent: -100,
-            duration: 0.5,
-            ease: "power3.inOut",
-            stagger: 0.015,
+            duration: 0.45,
+            ease: "power4.out",
+            stagger: { each: 0.02, from: "start" },
             overwrite: true
         });
     };
@@ -51,16 +51,16 @@ export function initRollAnimation(element: HTMLElement) {
     const handleLeave = () => {
         gsap.to(chars, {
             yPercent: 0,
-            duration: 0.5,
+            duration: 0.35,
             ease: "power3.inOut",
-            stagger: 0.015,
+            stagger: { each: 0.015, from: "end" },
             overwrite: true
         });
         gsap.to(clones, {
             yPercent: 0,
-            duration: 0.5,
+            duration: 0.35,
             ease: "power3.inOut",
-            stagger: 0.015,
+            stagger: { each: 0.015, from: "end" },
             overwrite: true
         });
     };
