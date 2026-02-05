@@ -11,9 +11,20 @@ import Link from "next/link";
 import gsap from "gsap";
 import { initRollAnimation } from "@/lib/animations/roll";
 import { SplitText } from "gsap/SplitText";
+import { CustomEase } from "gsap/CustomEase";
 import Clock from "./Clock";
 
 gsap.registerPlugin(SplitText);
+gsap.registerPlugin(CustomEase);
+
+// Same easing as PageTransition — shared visual language
+CustomEase.create("hop",
+    "M0,0 C0.29,0 0.348,0.05 0.422,0.134 0.494,0.217 0.484,0.355 0.5,0.5 0.518,0.662 0.515,0.793 0.596,0.876 0.701,0.983 0.72,0.987 1,1"
+);
+
+const POLY_HIDDEN_BOTTOM = "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)";
+const POLY_FULL = "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)";
+const POLY_HIDDEN_TOP = "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)";
 
 interface MenuOverlayProps {
     isOpen: boolean;
@@ -56,8 +67,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
     }, [isOpen, onClose]);
 
     // Roll animation on nav links and social links
-    // Cleanup is NOT done here — it's deferred to the close animation's onComplete
-    // to prevent a letter-spacing flash from SplitText revert while content is visible.
+    // Cleanup is deferred to the close animation's onComplete to prevent letter-spacing flash
     useEffect(() => {
         if (!isOpen) return;
 
@@ -103,25 +113,24 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             const tl = gsap.timeline();
             tlRef.current = tl;
 
-            // Reset overlay state
+            // Reset overlay
             gsap.set(overlayRef.current, {
-                clipPath: "inset(100% 0 0 0)"
+                clipPath: POLY_HIDDEN_BOTTOM
             });
 
-            // Wipe overlay in (reveal from bottom to top)
+            // Overlay sweeps up with organic momentum
             tl.to(overlayRef.current, {
-                clipPath: "inset(0% 0 0 0)",
-                duration: 0.8,
-                ease: "power4.inOut",
+                clipPath: POLY_FULL,
+                duration: 1,
+                ease: "hop",
                 onStart: () => {
                     if (window.lenis) window.lenis.stop();
                 }
             });
 
-            // SplitText character reveals for nav items
+            // SplitText character reveals
             const navLinkEls = navItemsRef.current?.querySelectorAll(".nav-item a");
             if (navLinkEls && navLinkEls.length > 0) {
-                // Clean up previous splits
                 splitInstancesRef.current.forEach(s => s.revert());
                 splitInstancesRef.current = [];
 
@@ -129,17 +138,15 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     const split = new SplitText(linkEl, { type: "chars" });
                     splitInstancesRef.current.push(split);
 
-                    // Set initial state
                     gsap.set(split.chars, { yPercent: 100, opacity: 0 });
 
-                    // Animate chars in
                     tl.to(split.chars, {
                         yPercent: 0,
                         opacity: 1,
                         duration: 0.8,
                         stagger: 0.02,
                         ease: "power4.out",
-                    }, 0.35);
+                    }, 0.4);
                 });
             }
 
@@ -150,7 +157,7 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 ease: "power2.out",
             }, 0.5);
 
-            // Footer social links fade + slide in
+            // Footer social links slide up
             const socialLinks = footerRef.current?.querySelectorAll(".nav-footer-item a");
             if (socialLinks && socialLinks.length > 0) {
                 gsap.set(socialLinks, { opacity: 0, y: 15 });
@@ -158,9 +165,9 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     opacity: 1,
                     y: 0,
                     duration: 0.5,
-                    stagger: 0.08,
+                    stagger: 0.06,
                     ease: "power4.out",
-                }, 0.5);
+                }, 0.55);
             }
 
             // Footer clock fade in
@@ -171,13 +178,13 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     opacity: 1,
                     duration: 0.4,
                     ease: "power2.out",
-                }, 0.6);
+                }, 0.65);
             }
 
         } else {
             // -- CLOSE SEQUENCE --
 
-            // Immediately hide content to prevent any flash
+            // Immediately hide content to prevent flash
             if (navItemsRef.current) gsap.set(navItemsRef.current, { opacity: 0 });
             if (footerRef.current) gsap.set(footerRef.current, { opacity: 0 });
             gsap.set([lineLeftRef.current, lineRightRef.current], { opacity: 0 });
@@ -185,19 +192,18 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
             const tl = gsap.timeline();
             tlRef.current = tl;
 
-            // Wipe overlay out (hide from bottom to top)
+            // Overlay collapses upward with the same organic momentum
             tl.to(overlayRef.current, {
-                clipPath: "inset(0 0 100% 0)",
-                duration: 0.6,
-                ease: "power4.inOut",
+                clipPath: POLY_HIDDEN_TOP,
+                duration: 0.8,
+                ease: "hop",
                 onComplete: () => {
                     if (window.lenis) window.lenis.start();
 
-                    // Clean up roll animations (deferred from useEffect to avoid flash)
+                    // Deferred cleanup to avoid flash
                     rollCleanupsRef.current.forEach(c => c());
                     rollCleanupsRef.current = [];
 
-                    // Clean up SplitText
                     splitInstancesRef.current.forEach(s => s.revert());
                     splitInstancesRef.current = [];
 

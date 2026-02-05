@@ -14,32 +14,37 @@ export default function Hero() {
 
   useEffect(() => {
     if (!containerRef.current) return;
+    let tl: gsap.core.Timeline | null = null;
 
     gsap.set([footerLeftRef.current, footerRightRef.current, headingRef.current], {
       y: 40,
       opacity: 0,
     });
 
-    const tl = gsap.timeline({
-      delay: 0.8,
-      defaults: {
-        ease: "power4.out",
-        duration: 0.8,
-      }
-    });
-    tl.to(headingRef.current, {
-      y: 0,
-      opacity: 1,
-    });
+    const animate = () => {
+      tl = gsap.timeline({
+        defaults: {
+          ease: "power4.out",
+          duration: 0.8,
+        }
+      });
+      tl.to(headingRef.current, {
+        y: 0,
+        opacity: 1,
+      });
 
-    tl.to([footerLeftRef.current, footerRightRef.current], {
-      y: 0,
-      opacity: 1,
-      stagger: 0.1,
-    }, "-=0.6");
+      tl.to([footerLeftRef.current, footerRightRef.current], {
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+      }, "-=0.6");
+    };
+
+    window.addEventListener("pageRevealComplete", animate, { once: true });
 
     return () => {
-      tl.kill();
+      window.removeEventListener("pageRevealComplete", animate);
+      if (tl) tl.kill();
     };
   }, []);
 

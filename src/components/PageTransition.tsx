@@ -4,14 +4,28 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CustomEase } from "gsap/CustomEase";
+
+gsap.registerPlugin(CustomEase);
+
+// Organic easing with a subtle midpoint inflection — feels physical, like momentum settling
+CustomEase.create("hop",
+    "M0,0 C0.29,0 0.348,0.05 0.422,0.134 0.494,0.217 0.484,0.355 0.5,0.5 0.518,0.662 0.515,0.793 0.596,0.876 0.701,0.983 0.72,0.987 1,1"
+);
+
+// Polygon helpers — all transitions share the same visual language
+const POLY_HIDDEN_BOTTOM = "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)";
+const POLY_FULL = "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)";
+const POLY_HIDDEN_TOP = "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)";
 
 export default function PageTransition() {
     const pathname = usePathname();
     const router = useRouter();
     const overlayRef = useRef<HTMLDivElement>(null);
+    const accentRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
+    const progressTextRef = useRef<HTMLSpanElement>(null);
     const isPendingRef = useRef(false);
-    const loadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const progressTweenRef = useRef<gsap.core.Tween | null>(null);
     const progressObjRef = useRef({ value: 0 });
@@ -45,10 +59,6 @@ export default function PageTransition() {
     };
 
     const revealPage = useCallback(() => {
-        if (loadingTimerRef.current) {
-            clearTimeout(loadingTimerRef.current);
-            loadingTimerRef.current = null;
-        }
         if (fallbackTimerRef.current) {
             clearTimeout(fallbackTimerRef.current);
             fallbackTimerRef.current = null;
@@ -56,20 +66,20 @@ export default function PageTransition() {
 
         killProgressTween();
         if (progressRef.current) gsap.killTweensOf(progressRef.current);
+        if (progressTextRef.current) gsap.killTweensOf(progressTextRef.current);
         if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
+        if (accentRef.current) gsap.killTweensOf(accentRef.current);
 
         progressObjRef.current.value = 100;
         setProgress(100);
 
         if (prefersReducedMotion()) {
-            gsap.set(overlayRef.current, { clipPath: "inset(0 0 100% 0)" });
+            gsap.set(overlayRef.current, { clipPath: POLY_HIDDEN_TOP });
+            gsap.set(accentRef.current, { clipPath: POLY_HIDDEN_TOP });
             gsap.set(progressRef.current, { opacity: 0 });
             isPendingRef.current = false;
             unlockScroll();
-
-            requestAnimationFrame(() => {
-                ScrollTrigger.refresh();
-            });
+            requestAnimationFrame(() => ScrollTrigger.refresh());
             return;
         }
 
@@ -77,49 +87,83 @@ export default function PageTransition() {
             onComplete: () => {
                 isPendingRef.current = false;
                 unlockScroll();
-
-                requestAnimationFrame(() => {
-                    ScrollTrigger.refresh();
-                });
+                requestAnimationFrame(() => ScrollTrigger.refresh());
             },
         });
 
+        // Counter text slides out
+        tl.to(progressTextRef.current, {
+            y: -30,
+            duration: 0.5,
+            ease: "power3.inOut",
+        });
+
+        // Progress container fades
         tl.to(progressRef.current, {
             opacity: 0,
             duration: 0.2,
             ease: "power2.inOut",
-            overwrite: true,
-        });
+        }, "-=0.3");
 
-        tl.to(overlayRef.current, {
-            clipPath: "inset(0 0 100% 0)",
-            duration: 0.7,
-            ease: "power4.inOut",
-            overwrite: true,
+        // Accent layer peels away first (upward)
+        tl.to(accentRef.current, {
+            clipPath: POLY_HIDDEN_TOP,
+            duration: 1,
+            ease: "hop",
             onStart: () => {
                 window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
             }
-        }, "-=0.05");
+        }, "-=0.3");
+
+        // Dark layer follows with slight delay (chase effect)
+        let revealFired = false;
+        tl.to(overlayRef.current, {
+            clipPath: POLY_HIDDEN_TOP,
+            duration: 1,
+            ease: "hop",
+            onUpdate: function() {
+                if (!revealFired && this.progress() >= 0.6) {
+                    revealFired = true;
+                    window.dispatchEvent(new CustomEvent("pageRevealComplete"));
+                }
+            }
+        }, "-=0.85");
+
     }, []);
+
+    // Initial page load
     useEffect(() => {
         lockScroll();
 
         if (prefersReducedMotion()) {
-            gsap.set(overlayRef.current, { clipPath: "inset(0 0 100% 0)" });
+            gsap.set(overlayRef.current, { clipPath: POLY_HIDDEN_TOP });
+            gsap.set(accentRef.current, { clipPath: POLY_HIDDEN_TOP });
             unlockScroll();
             return;
         }
 
-        gsap.set(overlayRef.current, { clipPath: "inset(0 0 0 0)" });
+        // Start with both layers fully covering
+        gsap.set(overlayRef.current, { clipPath: POLY_FULL });
+        gsap.set(accentRef.current, { clipPath: POLY_FULL });
 
         gsap.set(progressRef.current, { opacity: 1 });
+        gsap.set(progressTextRef.current, { y: 20 });
         progressObjRef.current.value = 0;
         setProgress(0);
 
+        // Counter slides into view
+        gsap.to(progressTextRef.current, {
+            y: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            delay: 0.3,
+        });
+
         progressTweenRef.current = gsap.to(progressObjRef.current, {
             value: 90,
-            duration: 3,
+            duration: 2.5,
             ease: "power2.out",
+            delay: 0.3,
             onUpdate: () => {
                 setProgress(Math.round(progressObjRef.current.value));
             },
@@ -132,7 +176,9 @@ export default function PageTransition() {
 
             killProgressTween();
             if (progressRef.current) gsap.killTweensOf(progressRef.current);
+            if (progressTextRef.current) gsap.killTweensOf(progressTextRef.current);
             if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
+            if (accentRef.current) gsap.killTweensOf(accentRef.current);
 
             progressObjRef.current.value = 100;
             setProgress(100);
@@ -141,30 +187,47 @@ export default function PageTransition() {
                 const tl = gsap.timeline({
                     onComplete: () => {
                         unlockScroll();
-
-                        requestAnimationFrame(() => {
-                            ScrollTrigger.refresh();
-                        });
+                        requestAnimationFrame(() => ScrollTrigger.refresh());
                     },
+                });
+
+                // Counter slides out
+                tl.to(progressTextRef.current, {
+                    y: -30,
+                    duration: 0.6,
+                    ease: "power3.inOut",
+                    delay: 0.2,
                 });
 
                 tl.to(progressRef.current, {
                     opacity: 0,
-                    duration: 0.3,
+                    duration: 0.2,
                     ease: "power2.inOut",
-                    delay: 0.15,
-                    overwrite: true,
-                });
+                }, "-=0.3");
 
-                tl.to(overlayRef.current, {
-                    clipPath: "inset(0 0 100% 0)",
-                    duration: 0.8,
-                    ease: "power4.inOut",
-                    overwrite: true,
+                // Accent layer peels away upward
+                tl.to(accentRef.current, {
+                    clipPath: POLY_HIDDEN_TOP,
+                    duration: 1.2,
+                    ease: "hop",
                     onStart: () => {
                         window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
                     }
-                }, "-=0.1");
+                }, "-=0.3");
+
+                // Dark layer chases it
+                let revealFired = false;
+                tl.to(overlayRef.current, {
+                    clipPath: POLY_HIDDEN_TOP,
+                    duration: 1.2,
+                    ease: "hop",
+                    onUpdate: function() {
+                        if (!revealFired && this.progress() >= 0.6) {
+                            revealFired = true;
+                            window.dispatchEvent(new CustomEvent("pageRevealComplete"));
+                        }
+                    },
+                }, "-=1.0");
             });
         };
 
@@ -180,6 +243,7 @@ export default function PageTransition() {
         }
     }, []);
 
+    // Link click handler
     useEffect(() => {
         const handleLinkClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -234,6 +298,15 @@ export default function PageTransition() {
                     ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
                     window.scrollTo(0, 0);
 
+                    // Reset progress text position for loading state
+                    gsap.set(progressTextRef.current, { y: 20 });
+
+                    gsap.to(progressTextRef.current, {
+                        y: 0,
+                        duration: 0.4,
+                        ease: "power3.out",
+                    });
+
                     progressTweenRef.current = gsap.to(progressObjRef.current, {
                         value: 90,
                         duration: 3,
@@ -258,19 +331,29 @@ export default function PageTransition() {
                 },
             });
 
-            // Cover the page: wipe overlay from bottom to top
-            gsap.set(overlayRef.current, { clipPath: "inset(100% 0 0 0)" });
-            tl.to(overlayRef.current, {
-                clipPath: "inset(0% 0 0 0)",
-                duration: 0.5,
-                ease: "power4.inOut",
+            // Cover the page: accent layer sweeps up first from bottom
+            gsap.set(accentRef.current, { clipPath: POLY_HIDDEN_BOTTOM });
+            gsap.set(overlayRef.current, { clipPath: POLY_HIDDEN_BOTTOM });
+
+            tl.to(accentRef.current, {
+                clipPath: POLY_FULL,
+                duration: 0.7,
+                ease: "hop",
             });
+
+            // Dark layer chases the accent layer
+            tl.to(overlayRef.current, {
+                clipPath: POLY_FULL,
+                duration: 0.7,
+                ease: "hop",
+            }, "-=0.55");
         };
 
         document.addEventListener("click", handleLinkClick, { capture: true });
         return () => document.removeEventListener("click", handleLinkClick, { capture: true });
     }, [pathname, router, revealPage]);
 
+    // Reveal on pathname change
     useEffect(() => {
         if (!isPendingRef.current) return;
         revealPage();
@@ -279,8 +362,11 @@ export default function PageTransition() {
     return (
         <div className="transition-container" role="presentation" aria-hidden="true">
             <div ref={overlayRef} className="transition-overlay" />
+            <div ref={accentRef} className="transition-overlay-accent" />
             <div ref={progressRef} className="transition-progress">
-                [&nbsp;&nbsp;{progress}%&nbsp;&nbsp;]
+                <span ref={progressTextRef} style={{ display: 'inline-block' }}>
+                    {progress}%
+                </span>
             </div>
         </div>
     );
