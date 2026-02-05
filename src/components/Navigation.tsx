@@ -15,10 +15,10 @@ export default function Navigation() {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMenuClosing, setIsMenuClosing] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const showAnim = useRef<gsap.core.Tween | null>(null);
-  const wasMenuOpenRef = useRef(false);
+  // Ref-based flag: true from when menu opens until menuCloseComplete fires.
+  // Using a ref avoids the one-frame gap that useState would cause.
+  const menuActiveCycleRef = useRef(false);
 
   useEffect(() => {
     const handleStart = () => setIsTransitioning(true);
@@ -33,25 +33,35 @@ export default function Navigation() {
     };
   }, []);
 
-  // Track menu closing state
+  // Mark the menu cycle active when menu opens
   useEffect(() => {
     if (isMenuOpen) {
-      wasMenuOpenRef.current = true;
-      setIsMenuClosing(false);
-    } else if (wasMenuOpenRef.current) {
-      wasMenuOpenRef.current = false;
-      setIsMenuClosing(true);
+      menuActiveCycleRef.current = true;
     }
   }, [isMenuOpen]);
 
-  // Listen for menu close animation complete
+  const isWorkPage = pathname === '/work';
+
+  // Show nav when menu close animation finishes
   useEffect(() => {
-    const handleCloseComplete = () => setIsMenuClosing(false);
+    const handleCloseComplete = () => {
+      menuActiveCycleRef.current = false;
+      if (!navRef.current) return;
+      if (isWorkPage) {
+        gsap.killTweensOf(navRef.current);
+        gsap.set(navRef.current, { yPercent: 0 });
+      } else {
+        gsap.to(navRef.current, {
+          yPercent: 0,
+          duration: 0.4,
+          ease: "power2.out",
+          overwrite: true
+        });
+      }
+    };
     window.addEventListener("menuCloseComplete", handleCloseComplete);
     return () => window.removeEventListener("menuCloseComplete", handleCloseComplete);
-  }, []);
-
-  const isWorkPage = pathname === '/work';
+  }, [isWorkPage]);
 
   useGSAP(() => {
     if (!navRef.current || isWorkPage) return;
@@ -84,7 +94,8 @@ export default function Navigation() {
   useGSAP(() => {
     if (!navRef.current) return;
 
-    if (isMenuOpen || isMenuClosing || (isTransitioning && !isWorkPage)) {
+    // Hide nav when menu is open, during its close animation, or during page transition
+    if (isMenuOpen || menuActiveCycleRef.current || (isTransitioning && !isWorkPage)) {
       gsap.to(navRef.current, {
         yPercent: -100,
         duration: 0.4,
@@ -94,7 +105,8 @@ export default function Navigation() {
     } else if (isWorkPage) {
       gsap.killTweensOf(navRef.current);
       gsap.set(navRef.current, { yPercent: 0 });
-    } else {
+    } else if (!menuActiveCycleRef.current) {
+      // Only show nav if we're not in a menu close cycle
       gsap.to(navRef.current, {
         yPercent: 0,
         duration: 0.4,
@@ -102,7 +114,7 @@ export default function Navigation() {
         overwrite: true
       });
     }
-  }, { scope: navRef, dependencies: [isMenuOpen, isMenuClosing, isTransitioning, isWorkPage] });
+  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning, isWorkPage] });
 
   return (
     <>
@@ -148,6 +160,3 @@ export default function Navigation() {
     </>
   );
 }
-
-
-

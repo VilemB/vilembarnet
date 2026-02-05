@@ -56,6 +56,8 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
     }, [isOpen, onClose]);
 
     // Roll animation on nav links and social links
+    // Cleanup is NOT done here — it's deferred to the close animation's onComplete
+    // to prevent a letter-spacing flash from SplitText revert while content is visible.
     useEffect(() => {
         if (!isOpen) return;
 
@@ -74,12 +76,17 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         });
 
         rollCleanupsRef.current = cleanups;
-
-        return () => {
-            cleanups.forEach(c => c());
-            rollCleanupsRef.current = [];
-        };
     }, [isOpen]);
+
+    // Safety cleanup on unmount
+    useEffect(() => {
+        return () => {
+            rollCleanupsRef.current.forEach(c => c());
+            rollCleanupsRef.current = [];
+            splitInstancesRef.current.forEach(s => s.revert());
+            splitInstancesRef.current = [];
+        };
+    }, []);
 
     // Main animation
     useEffect(() => {
@@ -169,29 +176,14 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
 
         } else {
             // -- CLOSE SEQUENCE --
+
+            // Immediately hide content to prevent any flash
+            if (navItemsRef.current) gsap.set(navItemsRef.current, { opacity: 0 });
+            if (footerRef.current) gsap.set(footerRef.current, { opacity: 0 });
+            gsap.set([lineLeftRef.current, lineRightRef.current], { opacity: 0 });
+
             const tl = gsap.timeline();
             tlRef.current = tl;
-
-            // Fade out all content quickly
-            const allContent = [
-                ...(navItemsRef.current ? [navItemsRef.current] : []),
-                ...(footerRef.current ? [footerRef.current] : []),
-            ];
-
-            if (allContent.length > 0) {
-                tl.to(allContent, {
-                    opacity: 0,
-                    duration: 0.25,
-                    ease: "power2.in",
-                });
-            }
-
-            // Fade out structural lines
-            tl.to([lineLeftRef.current, lineRightRef.current], {
-                opacity: 0,
-                duration: 0.2,
-                ease: "power2.in",
-            }, 0);
 
             // Wipe overlay out (hide from bottom to top)
             tl.to(overlayRef.current, {
@@ -201,18 +193,22 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                 onComplete: () => {
                     if (window.lenis) window.lenis.start();
 
-                    // Reset content opacity for next open
-                    if (navItemsRef.current) gsap.set(navItemsRef.current, { opacity: 1 });
-                    if (footerRef.current) gsap.set(footerRef.current, { opacity: 1 });
+                    // Clean up roll animations (deferred from useEffect to avoid flash)
+                    rollCleanupsRef.current.forEach(c => c());
+                    rollCleanupsRef.current = [];
 
                     // Clean up SplitText
                     splitInstancesRef.current.forEach(s => s.revert());
                     splitInstancesRef.current = [];
 
+                    // Reset content opacity for next open
+                    if (navItemsRef.current) gsap.set(navItemsRef.current, { opacity: 1 });
+                    if (footerRef.current) gsap.set(footerRef.current, { opacity: 1 });
+
                     // Signal Navigation that close animation is done
                     window.dispatchEvent(new CustomEvent("menuCloseComplete"));
                 }
-            }, 0.15);
+            });
         }
     }, [isOpen]);
 
