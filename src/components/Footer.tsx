@@ -58,6 +58,7 @@ export default function Footer() {
 
                             <Link href="/" className="footer-logo">
                                 <Image
+                                    className=""
                                     src="/logos/logo.svg"
                                     alt="VB Logo"
                                     width={80}

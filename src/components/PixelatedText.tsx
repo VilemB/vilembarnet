@@ -191,7 +191,7 @@ export default function PixelatedText({
       scene.add(planeMesh);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setClearColor(0xF3F0F0, 1);
+      renderer.setClearColor(0xEEEEEE, 1);
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 

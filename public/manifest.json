@@ -4,8 +4,8 @@
   "description": "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F3F0F0",
-  "theme_color": "#001F3D",
+  "background_color": "#EEEEEE",
+  "theme_color": "#0F0E0E",
   "icons": [
     {
       "src": "/favicon.ico",

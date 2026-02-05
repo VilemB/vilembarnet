@@ -14,7 +14,7 @@ const bricolageGrotesque = Bricolage_Grotesque({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#001F3D",
+  themeColor: "#0F0E0E",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       {
         rel: "mask-icon",
         url: "/favicon.svg",
-        color: "#001F3D",
+        color: "#0F0E0E",
       },
     ],
   },
