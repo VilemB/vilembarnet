@@ -31,8 +31,10 @@ export default function Navigation() {
     };
   }, []);
 
+  const isWorkPage = pathname === '/work';
+
   useGSAP(() => {
-    if (!navRef.current) return;
+    if (!navRef.current || isWorkPage) return;
 
     ScrollTrigger.create({
       start: "top top",
@@ -57,18 +59,21 @@ export default function Navigation() {
         }
       }
     });
-  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning, pathname] });
+  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning, pathname, isWorkPage] });
 
   useGSAP(() => {
     if (!navRef.current) return;
 
-    if (isMenuOpen || isTransitioning) {
+    if (isMenuOpen || (isTransitioning && !isWorkPage)) {
       gsap.to(navRef.current, {
         yPercent: -100,
         duration: 0.4,
         ease: "power2.inOut",
         overwrite: true
       });
+    } else if (isWorkPage) {
+      gsap.killTweensOf(navRef.current);
+      gsap.set(navRef.current, { yPercent: 0 });
     } else {
       gsap.to(navRef.current, {
         yPercent: 0,
@@ -77,7 +82,7 @@ export default function Navigation() {
         overwrite: true
       });
     }
-  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning] });
+  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning, isWorkPage] });
 
   return (
     <>
