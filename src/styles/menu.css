@@ -65,7 +65,7 @@
 
 .nav-footer {
     width: 100%;
-    padding: 2.5rem 4rem 4rem 4rem;
+    padding: 2rem 4rem 2rem 4rem;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -172,7 +172,7 @@
     }
 
     .nav-footer {
-        padding: 2rem 2rem 3rem 2rem;
+        padding: 1.5rem 2rem 1.5rem 2rem;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-end;
@@ -195,16 +195,13 @@
 }
 
 @media (max-width: 480px) {
-    .nav-overlay-line-left {
-        left: 0.75rem;
-    }
-
+    .nav-overlay-line-left,
     .nav-overlay-line-right {
-        right: 0.75rem;
+        display: none;
     }
 
     .nav-footer {
-        padding: 1.5rem 1.25rem 2.5rem 1.25rem;
+        padding: 1.5rem 1rem 1.5rem 1rem;
     }
 
     .nav-footer-item.socials {
@@ -220,8 +217,8 @@
     }
 
     .nav-footer::before {
-        left: 0.75rem;
-        right: 0.75rem;
+        left: 1rem;
+        right: 1rem;
     }
 
     .nav-background-clock {
