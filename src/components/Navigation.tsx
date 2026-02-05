@@ -15,8 +15,10 @@ export default function Navigation() {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuClosing, setIsMenuClosing] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const showAnim = useRef<gsap.core.Tween | null>(null);
+  const wasMenuOpenRef = useRef(false);
 
   useEffect(() => {
     const handleStart = () => setIsTransitioning(true);
@@ -29,6 +31,24 @@ export default function Navigation() {
       window.removeEventListener("pageTransitionStart", handleStart);
       window.removeEventListener("pageTransitionEnd", handleEnd);
     };
+  }, []);
+
+  // Track menu closing state
+  useEffect(() => {
+    if (isMenuOpen) {
+      wasMenuOpenRef.current = true;
+      setIsMenuClosing(false);
+    } else if (wasMenuOpenRef.current) {
+      wasMenuOpenRef.current = false;
+      setIsMenuClosing(true);
+    }
+  }, [isMenuOpen]);
+
+  // Listen for menu close animation complete
+  useEffect(() => {
+    const handleCloseComplete = () => setIsMenuClosing(false);
+    window.addEventListener("menuCloseComplete", handleCloseComplete);
+    return () => window.removeEventListener("menuCloseComplete", handleCloseComplete);
   }, []);
 
   const isWorkPage = pathname === '/work';
@@ -64,7 +84,7 @@ export default function Navigation() {
   useGSAP(() => {
     if (!navRef.current) return;
 
-    if (isMenuOpen || (isTransitioning && !isWorkPage)) {
+    if (isMenuOpen || isMenuClosing || (isTransitioning && !isWorkPage)) {
       gsap.to(navRef.current, {
         yPercent: -100,
         duration: 0.4,
@@ -82,7 +102,7 @@ export default function Navigation() {
         overwrite: true
       });
     }
-  }, { scope: navRef, dependencies: [isMenuOpen, isTransitioning, isWorkPage] });
+  }, { scope: navRef, dependencies: [isMenuOpen, isMenuClosing, isTransitioning, isWorkPage] });
 
   return (
     <>
