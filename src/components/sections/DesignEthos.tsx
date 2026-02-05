@@ -77,7 +77,7 @@ export default function DesignEthos() {
 
                     <div className="ethos-bottom-right">
                         <p className="ethos-text">
-                            BEYOND STRUCTURE AND USABILITY, DESIGN IS ABOUT HOW THINGS FEEL. I FOCUS ON BUILDING DIGITAL EXPERIENCES THAT EARN ATTENTION THROUGH THOUGHTFUL INTERACTION, VISUAL CLARITY, AND CARE FOR DETAIL, CREATING INTERFACES THAT FEEL NATURAL AND CONSIDERED.
+                            GOOD DESIGN DOESN&apos;T NEED EXPLAINING. I BUILD WEBSITES WITH CLEAN STRUCTURE, CONSIDERED MOTION, AND CODE THAT MAKES IT ALL WORK.
                         </p>
                     </div>
                 </div>

@@ -69,10 +69,8 @@ const flattenImages = (projs: Project[]): FlatImage[] => {
 
 export default function WorkPage() {
     const [activeFlatIndex, setActiveFlatIndex] = useState(0);
-    // Track previous flat index to determine direction
     const prevFlatIndexRef = useRef(0);
 
-    const containerRef = useRef<HTMLDivElement>(null);
     const previewsContainerRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -104,7 +102,7 @@ export default function WorkPage() {
             start: 'top top',
             end: `+=${scrollDistance}`,
             pin: true,
-            scrub: 0,
+            scrub: 0.5,
             anticipatePin: 1,
             onUpdate: (self) => {
                 const progress = self.progress;
@@ -138,12 +136,12 @@ export default function WorkPage() {
 
         if (activeItem.projectId !== prevItem.projectId || currentFlatIndex === prevFlatIndex) {
             const direction = currentFlatIndex >= prevFlatIndex ? 1 : -1;
-            const fromY = direction === 1 ? '100%' : '-100%';
+            const fromY = direction === 1 ? '60%' : '-60%';
 
             if (numberRef.current) {
                 gsap.fromTo(numberRef.current,
                     { y: fromY, opacity: 0 },
-                    { y: '0%', opacity: 1, duration: 0.5, ease: "power3.out", overwrite: true }
+                    { y: '0%', opacity: 1, duration: 0.6, ease: "power4.out", overwrite: true }
                 );
             }
 
@@ -155,9 +153,9 @@ export default function WorkPage() {
                         {
                             y: '0%',
                             opacity: 1,
-                            duration: 0.5,
-                            stagger: 0.02,
-                            ease: "back.out(1.7)",
+                            duration: 0.6,
+                            stagger: 0.025,
+                            ease: "power4.out",
                             overwrite: true
                         }
                     );
@@ -173,8 +171,8 @@ export default function WorkPage() {
 
             gsap.to(dotRef.current, {
                 y: dotY,
-                duration: 0.3,
-                ease: "power2.out",
+                duration: 0.5,
+                ease: "power3.out",
                 overwrite: true
             });
         }
@@ -198,7 +196,6 @@ export default function WorkPage() {
         <section ref={wrapperRef} className="work-section">
             <div className="work-container">
                 <div className="work-grid">
-                    {/* Display Section */}
                     <div className="work-display">
                         <div className="work-display-info">
                             <div className="work-display-number" style={{ overflow: 'hidden' }}>
