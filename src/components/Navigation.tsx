@@ -55,7 +55,12 @@ export default function Navigation() {
       if (!navRef.current) return;
       if (isWorkPage) {
         gsap.killTweensOf(navRef.current);
-        gsap.set(navRef.current, { yPercent: 0 });
+        gsap.to(navRef.current, {
+          yPercent: 0,
+          duration: 0.4,
+          ease: "power2.out",
+          overwrite: true
+        });
       } else {
         gsap.to(navRef.current, {
           yPercent: 0,
