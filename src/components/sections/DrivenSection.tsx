@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
+import PixelatedPhoto from "@/components/PixelatedPhoto";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -12,68 +12,72 @@ if (typeof window !== "undefined") {
 
 export default function DrivenSection() {
     const sectionRef = useRef<HTMLElement>(null);
-    const bgImageRef = useRef<HTMLDivElement>(null);
     const headingRef = useRef<HTMLHeadingElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    const text = "DRIVEN BY A PASSION FOR BUILDING.";
+    const words = text.split(" ");
 
     useGSAP(() => {
-        if (!bgImageRef.current || !sectionRef.current) return;
+        const wordsElements = headingRef.current?.querySelectorAll(".driven-word");
+        if (!wordsElements || wordsElements.length === 0) return;
 
-        gsap.fromTo(bgImageRef.current,
-            { yPercent: -20 },
-            {
-                yPercent: 0,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: sectionRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
-                },
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 85%",
+                end: "top 20%",
+                scrub: 1,
             }
-        );
+        });
 
-        gsap.fromTo(headingRef.current,
-            { y: 50, opacity: 0 },
-            {
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                ease: "power4.out",
-                scrollTrigger: {
-                    trigger: headingRef.current,
-                    start: "top 92%",
+        tl.to(wordsElements, {
+            color: "#0F0E0E",
+            stagger: 0.1,
+            ease: "power2.out",
+        });
+
+        if (contentRef.current) {
+            gsap.fromTo(contentRef.current,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1.2,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: contentRef.current,
+                        start: "top 90%",
+                    }
                 }
-            }
-        );
-
+            );
+        }
     }, { scope: sectionRef });
 
     return (
         <section ref={sectionRef} className="driven-section">
-            <div ref={bgImageRef} className="driven-bg">
-                <Image
-                    src="/website/vilem.webp"
-                    alt="Vilem Barnet"
-                    fill
-                    priority
-                    className="object-cover"
-                />
-            </div>
-
-            <div className="driven-overlay"></div>
-
-            <div className="padding-section driven-content">
-                <div className="driven-top">
+            <div className="driven-container">
+                <div className="driven-inner">
                     <h2 ref={headingRef} className="driven-heading">
-                        DRIVEN BY A PASSION<br />FOR BUILDING.
+                        {words.map((word, i) => (
+                            <span key={i} className="driven-word" style={{ color: "#B0B0B0" }}>
+                                {word}{" "}
+                            </span>
+                        ))}
                     </h2>
-                </div>
 
-                <div className="driven-bottom">
-                    <div className="driven-bottom-left">
-                        <div className="driven-service">[ WEB APPLICATIONS ]</div>
-                        <div className="driven-service">[ WEB DESIGN ]</div>
-                        <div className="driven-service">[ BRANDING ]</div>
+                    <div ref={contentRef} className="driven-grid">
+                        <div className="driven-services">
+                            <div className="driven-service">[ WEB APPLICATIONS ]</div>
+                            <div className="driven-service">[ WEB DESIGN ]</div>
+                            <div className="driven-service">[ BRANDING ]</div>
+                        </div>
+
+                        <PixelatedPhoto
+                            src="/website/vilem.webp"
+                            alt="Vilem Barnet"
+                            className="driven-photo"
+                        />
                     </div>
                 </div>
             </div>

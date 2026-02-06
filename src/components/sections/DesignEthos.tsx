@@ -57,28 +57,31 @@ export default function DesignEthos() {
 
     return (
         <section ref={sectionRef} className="ethos-section">
-            <div className="padding-section ethos-grid">
-                <div className="ethos-top-left">
-                    <h2 ref={headingRef} className="ethos-heading">
-                        {words.map((word, i) => (
-                            <span key={i} className="ethos-word" style={{ color: "#B0B0B0" }}>
-                                {word}{" "}
-                            </span>
-                        ))}
-                    </h2>
-                </div>
-
-                <div ref={bottomContentRef} className="ethos-bottom-content-wrapper" style={{ display: 'contents' }}>
-                    <div className="ethos-bottom-left">
-                        <Button href="/work" className="ethos-button">
-                            EXPLORE MY WORK
-                        </Button>
+            <div className="ethos-container">
+                <div className="ethos-line-top" />
+                <div className="ethos-grid">
+                    <div className="ethos-top-left">
+                        <h2 ref={headingRef} className="ethos-heading">
+                            {words.map((word, i) => (
+                                <span key={i} className="ethos-word" style={{ color: "#B0B0B0" }}>
+                                    {word}{" "}
+                                </span>
+                            ))}
+                        </h2>
                     </div>
 
-                    <div className="ethos-bottom-right">
-                        <p className="ethos-text">
-                            GOOD DESIGN DOESN&apos;T NEED EXPLAINING. I BUILD WEBSITES WITH CLEAN STRUCTURE, CONSIDERED MOTION, AND CODE THAT MAKES IT ALL WORK.
-                        </p>
+                    <div ref={bottomContentRef} className="ethos-bottom-content-wrapper" style={{ display: 'contents' }}>
+                        <div className="ethos-bottom-left">
+                            <Button href="/work" className="ethos-button">
+                                EXPLORE MY WORK
+                            </Button>
+                        </div>
+
+                        <div className="ethos-bottom-right">
+                            <p className="ethos-text">
+                                GOOD DESIGN DOESN&apos;T NEED EXPLAINING. I BUILD WEBSITES WITH CLEAN STRUCTURE, CONSIDERED MOTION, AND CODE THAT MAKES IT ALL WORK.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
