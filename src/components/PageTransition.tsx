@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -22,12 +22,22 @@ export default function PageTransition() {
     const overlayRef = useRef<HTMLDivElement>(null);
     const accentRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
+    const progressBarRef = useRef<HTMLDivElement>(null);
     const progressTextRef = useRef<HTMLSpanElement>(null);
     const isPendingRef = useRef(false);
     const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const progressTweenRef = useRef<gsap.core.Tween | null>(null);
     const progressObjRef = useRef({ value: 0 });
-    const [progress, setProgress] = useState(0);
+
+    const updateProgress = (value: number) => {
+        const rounded = Math.round(value);
+        if (progressTextRef.current) {
+            progressTextRef.current.textContent = `${rounded}%`;
+        }
+        if (progressBarRef.current) {
+            progressBarRef.current.style.width = `${rounded}%`;
+        }
+    };
 
     const prefersReducedMotion = () =>
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -69,7 +79,7 @@ export default function PageTransition() {
         if (accentRef.current) gsap.killTweensOf(accentRef.current);
 
         progressObjRef.current.value = 100;
-        setProgress(100);
+        updateProgress(100);
 
         if (prefersReducedMotion()) {
             gsap.set(overlayRef.current, { clipPath: POLY_HIDDEN_TOP });
@@ -93,17 +103,11 @@ export default function PageTransition() {
             },
         });
 
-        tl.to(progressTextRef.current, {
-            y: -30,
-            duration: 0.5,
-            ease: "power3.inOut",
-        });
-
         tl.to(progressRef.current, {
             opacity: 0,
-            duration: 0.2,
+            duration: 0.4,
             ease: "power2.inOut",
-        }, "-=0.3");
+        });
 
         tl.to(accentRef.current, {
             clipPath: POLY_HIDDEN_TOP,
@@ -142,15 +146,15 @@ export default function PageTransition() {
         gsap.set(overlayRef.current, { clipPath: POLY_FULL });
         gsap.set(accentRef.current, { clipPath: POLY_FULL });
 
-        gsap.set(progressRef.current, { opacity: 1 });
-        gsap.set(progressTextRef.current, { y: 20 });
+        gsap.set(progressRef.current, { opacity: 0 });
+        if (progressBarRef.current) progressBarRef.current.style.width = "0%";
         progressObjRef.current.value = 0;
-        setProgress(0);
+        updateProgress(0);
 
-        gsap.to(progressTextRef.current, {
-            y: 0,
-            duration: 0.6,
-            ease: "power3.out",
+        gsap.to(progressRef.current, {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out",
             delay: 0.3,
         });
 
@@ -160,7 +164,7 @@ export default function PageTransition() {
             ease: "power2.out",
             delay: 0.3,
             onUpdate: () => {
-                setProgress(Math.round(progressObjRef.current.value));
+                updateProgress(progressObjRef.current.value);
             },
         });
 
@@ -176,7 +180,7 @@ export default function PageTransition() {
             if (accentRef.current) gsap.killTweensOf(accentRef.current);
 
             progressObjRef.current.value = 100;
-            setProgress(100);
+            updateProgress(100);
 
             requestAnimationFrame(() => {
                 const tl = gsap.timeline({
@@ -186,18 +190,12 @@ export default function PageTransition() {
                     },
                 });
 
-                tl.to(progressTextRef.current, {
-                    y: -30,
-                    duration: 0.6,
-                    ease: "power3.inOut",
-                    delay: 0.2,
-                });
-
                 tl.to(progressRef.current, {
                     opacity: 0,
-                    duration: 0.2,
+                    duration: 0.4,
                     ease: "power2.inOut",
-                }, "-=0.3");
+                    delay: 0.15,
+                });
 
                 tl.to(accentRef.current, {
                     clipPath: POLY_HIDDEN_TOP,
@@ -281,7 +279,8 @@ export default function PageTransition() {
 
             killProgressTween();
             progressObjRef.current.value = 0;
-            setProgress(0);
+            updateProgress(0);
+            if (progressBarRef.current) progressBarRef.current.style.width = "0%";
 
             const tl = gsap.timeline({
                 onComplete: () => {
@@ -289,20 +288,14 @@ export default function PageTransition() {
                     ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
                     window.scrollTo(0, 0);
 
-                    gsap.set(progressTextRef.current, { y: 20 });
-
-                    gsap.to(progressTextRef.current, {
-                        y: 0,
-                        duration: 0.4,
-                        ease: "power3.out",
-                    });
+                    if (progressBarRef.current) progressBarRef.current.style.width = "0%";
 
                     progressTweenRef.current = gsap.to(progressObjRef.current, {
                         value: 90,
                         duration: 3,
                         ease: "power2.out",
                         onUpdate: () => {
-                            setProgress(Math.round(progressObjRef.current.value));
+                            updateProgress(progressObjRef.current.value);
                         },
                     });
 
@@ -351,9 +344,10 @@ export default function PageTransition() {
             <div ref={overlayRef} className="transition-overlay" />
             <div ref={accentRef} className="transition-overlay-accent" />
             <div ref={progressRef} className="transition-progress">
-                <span ref={progressTextRef} style={{ display: 'inline-block' }}>
-                    {progress}%
-                </span>
+                <div className="transition-progress-track">
+                    <div ref={progressBarRef} className="transition-progress-fill" />
+                </div>
+                <span ref={progressTextRef}>0%</span>
             </div>
         </div>
     );
