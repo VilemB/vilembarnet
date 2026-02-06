@@ -737,11 +737,14 @@ section {
   width: 100%;
   position: relative;
   background-color: var(--color-light);
+  display: flex;
+  flex-direction: column;
 }
 
 .footer-container {
   position: relative;
   width: 100%;
+  flex: 1;
 }
 
 /* Structural lines */
@@ -862,7 +865,7 @@ section {
 }
 
 .footer-copyright {
-  padding: 3rem 0;
+  padding: 1.5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
