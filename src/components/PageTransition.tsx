@@ -21,23 +21,8 @@ export default function PageTransition() {
     const router = useRouter();
     const overlayRef = useRef<HTMLDivElement>(null);
     const accentRef = useRef<HTMLDivElement>(null);
-    const progressRef = useRef<HTMLDivElement>(null);
-    const progressBarRef = useRef<HTMLDivElement>(null);
-    const progressTextRef = useRef<HTMLSpanElement>(null);
     const isPendingRef = useRef(false);
     const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const progressTweenRef = useRef<gsap.core.Tween | null>(null);
-    const progressObjRef = useRef({ value: 0 });
-
-    const updateProgress = (value: number) => {
-        const rounded = Math.round(value);
-        if (progressTextRef.current) {
-            progressTextRef.current.textContent = `${rounded}%`;
-        }
-        if (progressBarRef.current) {
-            progressBarRef.current.style.width = `${rounded}%`;
-        }
-    };
 
     const prefersReducedMotion = () =>
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -59,32 +44,18 @@ export default function PageTransition() {
         }
     };
 
-    const killProgressTween = () => {
-        if (progressTweenRef.current) {
-            progressTweenRef.current.kill();
-            progressTweenRef.current = null;
-        }
-    };
-
     const revealPage = useCallback(() => {
         if (fallbackTimerRef.current) {
             clearTimeout(fallbackTimerRef.current);
             fallbackTimerRef.current = null;
         }
 
-        killProgressTween();
-        if (progressRef.current) gsap.killTweensOf(progressRef.current);
-        if (progressTextRef.current) gsap.killTweensOf(progressTextRef.current);
         if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
         if (accentRef.current) gsap.killTweensOf(accentRef.current);
-
-        progressObjRef.current.value = 100;
-        updateProgress(100);
 
         if (prefersReducedMotion()) {
             gsap.set(overlayRef.current, { clipPath: POLY_HIDDEN_TOP });
             gsap.set(accentRef.current, { clipPath: POLY_HIDDEN_TOP });
-            gsap.set(progressRef.current, { opacity: 0 });
             isPendingRef.current = false;
             unlockScroll();
             window.scrollTo(0, 0);
@@ -103,12 +74,6 @@ export default function PageTransition() {
             },
         });
 
-        tl.to(progressRef.current, {
-            opacity: 0,
-            duration: 0.4,
-            ease: "power2.inOut",
-        });
-
         tl.to(accentRef.current, {
             clipPath: POLY_HIDDEN_TOP,
             duration: 1,
@@ -116,7 +81,7 @@ export default function PageTransition() {
             onStart: () => {
                 window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
             }
-        }, "-=0.3");
+        });
 
         let revealFired = false;
         tl.to(overlayRef.current, {
@@ -146,41 +111,13 @@ export default function PageTransition() {
         gsap.set(overlayRef.current, { clipPath: POLY_FULL });
         gsap.set(accentRef.current, { clipPath: POLY_FULL });
 
-        gsap.set(progressRef.current, { opacity: 0 });
-        if (progressBarRef.current) progressBarRef.current.style.width = "0%";
-        progressObjRef.current.value = 0;
-        updateProgress(0);
-
-        gsap.to(progressRef.current, {
-            opacity: 1,
-            duration: 0.5,
-            ease: "power2.out",
-            delay: 0.3,
-        });
-
-        progressTweenRef.current = gsap.to(progressObjRef.current, {
-            value: 90,
-            duration: 2.5,
-            ease: "power2.out",
-            delay: 0.3,
-            onUpdate: () => {
-                updateProgress(progressObjRef.current.value);
-            },
-        });
-
         let revealed = false;
         const reveal = () => {
             if (revealed) return;
             revealed = true;
 
-            killProgressTween();
-            if (progressRef.current) gsap.killTweensOf(progressRef.current);
-            if (progressTextRef.current) gsap.killTweensOf(progressTextRef.current);
             if (overlayRef.current) gsap.killTweensOf(overlayRef.current);
             if (accentRef.current) gsap.killTweensOf(accentRef.current);
-
-            progressObjRef.current.value = 100;
-            updateProgress(100);
 
             requestAnimationFrame(() => {
                 const tl = gsap.timeline({
@@ -190,13 +127,6 @@ export default function PageTransition() {
                     },
                 });
 
-                tl.to(progressRef.current, {
-                    opacity: 0,
-                    duration: 0.4,
-                    ease: "power2.inOut",
-                    delay: 0.15,
-                });
-
                 tl.to(accentRef.current, {
                     clipPath: POLY_HIDDEN_TOP,
                     duration: 1.2,
@@ -204,7 +134,7 @@ export default function PageTransition() {
                     onStart: () => {
                         window.dispatchEvent(new CustomEvent("pageTransitionEnd"));
                     }
-                }, "-=0.3");
+                });
 
                 let revealFired = false;
                 tl.to(overlayRef.current, {
@@ -277,34 +207,11 @@ export default function PageTransition() {
                 return;
             }
 
-            killProgressTween();
-            progressObjRef.current.value = 0;
-            updateProgress(0);
-            if (progressBarRef.current) progressBarRef.current.style.width = "0%";
-
             const tl = gsap.timeline({
                 onComplete: () => {
                     if (!isPendingRef.current) return;
                     ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
                     window.scrollTo(0, 0);
-
-                    if (progressBarRef.current) progressBarRef.current.style.width = "0%";
-
-                    progressTweenRef.current = gsap.to(progressObjRef.current, {
-                        value: 90,
-                        duration: 3,
-                        ease: "power2.out",
-                        onUpdate: () => {
-                            updateProgress(progressObjRef.current.value);
-                        },
-                    });
-
-                    gsap.to(progressRef.current, {
-                        opacity: 1,
-                        duration: 0.3,
-                        ease: "power2.out",
-                        overwrite: true,
-                    });
 
                     router.push(href);
 
@@ -343,12 +250,6 @@ export default function PageTransition() {
         <div className="transition-container" role="presentation" aria-hidden="true">
             <div ref={overlayRef} className="transition-overlay" />
             <div ref={accentRef} className="transition-overlay-accent" />
-            <div ref={progressRef} className="transition-progress">
-                <div className="transition-progress-track">
-                    <div ref={progressBarRef} className="transition-progress-fill" />
-                </div>
-                <span ref={progressTextRef}>0%</span>
-            </div>
         </div>
     );
 }
