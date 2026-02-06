@@ -25,11 +25,11 @@ export default function Navigation() {
     const handleEnd = () => setIsTransitioning(false);
 
     window.addEventListener("pageTransitionStart", handleStart);
-    window.addEventListener("pageTransitionEnd", handleEnd);
+    window.addEventListener("pageRevealComplete", handleEnd);
 
     return () => {
       window.removeEventListener("pageTransitionStart", handleStart);
-      window.removeEventListener("pageTransitionEnd", handleEnd);
+      window.removeEventListener("pageRevealComplete", handleEnd);
     };
   }, []);
 

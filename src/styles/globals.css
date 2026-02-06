@@ -63,6 +63,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .transition-overlay,
   .transition-overlay-accent {
     clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%) !important;
@@ -163,7 +164,7 @@ section {
 
 .top-navigation.nav-open .top-nav-left {
   opacity: 1;
-  }
+}
 
 .top-navigation.nav-open .top-nav-divider {
   opacity: 1;
@@ -977,6 +978,14 @@ section {
 
   .footer-copyright {
     margin: 0 1rem;
+  }
+
+  .footer-main-row {
+    gap: 1.5rem;
+  }
+
+  .footer-logo {
+    margin-bottom: 1rem;
   }
 
   .footer-socials-left,
