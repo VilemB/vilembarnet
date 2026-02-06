@@ -77,6 +77,8 @@ export default function PageTransition() {
             gsap.set(progressRef.current, { opacity: 0 });
             isPendingRef.current = false;
             unlockScroll();
+            window.scrollTo(0, 0);
+            if (window.lenis) window.lenis.scrollTo(0, { immediate: true, force: true });
             requestAnimationFrame(() => ScrollTrigger.refresh());
             return;
         }
@@ -85,6 +87,8 @@ export default function PageTransition() {
             onComplete: () => {
                 isPendingRef.current = false;
                 unlockScroll();
+                window.scrollTo(0, 0);
+                if (window.lenis) window.lenis.scrollTo(0, { immediate: true, force: true });
                 requestAnimationFrame(() => ScrollTrigger.refresh());
             },
         });

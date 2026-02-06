@@ -44,7 +44,6 @@ export default function LenisScroll() {
         window.scrollTo(0, 0);
 
         if (window.lenis) {
-            window.lenis.start();
             window.lenis.scrollTo(0, { immediate: true, force: true });
 
             requestAnimationFrame(() => {
