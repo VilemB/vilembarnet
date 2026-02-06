@@ -60,7 +60,7 @@ export default function DrivenSection() {
                 <div className="driven-inner">
                     <h2 ref={headingRef} className="driven-heading">
                         {words.map((word, i) => (
-                            <span key={i} className="driven-word" style={{ color: "#B0B0B0" }}>
+                            <span key={i} className="driven-word" style={{ color: "color-mix(in srgb, var(--color-dark) 30%, var(--color-light))" }}>
                                 {word}{" "}
                             </span>
                         ))}

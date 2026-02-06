@@ -63,7 +63,7 @@ export default function DesignEthos() {
                     <div className="ethos-top-left">
                         <h2 ref={headingRef} className="ethos-heading">
                             {words.map((word, i) => (
-                                <span key={i} className="ethos-word" style={{ color: "#B0B0B0" }}>
+                                <span key={i} className="ethos-word" style={{ color: "color-mix(in srgb, var(--color-dark) 30%, var(--color-light))" }}>
                                     {word}{" "}
                                 </span>
                             ))}

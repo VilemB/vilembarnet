@@ -66,18 +66,12 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
         return () => document.removeEventListener("keydown", handleEsc);
     }, [isOpen, onClose]);
 
-    // Roll animation on nav links and social links
+    // Roll animation on social links (nav links get roll after their SplitText reveal)
     // Cleanup is deferred to the close animation's onComplete to prevent letter-spacing flash
     useEffect(() => {
         if (!isOpen) return;
 
         const cleanups: (() => void)[] = [];
-
-        const navLinkEls = navItemsRef.current?.querySelectorAll(".nav-item a");
-        navLinkEls?.forEach((link: any) => {
-            const cleanup = initRollAnimation(link);
-            if (cleanup) cleanups.push(cleanup);
-        });
 
         const socialLinkEls = footerRef.current?.querySelectorAll(".nav-footer-item a");
         socialLinkEls?.forEach((link: any) => {
@@ -180,6 +174,18 @@ export default function MenuOverlay({ isOpen, onClose }: MenuOverlayProps) {
                     ease: "power2.out",
                 }, 0.65);
             }
+
+            // After char reveal completes, revert SplitText and apply roll hover
+            tl.call(() => {
+                splitInstancesRef.current.forEach(s => s.revert());
+                splitInstancesRef.current = [];
+
+                const linkEls = navItemsRef.current?.querySelectorAll(".nav-item a");
+                linkEls?.forEach((link: any) => {
+                    const cleanup = initRollAnimation(link);
+                    if (cleanup) rollCleanupsRef.current.push(cleanup);
+                });
+            });
 
         } else {
             // -- CLOSE SEQUENCE --
