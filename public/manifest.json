@@ -1,11 +1,11 @@
 {
   "name": "Vilém Barnet",
   "short_name": "Vilém Barnet",
-  "description": "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration.",
+  "description": "Vilém Barnet — freelance full-stack developer and web designer. Websites, web apps, and branding.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#EEEEEE",
-  "theme_color": "#0F0E0E",
+  "theme_color": "#201E43",
   "icons": [
     {
       "src": "/favicon.ico",

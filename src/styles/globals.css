@@ -5,9 +5,9 @@
 @import "./work.css";
 
 :root {
-  --color-light: #FCF9EA;
-  --color-dark: #0F0E0E;
-  --color-accent: #468A9A;
+  --color-light: #EEEEEE;
+  --color-dark: #201E43;
+  --color-accent: #508C9B;
 }
 
 .transition-container {
@@ -76,8 +76,8 @@
 
 @theme {
   --color-light: #EEEEEE;
-  --color-dark: #0F0E0E;
-  --color-accent: #468A9A;
+  --color-dark: #201E43;
+  --color-accent: #508C9B;
 
   --font-heading: var(--font-bricolage);
   --font-body: var(--font-bricolage);

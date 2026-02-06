@@ -32,7 +32,7 @@ export default function DrivenSection() {
         });
 
         tl.to(wordsElements, {
-            color: "#0F0E0E",
+            color: "#201E43",
             stagger: 0.1,
             ease: "power2.out",
         });
@@ -60,7 +60,7 @@ export default function DrivenSection() {
                 <div className="driven-inner">
                     <h2 ref={headingRef} className="driven-heading">
                         {words.map((word, i) => (
-                            <span key={i} className="driven-word" style={{ color: "color-mix(in srgb, var(--color-dark) 30%, var(--color-light))" }}>
+                            <span key={i} className="driven-word" style={{ color: "#B0B0BB" }}>
                                 {word}{" "}
                             </span>
                         ))}

@@ -1,16 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Work & Projects',
-  description: 'Explore my portfolio of web applications, design projects, and branding work. Featuring Studio Eclipse, Stepps.AI, Lumenapps, and Travist.',
+  title: 'Selected Work',
+  description: 'Selected projects by Vilém Barnet — web applications, UI/UX design, and branding. Featuring Studio Eclipse, Stepps.AI, Lumenapps, and Travist. Built with React, Next.js, and TypeScript.',
   openGraph: {
-    title: 'Work & Projects | Vilém Barnet',
-    description: 'Explore my portfolio of web applications, design projects, and branding work.',
+    title: 'Selected Work — Vilém Barnet',
+    description: 'Selected projects by Vilém Barnet — web applications, UI/UX design, and branding work built with React, Next.js, and TypeScript.',
     url: 'https://barnetvilem.com/work',
   },
   twitter: {
-    title: 'Work & Projects | Vilém Barnet',
-    description: 'Explore my portfolio of web applications, design projects, and branding work.',
+    title: 'Selected Work — Vilém Barnet',
+    description: 'Selected projects by Vilém Barnet — web applications, UI/UX design, and branding work built with React, Next.js, and TypeScript.',
+  },
+  alternates: {
+    canonical: 'https://barnetvilem.com/work',
   },
 };
 

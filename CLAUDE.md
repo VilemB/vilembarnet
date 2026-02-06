@@ -53,8 +53,8 @@ The site uses Three.js WebGL shaders for interactive distortion effects on text 
 - **Tailwind CSS 4** with `@theme` directive
 - Custom CSS variables in `:root` and `@theme`:
   - `--color-light`: #EEEEEE
-  - `--color-dark`: #0F0E0E
-  - `--color-accent`: #468A9A
+  - `--color-dark`: #201E43
+  - `--color-accent`: #508C9B
 - Font: Bricolage Grotesque (weights 200-800) loaded in layout
 - Responsive breakpoints: 720px (mobile), 480px (small mobile)
 - Section-level styles in `globals.css` (`.home`, `.hero-*`, `.cta-*`)

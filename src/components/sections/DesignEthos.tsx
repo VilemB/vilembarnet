@@ -32,7 +32,7 @@ export default function DesignEthos() {
         });
 
         tl.to(wordsElements, {
-            color: "#0F0E0E",
+            color: "#201E43",
             stagger: 0.1,
             ease: "power2.out",
         });
@@ -63,7 +63,7 @@ export default function DesignEthos() {
                     <div className="ethos-top-left">
                         <h2 ref={headingRef} className="ethos-heading">
                             {words.map((word, i) => (
-                                <span key={i} className="ethos-word" style={{ color: "color-mix(in srgb, var(--color-dark) 30%, var(--color-light))" }}>
+                                <span key={i} className="ethos-word" style={{ color: "#B0B0BB" }}>
                                     {word}{" "}
                                 </span>
                             ))}

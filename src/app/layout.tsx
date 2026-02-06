@@ -14,7 +14,7 @@ const bricolageGrotesque = Bricolage_Grotesque({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0F0E0E",
+  themeColor: "#201E43",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -23,11 +23,28 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://barnetvilem.com"),
   title: {
-    default: "Vilém Barnet | Full-Stack Engineer",
-    template: "%s | Vilém Barnet",
+    default: "Vilém Barnet — Developer & Designer",
+    template: "%s — Vilém Barnet",
   },
   description:
-    "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.",
+    "Vilém Barnet — freelance full-stack developer and web designer. I build high-performance websites, web apps, and brands using React, Next.js, and TypeScript. Available for hire.",
+  keywords: [
+    "Vilém Barnet",
+    "Vilem Barnet",
+    "full-stack developer",
+    "web developer",
+    "web designer",
+    "freelance developer",
+    "React developer",
+    "Next.js developer",
+    "TypeScript developer",
+    "frontend developer",
+    "web design",
+    "web applications",
+    "branding",
+    "UI design",
+    "portfolio",
+  ],
   authors: [{ name: "Vilém Barnet", url: "https://barnetvilem.com" }],
   creator: "Vilém Barnet",
   publisher: "Vilém Barnet",
@@ -56,38 +73,38 @@ export const metadata: Metadata = {
       {
         rel: "mask-icon",
         url: "/favicon.svg",
-        color: "#0F0E0E",
+        color: "#201E43",
       },
     ],
   },
   manifest: "/manifest.json",
   openGraph: {
     type: "website",
-    locale: "cs_CZ",
-    url: "https://vilembarnet.com",
+    locale: "en_US",
+    url: "https://barnetvilem.com",
     siteName: "Vilém Barnet",
-    title: "Vilém Barnet | Full-Stack Engineer",
+    title: "Vilém Barnet — Developer & Designer",
     description:
-      "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.",
+      "Freelance full-stack developer and web designer building high-performance websites, web apps, and brands with React, Next.js, and TypeScript.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Vilém Barnet - Full-Stack Engineer",
+        alt: "Vilém Barnet — Developer & Designer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vilém Barnet | Full-Stack Engineer",
+    title: "Vilém Barnet — Developer & Designer",
     description:
-      "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration. Building elegant web solutions that drive results.",
+      "Freelance full-stack developer and web designer building high-performance websites, web apps, and brands with React, Next.js, and TypeScript.",
     creator: "@barnetvilem",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://vilembarnet.com",
+    canonical: "https://barnetvilem.com",
   },
   verification: {
     google: "googleeee94309a9949b14.html",
@@ -115,26 +132,87 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Vilém Barnet",
-              jobTitle: "Full-Stack Engineer",
-              description:
-                "Full-Stack Engineer specializing in React, Next.js, TypeScript, and AI integration",
-              url: "https://barnetvilem.com",
-              sameAs: [
-                "https://github.com/vilemb",
-                "https://x.com/barnetvilem",
-                "https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/",
-              ],
-              knowsAbout: [
-                "React",
-                "Next.js",
-                "TypeScript",
-                "JavaScript",
-                "Node.js",
-                "Python",
-                "AI Integration",
-                "Web Development",
+              "@graph": [
+                {
+                  "@type": "Person",
+                  "@id": "https://barnetvilem.com/#person",
+                  name: "Vilém Barnet",
+                  alternateName: "Vilem Barnet",
+                  jobTitle: "Full-Stack Developer & Web Designer",
+                  description:
+                    "Freelance full-stack developer and web designer specializing in React, Next.js, TypeScript, and modern web technologies. Building high-performance websites, web applications, and brand identities.",
+                  url: "https://barnetvilem.com",
+                  email: "barnetv7@gmail.com",
+                  sameAs: [
+                    "https://github.com/vilemb",
+                    "https://x.com/barnetvilem",
+                    "https://www.linkedin.com/in/vil%C3%A9m-barnet-497003365/",
+                    "https://instagram.com/barnetvilem",
+                  ],
+                  knowsAbout: [
+                    "React",
+                    "Next.js",
+                    "TypeScript",
+                    "JavaScript",
+                    "Node.js",
+                    "Python",
+                    "AI Integration",
+                    "Web Development",
+                    "Web Design",
+                    "UI/UX Design",
+                    "GSAP",
+                    "Branding",
+                    "Three.js",
+                    "Tailwind CSS",
+                  ],
+                  makesOffer: [
+                    {
+                      "@type": "Offer",
+                      itemOffered: {
+                        "@type": "Service",
+                        name: "Web Application Development",
+                        description:
+                          "Custom web application development using React, Next.js, and TypeScript",
+                      },
+                    },
+                    {
+                      "@type": "Offer",
+                      itemOffered: {
+                        "@type": "Service",
+                        name: "Web Design",
+                        description:
+                          "Modern, responsive web design with clean structure and considered motion",
+                      },
+                    },
+                    {
+                      "@type": "Offer",
+                      itemOffered: {
+                        "@type": "Service",
+                        name: "Branding",
+                        description:
+                          "Brand identity design including logos, visual systems, and brand guidelines",
+                      },
+                    },
+                  ],
+                },
+                {
+                  "@type": "WebSite",
+                  "@id": "https://barnetvilem.com/#website",
+                  url: "https://barnetvilem.com",
+                  name: "Vilém Barnet — Developer & Designer",
+                  publisher: {
+                    "@id": "https://barnetvilem.com/#person",
+                  },
+                },
+                {
+                  "@type": "ProfilePage",
+                  "@id": "https://barnetvilem.com/#profilepage",
+                  url: "https://barnetvilem.com",
+                  name: "Vilém Barnet Portfolio",
+                  mainEntity: {
+                    "@id": "https://barnetvilem.com/#person",
+                  },
+                },
               ],
             }),
           }}
