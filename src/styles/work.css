@@ -1,7 +1,7 @@
 .work-section {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100svh;
     background-color: var(--color-light);
     overflow: hidden;
     display: flex;
@@ -11,7 +11,7 @@
 .work-container {
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100svh;
     position: relative;
     padding-top: 6rem;
     padding-bottom: 2rem;
@@ -212,9 +212,9 @@
 /* Mobile Styling */
 @media (max-width: 900px) {
     .work-container {
-        padding: 6rem 1rem 1rem 1rem;
+        padding: 4.5rem 1rem 0.5rem 1rem;
         flex-direction: column;
-        height: 100vh;
+        height: 100svh;
         overflow: hidden;
     }
 
@@ -228,10 +228,10 @@
     .work-display {
         order: 1;
         flex: 1 1 auto;
-        gap: 1rem;
-        margin-bottom: 1rem;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
         padding-top: 0;
-        height: 50%;
+        height: 45%;
         justify-content: center;
     }
 
@@ -250,7 +250,6 @@
     .work-display-info {
         order: 2;
         margin-top: 0;
-        position: absolute;
         position: relative;
         flex: 0 0 auto;
     }
@@ -267,22 +266,22 @@
         order: 2;
         flex: 1 1 auto;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
         gap: 1rem;
         height: 40%;
-        padding-top: 0;
+        padding-top: 0.5rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .work-previews-col {
         width: 40%;
-        mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 90%, transparent 100%);
         height: 100%;
     }
 
     .work-previews-container {
         width: 100%;
-        margin-top: 15vh;
+        margin-top: 5svh;
     }
 
     .work-preview-image-wrapper {
@@ -292,7 +291,7 @@
     .work-list-col {
         width: 60%;
         padding-left: 0;
-        padding-top: 15vh;
+        padding-top: 5svh;
         justify-content: flex-start;
         height: 100%;
     }
