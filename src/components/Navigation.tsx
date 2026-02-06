@@ -15,13 +15,21 @@ export default function Navigation() {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  // Ref-based flag: true from when menu opens until menuCloseComplete fires.
-  // Using a ref avoids the one-frame gap that useState would cause.
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const menuActiveCycleRef = useRef(false);
+  const wasPageTransitionRef = useRef(true);
 
   useEffect(() => {
-    const handleStart = () => setIsTransitioning(true);
+    if (navRef.current && pathname !== '/work') {
+      gsap.set(navRef.current, { yPercent: -100 });
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleStart = () => {
+      setIsTransitioning(true);
+      wasPageTransitionRef.current = true;
+    };
     const handleEnd = () => setIsTransitioning(false);
 
     window.addEventListener("pageTransitionStart", handleStart);
@@ -33,7 +41,6 @@ export default function Navigation() {
     };
   }, []);
 
-  // Mark the menu cycle active when menu opens
   useEffect(() => {
     if (isMenuOpen) {
       menuActiveCycleRef.current = true;
@@ -42,7 +49,6 @@ export default function Navigation() {
 
   const isWorkPage = pathname === '/work';
 
-  // Show nav when menu close animation finishes
   useEffect(() => {
     const handleCloseComplete = () => {
       menuActiveCycleRef.current = false;
@@ -94,7 +100,6 @@ export default function Navigation() {
   useGSAP(() => {
     if (!navRef.current) return;
 
-    // Hide nav when menu is open, during its close animation, or during page transition
     if (isMenuOpen || menuActiveCycleRef.current || (isTransitioning && !isWorkPage)) {
       gsap.to(navRef.current, {
         yPercent: -100,
@@ -106,10 +111,12 @@ export default function Navigation() {
       gsap.killTweensOf(navRef.current);
       gsap.set(navRef.current, { yPercent: 0 });
     } else if (!menuActiveCycleRef.current) {
-      // Only show nav if we're not in a menu close cycle
+      const delay = wasPageTransitionRef.current ? 0.4 : 0;
+      wasPageTransitionRef.current = false;
       gsap.to(navRef.current, {
         yPercent: 0,
         duration: 0.4,
+        delay,
         ease: "power2.out",
         overwrite: true
       });

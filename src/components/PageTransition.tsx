@@ -8,12 +8,10 @@ import { CustomEase } from "gsap/CustomEase";
 
 gsap.registerPlugin(CustomEase);
 
-// Organic easing with a subtle midpoint inflection — feels physical, like momentum settling
 CustomEase.create("hop",
     "M0,0 C0.29,0 0.348,0.05 0.422,0.134 0.494,0.217 0.484,0.355 0.5,0.5 0.518,0.662 0.515,0.793 0.596,0.876 0.701,0.983 0.72,0.987 1,1"
 );
 
-// Polygon helpers — all transitions share the same visual language
 const POLY_HIDDEN_BOTTOM = "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)";
 const POLY_FULL = "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)";
 const POLY_HIDDEN_TOP = "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)";
@@ -91,21 +89,18 @@ export default function PageTransition() {
             },
         });
 
-        // Counter text slides out
         tl.to(progressTextRef.current, {
             y: -30,
             duration: 0.5,
             ease: "power3.inOut",
         });
 
-        // Progress container fades
         tl.to(progressRef.current, {
             opacity: 0,
             duration: 0.2,
             ease: "power2.inOut",
         }, "-=0.3");
 
-        // Accent layer peels away first (upward)
         tl.to(accentRef.current, {
             clipPath: POLY_HIDDEN_TOP,
             duration: 1,
@@ -115,7 +110,6 @@ export default function PageTransition() {
             }
         }, "-=0.3");
 
-        // Dark layer follows with slight delay (chase effect)
         let revealFired = false;
         tl.to(overlayRef.current, {
             clipPath: POLY_HIDDEN_TOP,
@@ -131,7 +125,6 @@ export default function PageTransition() {
 
     }, []);
 
-    // Initial page load
     useEffect(() => {
         lockScroll();
 
@@ -142,7 +135,6 @@ export default function PageTransition() {
             return;
         }
 
-        // Start with both layers fully covering
         gsap.set(overlayRef.current, { clipPath: POLY_FULL });
         gsap.set(accentRef.current, { clipPath: POLY_FULL });
 
@@ -151,7 +143,6 @@ export default function PageTransition() {
         progressObjRef.current.value = 0;
         setProgress(0);
 
-        // Counter slides into view
         gsap.to(progressTextRef.current, {
             y: 0,
             duration: 0.6,
@@ -191,7 +182,6 @@ export default function PageTransition() {
                     },
                 });
 
-                // Counter slides out
                 tl.to(progressTextRef.current, {
                     y: -30,
                     duration: 0.6,
@@ -205,7 +195,6 @@ export default function PageTransition() {
                     ease: "power2.inOut",
                 }, "-=0.3");
 
-                // Accent layer peels away upward
                 tl.to(accentRef.current, {
                     clipPath: POLY_HIDDEN_TOP,
                     duration: 1.2,
@@ -215,7 +204,6 @@ export default function PageTransition() {
                     }
                 }, "-=0.3");
 
-                // Dark layer chases it
                 let revealFired = false;
                 tl.to(overlayRef.current, {
                     clipPath: POLY_HIDDEN_TOP,
@@ -243,7 +231,6 @@ export default function PageTransition() {
         }
     }, []);
 
-    // Link click handler
     useEffect(() => {
         const handleLinkClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -298,7 +285,6 @@ export default function PageTransition() {
                     ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
                     window.scrollTo(0, 0);
 
-                    // Reset progress text position for loading state
                     gsap.set(progressTextRef.current, { y: 20 });
 
                     gsap.to(progressTextRef.current, {
@@ -331,7 +317,6 @@ export default function PageTransition() {
                 },
             });
 
-            // Cover the page: accent layer sweeps up first from bottom
             gsap.set(accentRef.current, { clipPath: POLY_HIDDEN_BOTTOM });
             gsap.set(overlayRef.current, { clipPath: POLY_HIDDEN_BOTTOM });
 
@@ -341,7 +326,6 @@ export default function PageTransition() {
                 ease: "hop",
             });
 
-            // Dark layer chases the accent layer
             tl.to(overlayRef.current, {
                 clipPath: POLY_FULL,
                 duration: 0.7,
@@ -353,7 +337,6 @@ export default function PageTransition() {
         return () => document.removeEventListener("click", handleLinkClick, { capture: true });
     }, [pathname, router, revealPage]);
 
-    // Reveal on pathname change
     useEffect(() => {
         if (!isPendingRef.current) return;
         revealPage();
