@@ -1,8 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
-import PixelatedText from "@/components/PixelatedText";
+
+const PixelatedText = dynamic(() => import("@/components/PixelatedText"), {
+  ssr: false,
+  loading: () => <span className="opacity-0">BARNETVILEM</span>,
+});
 import Clock from "@/components/Clock";
 import Button from "@/components/Button";
 

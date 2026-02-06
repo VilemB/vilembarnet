@@ -1,7 +1,23 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  ShaderMaterial,
+  Mesh,
+  PlaneGeometry,
+  DataTexture,
+  TextureLoader,
+  RGBAFormat,
+  FloatType,
+  NearestFilter,
+  LinearFilter,
+  ClampToEdgeWrapping,
+  DoubleSide,
+} from "three";
+import type { Texture } from "three";
 
 interface PixelatedPhotoProps {
   src: string;
@@ -68,14 +84,14 @@ export default function PixelatedPhoto({
 
     const settings: Settings = { grid, mouse, strength, relaxation };
 
-    let scene: THREE.Scene;
-    let camera: THREE.OrthographicCamera;
-    let renderer: THREE.WebGLRenderer;
-    let material: THREE.ShaderMaterial;
-    let planeMesh: THREE.Mesh;
-    let planeGeometry: THREE.PlaneGeometry;
-    let dataTexture: THREE.DataTexture;
-    let imageTexture: THREE.Texture;
+    let scene: Scene;
+    let camera: OrthographicCamera;
+    let renderer: WebGLRenderer;
+    let material: ShaderMaterial;
+    let planeMesh: Mesh;
+    let planeGeometry: PlaneGeometry;
+    let dataTexture: DataTexture;
+    let imageTexture: Texture;
 
     const createCleanGrid = () => {
       const size = settings.grid;
@@ -86,14 +102,14 @@ export default function PixelatedPhoto({
         data[i] = 255;
       }
 
-      dataTexture = new THREE.DataTexture(
+      dataTexture = new DataTexture(
         data,
         size,
         size,
-        THREE.RGBAFormat,
-        THREE.FloatType
+        RGBAFormat,
+        FloatType
       );
-      dataTexture.magFilter = dataTexture.minFilter = THREE.NearestFilter;
+      dataTexture.magFilter = dataTexture.minFilter = NearestFilter;
 
       if (material) {
         material.uniforms.uDataTexture.value = dataTexture;
@@ -119,33 +135,33 @@ export default function PixelatedPhoto({
         scaleX = imgAspect / containerAspect;
       }
 
-      camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
+      camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
       camera.position.z = 1;
 
       if (planeGeometry) {
         planeGeometry.dispose();
       }
-      planeGeometry = new THREE.PlaneGeometry(2 * scaleX, 2 * scaleY);
+      planeGeometry = new PlaneGeometry(2 * scaleX, 2 * scaleY);
 
       return { width, height };
     };
 
-    const createImageTexture = (): Promise<THREE.Texture> => {
+    const createImageTexture = (): Promise<Texture> => {
       return new Promise((resolve, reject) => {
         if (isDestroyedRef.current) {
           reject(new Error("Component unmounted"));
           return;
         }
 
-        const loader = new THREE.TextureLoader();
+        const loader = new TextureLoader();
         loader.load(
           src,
           (texture) => {
-            texture.minFilter = THREE.LinearFilter;
-            texture.magFilter = THREE.LinearFilter;
+            texture.minFilter = LinearFilter;
+            texture.magFilter = LinearFilter;
             texture.generateMipmaps = false;
-            texture.wrapS = THREE.ClampToEdgeWrapping;
-            texture.wrapT = THREE.ClampToEdgeWrapping;
+            texture.wrapS = ClampToEdgeWrapping;
+            texture.wrapT = ClampToEdgeWrapping;
             imageTexture = texture;
             resolve(texture);
           },
@@ -155,10 +171,10 @@ export default function PixelatedPhoto({
       });
     };
 
-    const initializeScene = (texture: THREE.Texture) => {
+    const initializeScene = (texture: Texture) => {
       if (isDestroyedRef.current) return;
 
-      scene = new THREE.Scene();
+      scene = new Scene();
       const { width, height } = updateCameraAndGeometry();
       createCleanGrid();
 
@@ -178,7 +194,7 @@ export default function PixelatedPhoto({
           gl_FragColor = texture2D(uTexture, vUv - 0.02 * offset.rg);
         }`;
 
-      material = new THREE.ShaderMaterial({
+      material = new ShaderMaterial({
         uniforms: {
           time: { value: 0 },
           uTexture: { value: texture },
@@ -186,13 +202,13 @@ export default function PixelatedPhoto({
         },
         vertexShader,
         fragmentShader,
-        side: THREE.DoubleSide,
+        side: DoubleSide,
       });
 
-      planeMesh = new THREE.Mesh(planeGeometry, material);
+      planeMesh = new Mesh(planeGeometry, material);
       scene.add(planeMesh);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer = new WebGLRenderer({ antialias: true, alpha: false });
       renderer.setClearColor(0x000000, 1);
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -369,6 +385,8 @@ export default function PixelatedPhoto({
         src={src}
         alt={alt}
         className="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
       />
     </div>
   );

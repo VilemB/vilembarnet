@@ -1,7 +1,17 @@
 "use client";
 
 import { useRef } from "react";
-import PixelatedPhoto from "@/components/PixelatedPhoto";
+import dynamic from "next/dynamic";
+
+const PixelatedPhoto = dynamic(() => import("@/components/PixelatedPhoto"), {
+  ssr: false,
+  loading: () => (
+    <div className="driven-photo">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/website/vilem.webp" alt="Vilem Barnet" className="w-full h-full object-cover" loading="lazy" />
+    </div>
+  ),
+});
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";

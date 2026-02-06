@@ -7,7 +7,7 @@ import Navigation from "@/components/Navigation";
 import PageTransition from "@/components/PageTransition";
 
 const bricolageGrotesque = Bricolage_Grotesque({
-  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "700"],
   variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",

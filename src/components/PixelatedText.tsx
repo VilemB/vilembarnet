@@ -1,7 +1,23 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import {
+  Scene,
+  OrthographicCamera,
+  WebGLRenderer,
+  ShaderMaterial,
+  Mesh,
+  PlaneGeometry,
+  DataTexture,
+  CanvasTexture,
+  RGBAFormat,
+  FloatType,
+  NearestFilter,
+  LinearFilter,
+  ClampToEdgeWrapping,
+  DoubleSide,
+} from "three";
+import type { Texture } from "three";
 
 
 interface PixelatedTextProps {
@@ -67,12 +83,12 @@ export default function PixelatedText({
 
     const settings: Settings = { grid, mouse, strength, relaxation };
 
-    let scene: THREE.Scene;
-    let camera: THREE.OrthographicCamera;
-    let renderer: THREE.WebGLRenderer;
-    let material: THREE.ShaderMaterial;
-    let planeMesh: THREE.Mesh;
-    let dataTexture: THREE.DataTexture;
+    let scene: Scene;
+    let camera: OrthographicCamera;
+    let renderer: WebGLRenderer;
+    let material: ShaderMaterial;
+    let planeMesh: Mesh;
+    let dataTexture: DataTexture;
 
     const createCleanGrid = () => {
       const size = settings.grid;
@@ -83,14 +99,14 @@ export default function PixelatedText({
         data[i] = 255;
       }
 
-      dataTexture = new THREE.DataTexture(
+      dataTexture = new DataTexture(
         data,
         size,
         size,
-        THREE.RGBAFormat,
-        THREE.FloatType
+        RGBAFormat,
+        FloatType
       );
-      dataTexture.magFilter = dataTexture.minFilter = THREE.NearestFilter;
+      dataTexture.magFilter = dataTexture.minFilter = NearestFilter;
 
       if (material) {
         material.uniforms.uDataTexture.value = dataTexture;
@@ -99,12 +115,12 @@ export default function PixelatedText({
     };
 
     const createThreeTexture = (canvas: HTMLCanvasElement) => {
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
+      const texture = new CanvasTexture(canvas);
+      texture.minFilter = LinearFilter;
+      texture.magFilter = LinearFilter;
       texture.generateMipmaps = false;
-      texture.wrapS = THREE.ClampToEdgeWrapping;
-      texture.wrapT = THREE.ClampToEdgeWrapping;
+      texture.wrapS = ClampToEdgeWrapping;
+      texture.wrapT = ClampToEdgeWrapping;
       texture.flipY = true;
       return texture;
     };
@@ -146,14 +162,14 @@ export default function PixelatedText({
       return createThreeTexture(canvas);
     };
 
-    const initializeScene = (texture: THREE.Texture) => {
+    const initializeScene = (texture: Texture) => {
       if (isDestroyedRef.current) return;
 
       const width = container.offsetWidth;
       const height = container.offsetHeight;
 
-      scene = new THREE.Scene();
-      camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
+      scene = new Scene();
+      camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
       camera.position.z = 1;
 
       createCleanGrid();
@@ -175,7 +191,7 @@ export default function PixelatedText({
           gl_FragColor = color;
         }`;
 
-      material = new THREE.ShaderMaterial({
+      material = new ShaderMaterial({
         uniforms: {
           time: { value: 0 },
           uTexture: { value: texture },
@@ -183,14 +199,14 @@ export default function PixelatedText({
         },
         vertexShader,
         fragmentShader,
-        side: THREE.DoubleSide,
+        side: DoubleSide,
         transparent: true,
       });
 
-      planeMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+      planeMesh = new Mesh(new PlaneGeometry(2, 2), material);
       scene.add(planeMesh);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new WebGLRenderer({ antialias: true, alpha: true });
       renderer.setClearColor(0xEEEEEE, 1);
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
